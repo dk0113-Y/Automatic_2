@@ -25,10 +25,9 @@ This skill is not a tuning guide, decision policy, router, project baseline, wor
 Expected task input:
 
 - `source_run_dir`: path to one completed training run directory.
-- `output_report_path`: optional report path, only when the prompt authorizes writing a report.
-- `destination_directory`: optional report destination, only when the prompt authorizes writing a report.
+- `output_report_path`: optional JSON report path, only when the prompt authorizes writing a report.
+- `destination_directory`: optional report destination for the structured JSON report, only when the prompt authorizes writing.
 - `run_name`: optional run label supplied by the prompt or inferred from the run directory name.
-- `report_format`: optional specific output format requested by the prompt.
 
 If `source_run_dir` is missing, inaccessible, not a directory, or too ambiguous to identify one run, report `blocked_insufficient_input` and do not invent facts.
 
@@ -283,25 +282,9 @@ Codex must never copy or publish:
 
 Codex may report existence, relative paths, file sizes, timestamps, and metadata of checkpoints when needed. Metadata reporting must not include binary payload contents.
 
-## 12. Suggested Output Shape
+## 12. Structured JSON Output
 
-When the prompt asks Codex to write a Markdown report, use a neutral report structure:
-
-- Scope
-- Run identity
-- Files inspected
-- Reproducible-launch verification
-- Train-side monitoring summary
-- Post-hoc selection summary
-- Supplemental `final_probe` summary
-- Configuration and runtime facts
-- Missingness and parseability
-- Forbidden artifact check
-- Unverified items
-- Factual summary status
-- Explicit `No tuning recommendation provided`
-
-When the prompt asks for structured output, use this neutral JSON shape:
+When the prompt authorizes writing a report, use this structured JSON object shape:
 
 ```json
 {
@@ -311,7 +294,9 @@ When the prompt asks for structured output, use this neutral JSON shape:
   "source_run_dir": "<sanitized or relative>",
   "run_name": "<name or null>",
   "files_inspected": [],
+  "commands_run": [],
   "reproducible_launch_status": "<status>",
+  "reproducible_launch": {},
   "train_side_monitoring": {},
   "posthoc_selection": {},
   "supplemental_final_probe": {},
@@ -325,7 +310,16 @@ When the prompt asks for structured output, use this neutral JSON shape:
 }
 ```
 
-`tuning_recommendation_provided` must always be `false`.
+Output requirements:
+
+- The output must be valid JSON.
+- `tuning_recommendation_provided` must always be `false`.
+- Paths must be sanitized.
+- Do not include full CSV contents.
+- Do not include checkpoint payloads.
+- Do not include model weights.
+- Do not include private absolute paths.
+- Do not include tuning decisions.
 
 ## 13. Prohibited Output
 
@@ -351,9 +345,9 @@ When this skill is used in a real task, record:
 
 - commands run
 - files inspected
-- parse checks
+- JSON parse check
 - whether the training repository was modified
-- whether generated report files were written
+- whether the generated JSON report file was written
 - whether forbidden artifacts were copied
 - whether no tuning recommendation was provided
 
