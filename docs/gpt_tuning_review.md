@@ -10,14 +10,13 @@ This document defines a GPT-side tuning review workflow for deriving a bounded n
 - archived `training_run_analysis.json` or `multi_run_analysis.json`
 - archived `tuning_review.json`
 
-This workflow produces:
+This workflow produces a user-facing Chinese tuning review with an explicit next-step recommendation.
 
-- a user-facing Chinese tuning review
-- an archivable `tuning_review_payload` for later use by the training-analysis archive workflow
+The archivable `tuning_review_payload` is the structured content contract used when the user requests archive/落盘 or when GPT prepares a separate Codex archive prompt. It is not mandatory in the default tuning-review response unless the user requests archive-ready output.
 
 This document is not a Codex execution skill, a GPT-to-Codex prompt packaging document, a training-system manifest, a Codex factual-analysis extractor, a history archive writer, a raw training-log parser, a method-redesign workflow, or a paper-level conclusion policy.
 
-GPT owns evidence interpretation after admissibility gates pass, prior rationale validation, historical tuning-chain synthesis, bounded next-run recommendation, user-facing tuning review, and archivable `tuning_review_payload` generation.
+GPT owns evidence interpretation after admissibility gates pass, prior rationale validation, historical tuning-chain synthesis, bounded next recommendation, user-facing tuning review, and structured tuning rationale content when archive-ready output is requested.
 
 Codex owns factual analysis extraction through concrete Codex skills, archive writing through concrete Codex skills, and bounded file inspection and validation when explicitly assigned.
 
@@ -46,7 +45,17 @@ If either condition is not met, GPT must not produce a formal next-run plan. `re
 
 Non-formal, debug, smoke, profile, incomplete, missing, contradictory, or blocked runs must not be treated as formal tuning evidence. GPT may still provide a bounded diagnostic explanation of missingness or repair needs.
 
-## 4. Engineering Grounding
+## 4. Active Optimization Objective
+
+Formal GPT tuning review is an active optimization workflow within the valid engineering tuning surface. Its goal is not only to summarize the current run, but also to reduce the most important remaining tuning uncertainty and improve system performance through bounded, evidence-grounded recommendations.
+
+When evidence gates pass, GPT should identify the next actionable uncertainty unless the user explicitly asks to pause. Refuting one prior hypothesis should redirect the tuning chain to the next justified variable or comparison plan; it should not automatically terminate active tuning.
+
+GPT must not claim that the current configuration is globally optimal unless the available evidence directly supports that claim. GPT must not claim that no further performance improvement is possible from a single-run or single-seed chain.
+
+This objective does not force a `next_run_plan` when evidence supports `multi_run_comparison_needed` or when the user requests a pause.
+
+## 5. Engineering Grounding
 
 `docs/training_system_manifest.md` is the engineering grounding layer. GPT must use it to constrain:
 
@@ -60,7 +69,7 @@ Non-formal, debug, smoke, profile, incomplete, missing, contradictory, or blocke
 
 The manifest is not a tuning guide, but it defines the valid engineering interpretation space and the valid tuning action surface. GPT must not propose a recommendation that conflicts with the manifest unless the user explicitly asks for a method-level redesign discussion.
 
-## 5. Prior Rationale Extraction
+## 6. Prior Rationale Extraction
 
 GPT identifies the prior tuning rationale by this preferred matching order:
 
@@ -79,7 +88,7 @@ GPT must extract:
 - limitations
 - recommended command metadata
 
-## 6. Prior Hypothesis Validation
+## 7. Prior Hypothesis Validation
 
 GPT must evaluate the current factual analysis against the prior hypothesis before proposing the next recommendation.
 
@@ -93,7 +102,7 @@ Use this `validation_status` enum:
 
 The validation must explicitly separate supporting evidence, contradicting evidence, unverified items, and limitations. The prior tuning review defines the experiment intent, but it must not override the current factual evidence.
 
-## 7. Historical Trajectory Synthesis
+## 8. Historical Trajectory Synthesis
 
 GPT must synthesize the historical tuning chain from `history_index.json` and relevant archived records.
 
@@ -109,7 +118,7 @@ The synthesis must identify:
 
 History prevents short-sighted result-driven tuning and repeated experiments, but old history must not override current formal evidence.
 
-## 8. Contextual Metric Judgement
+## 9. Contextual Metric Judgement
 
 GPT may judge metric movement without fixed universal thresholds. GPT may state that reward supports a hypothesis, RVR indicates degradation, coverage is stable, success rate weakens a claim, or episode length changes are decision-relevant only when the judgement is grounded in:
 
@@ -128,7 +137,7 @@ Strict reproducible evidence means small metric movements should not be dismisse
 
 GPT must not invent fixed global thresholds for reward support, RVR degradation, coverage improvement, or success-rate change unless the threshold comes from the training implementation, artifact schema, accepted project protocol, or explicit user instruction.
 
-## 9. Evidence Roles
+## 10. Evidence Roles
 
 - Current factual analysis decides admissibility and provides current run facts.
 - `docs/training_system_manifest.md` defines engineering fact boundaries and valid action space.
@@ -139,12 +148,12 @@ GPT must not invent fixed global thresholds for reward support, RVR degradation,
 - `final_probe` is supplemental held-out validation.
 - Runtime speed alone is not method-performance superiority evidence.
 
-## 10. Recommendation Modes
+## 11. Recommendation Modes
 
 `recommendation_type` must use this enum:
 
 - `next_run_plan`: formal evidence supports an executable next training run.
-- `hold_current_baseline`: formal evidence supports retaining the current baseline without launching a new tuning run.
+- `hold_current_baseline`: formal evidence supports retaining a current reference baseline for the present comparison or tuning chain. It does not mean global optimality, tuning completion, or absence of further performance improvement. In an active optimization workflow, this mode should be used only when pausing is justified, when no bounded next tuning action is supported, or when the user requests holding the baseline.
 - `requires_more_evidence`: available evidence is insufficient for a formal next-run plan.
 - `repeat_or_repair_run`: the run or analysis should be repeated or repaired before formal review.
 - `multi_run_comparison_needed`: evidence supports comparing a bounded set of runs before choosing the next single direction.
@@ -152,7 +161,11 @@ GPT must not invent fixed global thresholds for reward support, RVR degradation,
 
 `method_redesign_discussion_only` must not include an executable training command unless the user separately approves a method-level redesign task.
 
-## 11. User-Facing Output Requirements
+If the prior hypothesis is refuted and evidence gates pass, GPT must identify the next unresolved tuning uncertainty. GPT should normally choose `next_run_plan` when a bounded single-variable next run is justified. GPT should choose `multi_run_comparison_needed` when robustness, seed variation, or branch comparison should be established before choosing one next direction.
+
+GPT may choose `hold_current_baseline` as a reference-baseline decision, but must also state whether active tuning should pause or what unresolved uncertainty should be addressed next. A held baseline is a reference point, not proof of optimality.
+
+## 12. User-Facing Output Requirements
 
 The standard user-facing review structure is Chinese:
 
@@ -165,7 +178,21 @@ The standard user-facing review structure is Chinese:
 
 Evidence-insufficient cases may collapse the structure but must still explain the gate failure and next evidence action. User-facing recommendations should be clear enough to produce a concrete PowerShell launch command when `recommendation_type` is `next_run_plan`.
 
-## 12. Archivable tuning_review_payload
+The user-facing review must provide an explicit next-step recommendation.
+
+If `recommendation_type` is `next_run_plan`, include a concrete PowerShell launch command and validation focus.
+
+If `recommendation_type` is `multi_run_comparison_needed`, describe the bounded comparison plan and the uncertainty it resolves.
+
+If `recommendation_type` is `hold_current_baseline`, state clearly that this means retaining a reference baseline, not proving global optimality or ending active tuning; also state the next unresolved tuning uncertainty or why pausing is justified.
+
+If evidence is insufficient, explain the blocking condition and required evidence action.
+
+The default user-facing tuning review does not need to include a complete `tuning_review_payload` JSON unless the user requests archive-ready output or asks GPT to prepare a Codex archive prompt.
+
+## 13. Payload Content For Archive Step
+
+This payload contract defines the structured tuning rationale that GPT supplies when the user requests archive/落盘 or when GPT prepares a separate Codex archive prompt. It is not the default output of every tuning-review response.
 
 The archivable payload must be JSON-compatible and use this top-level shape:
 
@@ -240,8 +267,8 @@ Required field constraints:
 - `report_type` must be `"gpt_tuning_review"`.
 - `generated_by` must be `"gpt"`.
 - `evidence_gate.status` must be `passed` or `blocked`.
-- `prior_rationale_validation.validation_status` must use the fixed enum from Section 6.
-- `recommendation_type` must use the fixed enum from Section 10.
+- `prior_rationale_validation.validation_status` must use the fixed enum from Section 7.
+- `recommendation_type` must use the fixed enum from Section 11.
 - `recommended_next_command_summary` may be `null` when no executable next run is recommended.
 - `next_hypothesis` is required for `next_run_plan` and `multi_run_comparison_needed`.
 - `next_hypothesis` should be `null` or minimal for `requires_more_evidence` when no run hypothesis exists.
@@ -255,7 +282,7 @@ Portable command metadata requirements:
 - `command_arguments` must store concrete launcher parameters
 - private local absolute paths must not be stored in tracked history payloads
 
-## 13. Forbidden Reasoning And Output
+## 14. Forbidden Reasoning And Output
 
 GPT must not:
 
@@ -264,12 +291,15 @@ GPT must not:
 - treat post-hoc winner alone as method superiority evidence
 - treat runtime speed alone as method superiority evidence
 - invent next hyperparameters without tying them to evidence and hypothesis
+- treat `hold_current_baseline` as proof of global optimum
+- treat a refuted prior hypothesis as automatic termination of active tuning
+- output an archivable payload JSON by default unless the user requests archive-ready output or Codex archive prompt preparation
 - propose method-level redesign as an unattended training command
 - use full logs, full CSVs, checkpoints, model weights, raw outputs, plots, or trajectories directly
 - store private local absolute paths in archivable payloads
 - use fixed universal metric thresholds without source authority
 
-## 14. Failure And Insufficient Evidence Cases
+## 15. Failure And Insufficient Evidence Cases
 
 Missing current factual analysis, missing or failed reproducibility evidence, partial factual summary, missing history, no prior rationale match, malformed history index, missing archived payloads, and non-formal/debug/profile runs must be handled explicitly.
 
