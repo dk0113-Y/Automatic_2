@@ -26,14 +26,7 @@ A document may call or reference another document only when needed for its own d
 
 Documents should be written as stable project materials, not as construction notes. Avoid patch-style or construction-phase wording unless explicitly requested by the user.
 
-Avoid wording that frames content as transitional, including:
-
-- prior-state adverbs such as "pre<!-- -->viously" or "now"
-- reversal phrases such as "no lon<!-- -->ger"
-- change-result phrases such as "after this cha<!-- -->nge" or "this fi<!-- -->xes"
-- status labels such as "temporary" or "workaround"
-- change-history labels such as "migration no<!-- -->te" or "patch no<!-- -->te"
-- format-transition labels such as "old for<!-- -->mat" or "new for<!-- -->mat"
+Avoid wording that frames content as transitional, including prior-state references, reversal phrasing, change-result phrasing, temporary-status labels, change-history labels, and format-transition labels.
 
 Reserved interfaces are allowed when they are intentional stable interface contracts, not temporary construction notes.
 
