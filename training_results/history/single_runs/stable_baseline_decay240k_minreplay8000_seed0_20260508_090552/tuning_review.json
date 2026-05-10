@@ -5,6 +5,90 @@
   "review_scope": "single_run",
   "source_analysis_archive_id": "stable_baseline_decay240k_minreplay8000_seed0_20260508_090552",
   "source_run_name_or_group": "stable_baseline_decay240k_minreplay8000_seed0_20260508_090552",
+  "evidence_gate": {
+    "status": "passed",
+    "reproducible_launch_status": "reproducible_launch_confirmed",
+    "factual_summary_status": "factual_summary_ready",
+    "blocking_reason": null
+  },
+  "engineering_context": {
+    "manifest_used": "docs/training_system_manifest.md",
+    "method_mainline": "Shared semantic dual-state Double DQN mainline with dual-branch semantic dueling Q network under formal_posthoc_trainselect_v1.",
+    "tuning_surface_used": [
+      "total_env_steps"
+    ],
+    "method_redesign_required": false,
+    "engineering_constraints": [
+      "Keep the current algorithmic mainline unchanged.",
+      "Use the stable reproducible launcher.",
+      "Treat post-hoc selection as checkpoint-selection context.",
+      "Treat final_probe as supplemental held-out validation.",
+      "Use a single-variable budget extension before changing exploration, replay warmup, or reward parameters."
+    ]
+  },
+  "prior_rationale_validation": {
+    "prior_archive_id": null,
+    "prior_recommendation_type": null,
+    "prior_hypothesis": null,
+    "validation_status": "not_applicable",
+    "supporting_evidence": [],
+    "contradicting_evidence": [],
+    "unverified_items": [
+      "No earlier paired tuning archive existed before this first archived record."
+    ]
+  },
+  "historical_trajectory": {
+    "history_entries_used": [],
+    "chain_summary": "This is the first paired archive entry. It establishes the baseline-to-budget-extension tuning chain.",
+    "repeated_uncertainties": [],
+    "resolved_uncertainties": [],
+    "remaining_uncertainties": [
+      "Whether the current configuration remains undertrained at 500k env steps.",
+      "Whether extending the budget to 650k preserves or improves late-stage train-side dynamics.",
+      "Whether RVR, timeout, stall, zero-info, and recent revisit diagnostics continue decreasing under the same exploration, replay warmup, and reward settings."
+    ]
+  },
+  "current_evidence_interpretation": {
+    "train_side_monitoring": {
+      "summary": [
+        "Recent train reward reached 145.01.",
+        "Recent train coverage reached 0.9348.",
+        "Recent train success_rate reached 0.81.",
+        "Recent episode_length decreased to 385.74.",
+        "Recent RVR decreased to 0.1917."
+      ],
+      "dynamics": [
+        "Reward increased from 9.98 to 145.01.",
+        "Coverage increased from 0.4528 to 0.9348.",
+        "Success_rate increased from 0.00 to 0.81.",
+        "Episode_length decreased from 600.00 to 385.74.",
+        "RVR decreased from 0.6268 to 0.1917.",
+        "Timeout, stall, zero-info, and recent revisit diagnostics decreased."
+      ]
+    },
+    "posthoc_selection_context": {
+      "winner_step": 500000,
+      "best_vs_last_gap": 0,
+      "interpretation": "The post-hoc winner is the final 500k checkpoint, so the run does not show clear post-peak degradation before termination."
+    },
+    "supplemental_final_probe": {
+      "winner_reward": 133.4099578857422,
+      "winner_coverage": 0.9137020707130432,
+      "winner_success_rate": 0.75,
+      "winner_repeat_visit_ratio": 0.24047355353832245,
+      "interpretation": "final_probe is directionally supportive but remains supplemental held-out validation."
+    },
+    "contextual_metric_judgements": [
+      "Endpoint train-side dynamics support testing a budget extension before changing exploration, replay warmup, or reward parameters.",
+      "RVR remains non-trivial, but its strong decrease from early to final training does not yet justify changing epsilon_end before checking budget saturation.",
+      "The combination of endpoint winner, zero best-vs-last gap, and supportive train-final consistency favors a single-variable budget extension."
+    ],
+    "limitations": [
+      "The rationale is based on one formal run.",
+      "No prior paired history existed at the time of this archive.",
+      "final_probe remains finite held-out validation even under deterministic reproducibility."
+    ]
+  },
   "recommendation_type": "next_run_plan",
   "recommended_next_run_name": "stable_extend650k_decay240k_minreplay8000_seed0",
   "recommended_next_command_summary": {
@@ -30,6 +114,24 @@
       "MinReplaySize": 8000,
       "FinalGreedyEpisodes": 100
     }
+  },
+  "next_hypothesis": {
+    "hypothesis_id": "budget_extension_undertraining_check",
+    "hypothesis": "Extending the training budget from 500k to 650k env steps while preserving epsilon_decay_steps=240k, epsilon_end=0.05, min_replay_size=8000, seed=0, and final_greedy_episodes=100 will test whether the current configuration remains undertrained rather than already saturated or degraded.",
+    "expected_supporting_evidence_next_run": [
+      "The 650k winner remains near the endpoint.",
+      "Late-stage reward, coverage, and success_rate continue improving or remain strong.",
+      "RVR, timeout, stall, zero-info, and recent revisit diagnostics continue decreasing or do not deteriorate.",
+      "Train-final consistency remains supportive.",
+      "final_probe remains supplemental but directionally aligned with train-side evidence."
+    ],
+    "expected_refuting_evidence_next_run": [
+      "The 650k best checkpoint is no longer near the endpoint.",
+      "Metrics after 500k show RVR, stall, zero-info, timeout, or recent revisit deterioration.",
+      "Late-stage reward, coverage, or success_rate weakens in a way that suggests saturation or degradation.",
+      "Train-side monitoring continues improving but final_probe clearly falls back, requiring focused train-final consistency review.",
+      "The budget extension produces ambiguous evidence that cannot distinguish budget effect from endpoint degradation."
+    ]
   },
   "proposed_changes": {
     "total_env_steps": 650000
