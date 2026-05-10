@@ -113,9 +113,14 @@ Default forbidden writes:
 Required validation:
 
 - JSON parse check
+- required top-level key completeness check
+- `factual_summary_status` presence check
+- `factual_summary_status` allowed-value check
+- `tuning_recommendation_provided=false` check
 - `git diff` scope
 - `git diff --check`
 - training repository status check
+- source run output modification check
 - no forbidden artifact copy
 
 Commit and push:
@@ -317,6 +322,62 @@ Required procedure:
 Validation:
   Run from C:\Users\Dk\Desktop\SCI\Automatic_2:
     - python -m json.tool <output_json_path>
+    - python - <<'PY'
+      import json
+      from pathlib import Path
+
+      path = Path(r"training_results\current\current_training_run_analysis.json")
+      data = json.loads(path.read_text(encoding="utf-8"))
+
+      required_keys = [
+          "schema_version",
+          "report_type",
+          "generated_by",
+          "source_run_dir",
+          "run_name",
+          "files_inspected",
+          "commands_run",
+          "reproducible_launch_status",
+          "reproducible_launch",
+          "train_side_monitoring",
+          "posthoc_selection",
+          "supplemental_final_probe",
+          "configuration_and_runtime",
+          "missing_artifacts",
+          "parse_failures",
+          "unverified_items",
+          "forbidden_artifact_findings",
+          "factual_summary_status",
+          "tuning_recommendation_provided",
+      ]
+
+      missing = [key for key in required_keys if key not in data]
+      if missing:
+          raise SystemExit(f"Missing required top-level keys: {missing}")
+
+      allowed_status = {
+          "factual_summary_ready",
+          "partial_factual_summary",
+          "missing_core_training_monitoring",
+          "reproducibility_unverified",
+          "blocked_insufficient_input",
+          "parse_failed",
+      }
+
+      if data.get("report_type") != "training_run_factual_analysis":
+          raise SystemExit(f"Unexpected report_type: {data.get('report_type')!r}")
+
+      if data.get("generated_by") != "codex":
+          raise SystemExit(f"Unexpected generated_by: {data.get('generated_by')!r}")
+
+      if data.get("factual_summary_status") not in allowed_status:
+          raise SystemExit(f"Invalid factual_summary_status: {data.get('factual_summary_status')!r}")
+
+      if data.get("tuning_recommendation_provided") is not False:
+          raise SystemExit("tuning_recommendation_provided must be false")
+
+      print("schema completeness check passed")
+      PY
     - git status --short --branch
     - git diff -- <output_json_path>
     - git diff --check
@@ -327,7 +388,7 @@ Commit and push policy:
   Commit and push after validation passes and only <output_json_path> changed, unless the user explicitly disables commit/push for the task. Do not commit or push if any forbidden file changed, the JSON is invalid, the training repository changed, source run outputs changed, or a forbidden artifact was copied.
 
 Final report requirements:
-  Report the output JSON path, files changed, validation commands and results, whether the training repository was modified, whether forbidden artifacts were copied, whether commit and push were performed, commit hash when available, push target branch when available, the reason if commit/push was not performed, remaining risks, and confirmation that no tuning recommendation or decision was provided.
+  Report the output JSON path, files changed, validation commands and results, schema completeness validation result, factual_summary_status value, confirmation that tuning_recommendation_provided is false, whether the training repository was modified, whether forbidden artifacts were copied, whether commit and push were performed, commit hash when available, push target branch when available, the reason if commit/push was not performed, remaining risks, and confirmation that no tuning recommendation or decision was provided.
 ```
 
 ## 7. Update Policy

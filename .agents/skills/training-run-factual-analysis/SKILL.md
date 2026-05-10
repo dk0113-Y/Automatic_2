@@ -311,13 +311,48 @@ When the prompt authorizes writing a report, use this structured JSON object sha
 Output requirements:
 
 - The output must be valid JSON.
+- JSON parse success alone is insufficient for report validation.
+- Every required top-level key in the structured JSON object shape must be present before commit/push.
+- The report must not omit `factual_summary_status`.
+- `factual_summary_status` must be set to the most appropriate neutral status from this skill:
+  - `factual_summary_ready`
+  - `partial_factual_summary`
+  - `missing_core_training_monitoring`
+  - `reproducibility_unverified`
+  - `blocked_insufficient_input`
+  - `parse_failed`
+- `report_type` must be exactly `training_run_factual_analysis`.
+- `generated_by` must be exactly `codex`.
 - `tuning_recommendation_provided` must always be `false`.
+- `tuning_recommendation_provided` must be verified as exactly `false`.
 - Paths must be sanitized.
 - Do not include full CSV contents.
 - Do not include checkpoint payloads.
 - Do not include model weights.
 - Do not include private absolute paths.
 - Do not include tuning decisions.
+
+Required top-level keys:
+
+- `schema_version`
+- `report_type`
+- `generated_by`
+- `source_run_dir`
+- `run_name`
+- `files_inspected`
+- `commands_run`
+- `reproducible_launch_status`
+- `reproducible_launch`
+- `train_side_monitoring`
+- `posthoc_selection`
+- `supplemental_final_probe`
+- `configuration_and_runtime`
+- `missing_artifacts`
+- `parse_failures`
+- `unverified_items`
+- `forbidden_artifact_findings`
+- `factual_summary_status`
+- `tuning_recommendation_provided`
 
 ## 13. Prohibited Output
 
@@ -344,6 +379,9 @@ When this skill is used in a real task, record:
 - commands run
 - files inspected
 - JSON parse check
+- schema completeness check for all required top-level keys
+- final `factual_summary_status` value
+- confirmation that `tuning_recommendation_provided` is false
 - whether the training repository was modified
 - whether the generated JSON report file was written
 - whether forbidden artifacts were copied
