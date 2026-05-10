@@ -1,0 +1,218 @@
+{
+  "schema_version": "1.0",
+  "report_type": "gpt_tuning_review",
+  "generated_by": "gpt",
+  "review_scope": "single_run",
+  "source_analysis_archive_id": "stable_extend650k_decay240k_minreplay8000_seed0_20260510_150603",
+  "source_run_name_or_group": "stable_extend650k_decay240k_minreplay8000_seed0_20260510_150603",
+  "evidence_gate": {
+    "status": "passed",
+    "reproducible_launch_status": "reproducible_launch_confirmed",
+    "factual_summary_status": "factual_summary_ready",
+    "blocking_reason": null
+  },
+  "engineering_context": {
+    "manifest_used": "docs/training_system_manifest.md",
+    "method_mainline": "Shared semantic dual-state Double DQN mainline with a dual-branch semantic dueling Q network under formal_posthoc_trainselect_v1.",
+    "tuning_surface_used": [
+      "total_env_steps",
+      "epsilon_end"
+    ],
+    "method_redesign_required": false,
+    "engineering_constraints": [
+      "Keep the current algorithmic mainline unchanged.",
+      "Use the stable reproducible launcher.",
+      "Treat train-side monitoring as primary evidence for current training dynamics.",
+      "Treat post-hoc selection as checkpoint-selection context.",
+      "Treat final_probe as supplemental held-out validation only.",
+      "Do not treat final_probe alone as superiority evidence.",
+      "Do not treat post-hoc winner alone as method superiority evidence.",
+      "Do not treat runtime speed alone as method superiority evidence.",
+      "Do not propose method-level redesign as an executable training command."
+    ]
+  },
+  "prior_rationale_validation": {
+    "prior_archive_id": "stable_baseline_decay240k_minreplay8000_seed0_20260508_090552",
+    "prior_recommendation_type": "next_run_plan",
+    "prior_hypothesis": {
+      "hypothesis_id": "budget_extension_undertraining_check",
+      "hypothesis": "Extending the training budget from 500k to 650k env steps while preserving epsilon_decay_steps=240k, epsilon_end=0.05, min_replay_size=8000, seed=0, and final_greedy_episodes=100 will test whether the current configuration remains undertrained rather than already saturated or degraded."
+    },
+    "validation_status": "refuted",
+    "supporting_evidence": [
+      "The 650k run remained formally admissible with reproducible_launch_confirmed and factual_summary_ready.",
+      "The 650k run retained train-final consistency, with current recent_train and final_probe directionally aligned across the tracked metrics.",
+      "Coverage at the 650k endpoint was slightly higher than the 500k baseline endpoint."
+    ],
+    "contradicting_evidence": [
+      "The 650k endpoint recent_train reward was lower than the 500k baseline endpoint.",
+      "The 650k endpoint recent_train success_rate was lower than the 500k baseline endpoint.",
+      "The 650k endpoint recent_train episode_length was higher than the 500k baseline endpoint.",
+      "The 650k endpoint repeat_visit_ratio was higher than the 500k baseline endpoint.",
+      "Timeout, stall, and zero-info diagnostics worsened relative to the 500k baseline.",
+      "The 650k late-stage training dynamics did not support continued clean improvement from budget extension."
+    ],
+    "unverified_items": [
+      "This validation is based on a single-seed chain and does not prove global optimality of the 500k baseline.",
+      "The current evidence does not establish whether epsilon_end=0.03 is superior; it only justifies a bounded validation run."
+    ],
+    "limitations": [
+      "The prior hypothesis is evaluated from structured current and historical analysis files only.",
+      "The conclusion does not rely on final_probe alone.",
+      "The conclusion does not rely on runtime speed.",
+      "The conclusion does not establish that no further performance improvement is possible."
+    ]
+  },
+  "historical_trajectory": {
+    "history_entries_used": [
+      {
+        "archive_id": "stable_baseline_decay240k_minreplay8000_seed0_20260508_090552",
+        "archive_type": "single_run",
+        "training_analysis_path": "training_results/history/single_runs/stable_baseline_decay240k_minreplay8000_seed0_20260508_090552/training_run_analysis.json",
+        "tuning_review_path": "training_results/history/single_runs/stable_baseline_decay240k_minreplay8000_seed0_20260508_090552/tuning_review.json"
+      }
+    ],
+    "chain_summary": "The tuning chain first established the 500k baseline with epsilon_decay_steps=240k, epsilon_end=0.05, min_replay_size=8000, seed=0, and final_greedy_episodes=100. The archived GPT review then recommended a single-variable budget extension to 650k env steps to test the budget_extension_undertraining_check hypothesis. The current 650k analysis refutes that budget-extension hypothesis because the added budget did not produce a superior training-side quality profile relative to the 500k reference baseline.",
+    "repeated_uncertainties": [
+      "Whether late-stage exploration and repeated visits limit final policy efficiency.",
+      "Whether the residual epsilon setting is too high once the model has reached the late training phase.",
+      "Whether coverage can be preserved while reducing inefficient exploration behaviors."
+    ],
+    "resolved_uncertainties": [
+      "A single-variable extension from 500k to 650k env steps is not the next priority under the current epsilon_decay_steps=240k, epsilon_end=0.05, min_replay_size=8000, seed=0 setting.",
+      "The 500k baseline remains the current reference baseline for this tuning chain."
+    ],
+    "remaining_uncertainties": [
+      "Whether lowering epsilon_end from 0.05 to 0.03 at the 500k budget reduces late-stage residual exploration effects.",
+      "Whether lower residual exploration can reduce RVR, stall, zero-info, timeout, and episode_length without sacrificing coverage and success_rate.",
+      "Whether the observed 650k degradation is primarily budget-extension saturation/degradation or residual exploration inefficiency."
+    ],
+    "parameter_dimensions_already_tested": [
+      "total_env_steps: 500000 versus 650000 under otherwise fixed settings"
+    ],
+    "parameter_dimensions_selected_next": [
+      "epsilon_end: 0.05 versus 0.03 under 500000 total_env_steps"
+    ],
+    "next_recommendation_chain_type": "single_variable_switch_from_budget_extension_to_epsilon_end"
+  },
+  "current_evidence_interpretation": {
+    "train_side_monitoring": {
+      "evidence_role": "primary",
+      "current_run_recent_train": {
+        "env_steps": 650000,
+        "reward": 137.602203,
+        "coverage": 0.939623,
+        "success_rate": 0.65,
+        "episode_length": 446.529999,
+        "repeat_visit_ratio": 0.251721,
+        "epsilon": 0.05
+      },
+      "baseline_500k_recent_train_reference": {
+        "env_steps": 500000,
+        "reward": 145.01025390625,
+        "coverage": 0.9347909688949585,
+        "success_rate": 0.8100000023841858,
+        "episode_length": 385.739990234375,
+        "repeat_visit_ratio": 0.19174645841121674,
+        "epsilon": 0.05
+      },
+      "contextual_judgement": "The 650k endpoint only slightly improved coverage relative to the 500k reference baseline, while reward, success_rate, episode_length, repeat_visit_ratio, timeout, stall, and zero-info diagnostics worsened. This refutes the prior undertraining-check hypothesis and indicates that total_env_steps extension is not the next priority."
+    },
+    "posthoc_selection_context": {
+      "evidence_role": "checkpoint_selection_context",
+      "interpretation": "Post-hoc selection is used only to understand checkpoint-selection behavior. It is not treated as standalone method superiority evidence."
+    },
+    "supplemental_final_probe": {
+      "evidence_role": "supplemental_held_out_validation",
+      "current_run_final_probe": {
+        "reward": 134.542068,
+        "coverage": 0.921822,
+        "success_rate": 0.69,
+        "episode_length": 417.519989,
+        "repeat_visit_ratio": 0.230465
+      },
+      "interpretation": "The current run's final_probe is directionally aligned with recent_train, but final_probe remains supplemental held-out validation only and is not used alone as superiority evidence."
+    },
+    "contextual_metric_judgements": [
+      "The 650k budget extension is refuted as the next priority because the broader training-side quality profile weakened relative to the 500k reference baseline.",
+      "Coverage alone is insufficient to override degradation in reward, success_rate, episode_length, RVR, timeout, stall, and zero-info diagnostics.",
+      "The current 500k baseline should be retained as the reference baseline for this chain, but this is not a global-optimum claim.",
+      "Active tuning should continue because the residual-exploration uncertainty remains unresolved.",
+      "The next run should test epsilon_end=0.03 as a bounded single-variable validation of residual exploration, not as a confirmed superior setting."
+    ],
+    "limitations": [
+      "The comparison is based on the structured current and historical analysis files already tracked in Automatic_2.",
+      "The chain remains single-seed and does not establish global optimality.",
+      "Strict reproducibility does not eliminate finite held-out evaluation limitations.",
+      "The recommendation does not propose method-level redesign."
+    ]
+  },
+  "recommendation_type": "next_run_plan",
+  "recommended_next_command_summary": {
+    "working_directory": "source_training_repo",
+    "launcher": "scripts/launch_formal_train_stable.ps1",
+    "run_name": "stable_epsend003_budget500k_decay240k_minreplay8000_seed0",
+    "stable_reproducible_mode_required": true,
+    "command_template": "cd <source_training_repo>; .\\scripts\\launch_formal_train_stable.ps1 -RunName \"stable_epsend003_budget500k_decay240k_minreplay8000_seed0\" -Device \"cuda\" -Seed 0 -TotalEnvSteps 500000 -EpsilonDecaySteps 240000 -EpsilonEnd 0.03 -MinReplaySize 8000 -FinalGreedyEpisodes 100",
+    "command_arguments": {
+      "RunName": "stable_epsend003_budget500k_decay240k_minreplay8000_seed0",
+      "Device": "cuda",
+      "Seed": 0,
+      "TotalEnvSteps": 500000,
+      "EpsilonDecaySteps": 240000,
+      "EpsilonEnd": 0.03,
+      "MinReplaySize": 8000,
+      "FinalGreedyEpisodes": 100
+    }
+  },
+  "next_hypothesis": {
+    "hypothesis_id": "epsilon_end_003_residual_exploration_check",
+    "hypothesis": "Lowering epsilon_end from 0.05 to 0.03 while returning to the 500k env-step budget and preserving epsilon_decay_steps=240k, min_replay_size=8000, seed=0, and final_greedy_episodes=100 will test whether late-stage residual exploration is contributing to RVR, stall, zero-info, timeout, and longer episode_length without sacrificing coverage and success_rate.",
+    "expected_supporting_evidence_next_run": [
+      "Recent train repeat_visit_ratio decreases relative to the 500k reference baseline.",
+      "Recent train stall, zero-info, timeout, and recent revisit diagnostics decrease relative to the 500k reference baseline.",
+      "Recent train episode_length decreases or remains no worse than the 500k reference baseline.",
+      "Recent train coverage remains comparable to the 500k reference baseline.",
+      "Recent train success_rate remains comparable to or improves over the 500k reference baseline.",
+      "Post-hoc winner remains near the endpoint or does not indicate clear late-stage degradation.",
+      "Train-final consistency remains directionally aligned.",
+      "final_probe remains supplemental and directionally consistent with train-side evidence."
+    ],
+    "expected_refuting_evidence_next_run": [
+      "Coverage drops relative to the 500k reference baseline in a way not compensated by efficiency gains.",
+      "Success_rate drops relative to the 500k reference baseline.",
+      "RVR, stall, zero-info, timeout, or episode_length do not improve relative to the 500k reference baseline.",
+      "Post-hoc selection indicates clear late-stage degradation after an earlier checkpoint peak.",
+      "Train-side monitoring and final_probe become directionally inconsistent, requiring a separate train-final consistency review."
+    ]
+  },
+  "rationale": [
+    "Evidence gate passed for the current 650k run.",
+    "The prior archive matched the current run family and supplied the budget_extension_undertraining_check hypothesis.",
+    "The prior hypothesis is refuted because extending total_env_steps from 500k to 650k under fixed epsilon_decay_steps=240k, epsilon_end=0.05, min_replay_size=8000, seed=0, and final_greedy_episodes=100 did not improve the overall training-side quality profile.",
+    "The 650k run only slightly improved coverage while reward, success_rate, episode_length, repeat_visit_ratio, timeout, stall, and zero-info diagnostics worsened relative to the 500k baseline.",
+    "The 500k baseline should be retained as the current reference baseline, but this is not a global-optimum claim and does not end active tuning.",
+    "Active tuning should continue by addressing the next unresolved tuning uncertainty within the valid engineering tuning surface.",
+    "The next bounded single-variable run should lower epsilon_end from 0.05 to 0.03 at the 500k budget to validate whether residual exploration is driving late-stage inefficiency.",
+    "The epsilon_end=0.03 run is a validation experiment, not a confirmed superior setting."
+  ],
+  "expected_validation_focus": [
+    "Compare the epsilon_end=0.03 500k run against the retained 500k reference baseline, not against a presumed global optimum.",
+    "Prioritize train-side recent reward, coverage, success_rate, episode_length, and repeat_visit_ratio.",
+    "Inspect timeout, stall, zero-info, recent revisit, and turn diagnostics as behavior-efficiency evidence.",
+    "Use post-hoc selection only as checkpoint-selection context.",
+    "Use final_probe only as supplemental held-out validation.",
+    "Check train-final consistency before accepting any apparent improvement.",
+    "Confirm that any improvement is not merely a runtime-speed effect.",
+    "Do not infer method-level superiority from this single-variable run alone."
+  ],
+  "limitations": [
+    "This archive payload is based on the accepted GPT tuning review summary and structured Automatic_2 evidence files.",
+    "The 500k baseline is retained only as the current reference baseline.",
+    "This payload does not claim that the 500k baseline is globally optimal.",
+    "This payload does not claim that active tuning is complete.",
+    "This payload does not claim that no further performance improvement is possible.",
+    "The next run tests a bounded epsilon_end uncertainty and does not redesign the method.",
+    "The final_probe evidence remains supplemental and finite-sample-limited."
+  ]
+}
