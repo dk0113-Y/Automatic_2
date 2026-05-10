@@ -95,7 +95,9 @@ If `source_analysis_json` is invalid, report `parse_failed` and do not archive.
 
 `tuning_review_payload` is GPT-owned content supplied by the prompt or by a JSON source file.
 
-Required minimum `tuning_review.json` shape:
+The GPT-side payload contract is defined by `docs/gpt_tuning_review.md`. This archive skill validates and preserves the supplied payload; it does not perform GPT tuning review.
+
+Required JSON-compatible top-level `tuning_review.json` shape:
 
 ```json
 {
@@ -103,34 +105,61 @@ Required minimum `tuning_review.json` shape:
   "report_type": "gpt_tuning_review",
   "generated_by": "gpt",
   "review_scope": "single_run_or_multi_run",
-  "source_analysis_archive_id": "<archive_id>",
-  "source_run_name_or_group": "<name>",
-  "recommendation_type": "<next_run_plan|hold|requires_more_evidence|other>",
-  "recommended_next_command_summary": {
-    "working_directory": "source_training_repo",
-    "launcher": "scripts/launch_formal_train_stable.ps1",
-    "run_name": "<run name>",
-    "stable_reproducible_mode_required": true,
-    "command_template": "cd <source_training_repo>; .\\scripts\\launch_formal_train_stable.ps1 <arguments>",
-    "command_arguments": {}
-  },
-  "tuning_commentary": "",
+  "source_analysis_archive_id": "<archive_id_or_null>",
+  "source_run_name_or_group": "<run_name_or_group>",
+  "evidence_gate": {},
+  "engineering_context": {},
+  "prior_rationale_validation": {},
+  "historical_trajectory": {},
+  "current_evidence_interpretation": {},
+  "recommendation_type": "<recommendation_type>",
+  "recommended_next_command_summary": null,
+  "next_hypothesis": null,
   "rationale": [],
   "expected_validation_focus": [],
   "limitations": []
 }
 ```
 
-Requirements:
+Required field constraints:
 
 - The final `tuning_review.json` must be valid JSON.
+- `schema_version` must be `"1.0"`.
+- `report_type` must be `"gpt_tuning_review"`.
+- `generated_by` must be `"gpt"`.
+- `evidence_gate.status` must be `"passed"` or `"blocked"`.
+- `prior_rationale_validation.validation_status` must be one of:
+  - `supported`
+  - `partially_supported`
+  - `refuted`
+  - `not_verifiable`
+  - `not_applicable`
+- `recommendation_type` must be one of:
+  - `next_run_plan`
+  - `hold_current_baseline`
+  - `requires_more_evidence`
+  - `repeat_or_repair_run`
+  - `multi_run_comparison_needed`
+  - `method_redesign_discussion_only`
+- `recommended_next_command_summary` may be `null` when no executable next run is recommended.
+- `next_hypothesis` is required for `next_run_plan` and `multi_run_comparison_needed`.
+- `next_hypothesis` may be `null` or minimal for `requires_more_evidence` when no run hypothesis exists.
+
+Codex handling requirements:
+
 - Preserve GPT-provided tuning rationale.
 - Do not judge whether the tuning rationale is correct.
+- Do not infer missing hypothesis, evidence, or recommendation content.
 - Do not add new tuning recommendations beyond the supplied payload.
-- If optional fields are absent, keep the JSON minimal rather than inventing content.
-- The skill may add `archive_id` and source path metadata when needed, but must not change the tuning meaning.
+- If optional fields are absent and the task does not authorize normalization, keep the JSON minimal rather than inventing content.
+- The skill may add `archive_id` and source path metadata only when needed, but must not change the tuning meaning.
+- Normalize JSON syntax or shape only when explicitly instructed.
+
+Portable command metadata requirements:
+
 - Use portable repository labels or repository-relative paths for command metadata.
 - Use `working_directory: source_training_repo` when command metadata references the external training repository.
+- Use `launcher: scripts/launch_formal_train_stable.ps1` for formal stable training launches.
 - Use `<source_training_repo>` as the placeholder for the external training repository when a command template is recorded.
 - Use `command_arguments` for concrete launcher parameters.
 - Do not store private local absolute paths in tracked tuning-review history.
@@ -179,6 +208,9 @@ Requirements:
 - Use repository-relative paths in `history_index.json`.
 - Do not store private absolute paths.
 - Do not duplicate full report content inside `history_index.json`.
+- Do not store full `evidence_gate`, `prior_rationale_validation`, `historical_trajectory`, `current_evidence_interpretation`, or `next_hypothesis` content in `history_index.json`.
+- `history_index.json` may record `recommendation_type` when present.
+- `history_index.json` may record `recommended_next_run_name` when present.
 - If an entry with the same `archive_id` already exists, do not silently overwrite it.
 - Existing archive replacement requires explicit prompt authorization.
 - Without replacement authorization, report `archive_id_conflict` and stop.
