@@ -106,7 +106,14 @@ Required minimum `tuning_review.json` shape:
   "source_analysis_archive_id": "<archive_id>",
   "source_run_name_or_group": "<name>",
   "recommendation_type": "<next_run_plan|hold|requires_more_evidence|other>",
-  "recommended_next_command_summary": {},
+  "recommended_next_command_summary": {
+    "working_directory": "source_training_repo",
+    "launcher": "scripts/launch_formal_train_stable.ps1",
+    "run_name": "<run name>",
+    "stable_reproducible_mode_required": true,
+    "command_template": "cd <source_training_repo>; .\\scripts\\launch_formal_train_stable.ps1 <arguments>",
+    "command_arguments": {}
+  },
   "tuning_commentary": "",
   "rationale": [],
   "expected_validation_focus": [],
@@ -122,6 +129,11 @@ Requirements:
 - Do not add new tuning recommendations beyond the supplied payload.
 - If optional fields are absent, keep the JSON minimal rather than inventing content.
 - The skill may add `archive_id` and source path metadata when needed, but must not change the tuning meaning.
+- Use portable repository labels or repository-relative paths for command metadata.
+- Use `working_directory: source_training_repo` when command metadata references the external training repository.
+- Use `<source_training_repo>` as the placeholder for the external training repository when a command template is recorded.
+- Use `command_arguments` for concrete launcher parameters.
+- Do not store private local absolute paths in tracked tuning-review history.
 
 ## 7. history_index.json Contract
 

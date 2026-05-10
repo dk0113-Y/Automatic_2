@@ -8,7 +8,7 @@
   "recommendation_type": "next_run_plan",
   "recommended_next_run_name": "stable_extend650k_decay240k_minreplay8000_seed0",
   "recommended_next_command_summary": {
-    "working_directory": "C:\\Users\\Dk\\Desktop\\SCI\\代码1",
+    "working_directory": "source_training_repo",
     "launcher": "scripts/launch_formal_train_stable.ps1",
     "run_name": "stable_extend650k_decay240k_minreplay8000_seed0",
     "device": "cuda",
@@ -19,7 +19,17 @@
     "min_replay_size": 8000,
     "final_greedy_episodes": 100,
     "stable_reproducible_mode_required": true,
-    "powershell_command": "cd C:\\Users\\Dk\\Desktop\\SCI\\代码1; .\\scripts\\launch_formal_train_stable.ps1 -RunName \"stable_extend650k_decay240k_minreplay8000_seed0\" -Device \"cuda\" -Seed 0 -TotalEnvSteps 650000 -EpsilonDecaySteps 240000 -EpsilonEnd 0.05 -MinReplaySize 8000 -FinalGreedyEpisodes 100"
+    "command_template": "cd <source_training_repo>; .\\scripts\\launch_formal_train_stable.ps1 -RunName \"stable_extend650k_decay240k_minreplay8000_seed0\" -Device \"cuda\" -Seed 0 -TotalEnvSteps 650000 -EpsilonDecaySteps 240000 -EpsilonEnd 0.05 -MinReplaySize 8000 -FinalGreedyEpisodes 100",
+    "command_arguments": {
+      "RunName": "stable_extend650k_decay240k_minreplay8000_seed0",
+      "Device": "cuda",
+      "Seed": 0,
+      "TotalEnvSteps": 650000,
+      "EpsilonDecaySteps": 240000,
+      "EpsilonEnd": 0.05,
+      "MinReplaySize": 8000,
+      "FinalGreedyEpisodes": 100
+    }
   },
   "proposed_changes": {
     "total_env_steps": 650000

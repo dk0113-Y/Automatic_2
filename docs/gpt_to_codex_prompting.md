@@ -217,6 +217,10 @@ Required prompt behavior:
 - Do not reanalyze training outputs.
 - Preserve source report facts.
 - Preserve GPT tuning rationale.
+- Require `tuning_review_payload` to use repository-relative paths or path labels.
+- Use `recommended_next_command_summary.working_directory: source_training_repo` when the external training repository is referenced.
+- Use `recommended_next_command_summary.command_template` with the `<source_training_repo>` placeholder when a command template is recorded.
+- Use `recommended_next_command_summary.command_arguments` for concrete launcher parameters.
 - Do not create `archive_manifest.json`.
 - Provide no tuning decision by Codex.
 
@@ -244,6 +248,10 @@ Required prompt behavior:
 - Do not reanalyze training outputs.
 - Preserve source report facts.
 - Preserve GPT tuning rationale.
+- Require `tuning_review_payload` to use repository-relative paths or path labels.
+- Use `recommended_next_command_summary.working_directory: source_training_repo` when the external training repository is referenced.
+- Use `recommended_next_command_summary.command_template` with the `<source_training_repo>` placeholder when a command template is recorded.
+- Use `recommended_next_command_summary.command_arguments` for concrete launcher parameters.
 - Do not create `archive_manifest.json`.
 - Provide no tuning decision by Codex.
 
