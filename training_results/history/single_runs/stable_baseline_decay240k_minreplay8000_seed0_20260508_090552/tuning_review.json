@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "report_type": "gpt_tuning_review",
+  "generated_by": "gpt",
+  "review_scope": "single_run",
+  "source_analysis_archive_id": "stable_baseline_decay240k_minreplay8000_seed0_20260508_090552",
+  "source_run_name_or_group": "stable_baseline_decay240k_minreplay8000_seed0_20260508_090552",
+  "recommendation_type": "next_run_plan",
+  "recommended_next_run_name": "stable_extend650k_decay240k_minreplay8000_seed0",
+  "recommended_next_command_summary": {
+    "working_directory": "C:\\Users\\Dk\\Desktop\\SCI\\代码1",
+    "launcher": "scripts/launch_formal_train_stable.ps1",
+    "run_name": "stable_extend650k_decay240k_minreplay8000_seed0",
+    "device": "cuda",
+    "seed": 0,
+    "total_env_steps": 650000,
+    "epsilon_decay_steps": 240000,
+    "epsilon_end": 0.05,
+    "min_replay_size": 8000,
+    "final_greedy_episodes": 100,
+    "stable_reproducible_mode_required": true,
+    "powershell_command": "cd C:\\Users\\Dk\\Desktop\\SCI\\代码1; .\\scripts\\launch_formal_train_stable.ps1 -RunName \"stable_extend650k_decay240k_minreplay8000_seed0\" -Device \"cuda\" -Seed 0 -TotalEnvSteps 650000 -EpsilonDecaySteps 240000 -EpsilonEnd 0.05 -MinReplaySize 8000 -FinalGreedyEpisodes 100"
+  },
+  "proposed_changes": {
+    "total_env_steps": 650000
+  },
+  "unchanged_controls": {
+    "epsilon_decay_steps": 240000,
+    "epsilon_end": 0.05,
+    "min_replay_size": 8000,
+    "seed": 0,
+    "final_greedy_episodes": 100,
+    "stable_reproducible_launcher": "scripts/launch_formal_train_stable.ps1"
+  },
+  "tuning_commentary": "The next run should extend only the training budget from 500k to 650k env steps while preserving epsilon_decay_steps=240k, epsilon_end=0.05, min_replay_size=8000, seed=0, and final_greedy_episodes=100. The purpose is to test whether the current configuration is still undertrained before changing exploration, replay warmup, or reward parameters.",
+  "rationale": [
+    "The current run is reproducible_launch_confirmed and factual_summary_ready.",
+    "The post-hoc winner is the final 500k checkpoint, so the run does not show a clear post-peak degradation before termination.",
+    "Train-side monitoring remains strong at the endpoint: reward, coverage, success_rate, episode_length, and RVR all improved from early to final values.",
+    "Train-final consistency supports the final_probe according to the current structured artifact.",
+    "A single-variable budget extension tests whether the current configuration is undertrained before changing exploration, replay, or reward parameters."
+  ],
+  "expected_validation_focus": [
+    "Whether the 650k winner remains near the endpoint.",
+    "Whether late-stage reward, coverage, and success_rate continue improving.",
+    "Whether RVR, timeout, stall, and zero-info diagnostics continue decreasing.",
+    "Whether train-final consistency remains supportive.",
+    "Whether final_probe remains supplemental but directionally aligned with train-side evidence."
+  ],
+  "limitations": [
+    "This tuning rationale is based on the current single-run factual analysis and passive training-system engineering context only.",
+    "No historical paired archive existed before this archive operation.",
+    "The final_probe should remain supplemental evidence because finite held-out episode count limits statistical coverage even under deterministic reproducibility."
+  ]
+}
