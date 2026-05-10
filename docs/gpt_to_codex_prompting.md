@@ -65,8 +65,9 @@ All Codex prompts generated from these interfaces must follow these rules:
 - Codex must not copy checkpoints, model weights, full logs, full CSVs, raw outputs, plots, or trajectories.
 - Codex must sanitize private local paths in tracked outputs.
 - Codex must validate JSON outputs when JSON is written.
-- Codex may commit and push only when validation passes and only allowed files changed.
-- Codex must report files changed, validation commands, remaining risks, and whether forbidden actions were avoided.
+- Codex must commit and push after validation passes and only allowed files changed, unless the user explicitly disables commit/push for the task.
+- Codex must not commit or push when validation fails, forbidden files changed, forbidden artifacts were copied, JSON outputs are invalid, the training repository was modified without authorization, source run outputs were modified, or any task-specific blocking condition is present.
+- Codex must report files changed, validation commands, remaining risks, whether forbidden actions were avoided, whether commit and push were performed, commit hash when available, push target branch when available, and the reason if commit/push was not performed.
 
 ## 5. Routine Codex Task Interfaces
 
@@ -119,7 +120,8 @@ Required validation:
 
 Commit and push:
 
-- Allowed only if validation passes and only allowed files changed.
+- Required after validation passes and only allowed files changed, unless the user explicitly disables commit/push for the task.
+- Do not commit or push if validation fails or any forbidden change is detected.
 
 ### 5.2 multi_run_script_generation_task
 
@@ -322,14 +324,14 @@ Validation:
   Also verify that the training repository was not modified and that no forbidden artifacts were copied.
 
 Commit and push policy:
-  Commit and push only if validation passes and only <output_json_path> changed. Do not commit or push if any forbidden file changed, the JSON is invalid, the training repository changed, or a forbidden artifact was copied.
+  Commit and push after validation passes and only <output_json_path> changed, unless the user explicitly disables commit/push for the task. Do not commit or push if any forbidden file changed, the JSON is invalid, the training repository changed, source run outputs changed, or a forbidden artifact was copied.
 
 Final report requirements:
-  Report the output JSON path, files changed, validation commands and results, whether the training repository was modified, whether forbidden artifacts were copied, remaining risks, and confirmation that no tuning recommendation or decision was provided.
+  Report the output JSON path, files changed, validation commands and results, whether the training repository was modified, whether forbidden artifacts were copied, whether commit and push were performed, commit hash when available, push target branch when available, the reason if commit/push was not performed, remaining risks, and confirmation that no tuning recommendation or decision was provided.
 ```
 
 ## 7. Update Policy
 
 When a reserved interface obtains an accepted `SKILL.md` file, replace its `Skill identity` and `Expected skill file` fields with the canonical concrete `Skill invocation` field. Keep the surrounding interface structure unchanged.
 
-Do not add temporary notes, patch notes, construction history, or wording that marks content as recently introduced. All callable skill invocations must use the same local Markdown-link format. Do not preserve obsolete prompt forms.
+Use stable interface wording. All callable skill invocations must use the same local Markdown-link format. Do not preserve obsolete prompt forms.
