@@ -6,7 +6,7 @@ This document defines GPT-side prompt packaging for routine Codex tasks in `Auto
 
 This document is not a user-request router, not a GPT decision workflow, not a Codex analysis skill, and not a training-system manifest. It does not define tuning decisions, result interpretation policy, accepted-baseline policy, next-hyperparameter policy, training-system engineering facts, or Codex data-analysis methods.
 
-`docs/training_system_manifest.md` may be included in Codex prompt required reading when passive engineering context is relevant. `.agents/skills/training-run-factual-analysis/SKILL.md` is the currently available concrete Codex skill for single-run factual analysis.
+`docs/training_system_manifest.md` may be included in Codex prompt required reading when passive engineering context is relevant. `.agents/skills/training-run-factual-analysis/SKILL.md` is the concrete Codex skill for single-run factual analysis. `.agents/skills/training-analysis-archive/SKILL.md` is the concrete Codex skill for paired analysis archive records.
 
 ## 2. Prompt Language And Shape
 
@@ -42,11 +42,16 @@ Skill invocation:
 
 A task interface is callable only when it contains this concrete local `SKILL.md` path. Task interfaces without a concrete `Skill invocation` field define reserved interface contracts but are not executable skill calls.
 
-Current concrete invocation:
+Current concrete invocations:
 
 ```text
 Skill invocation:
   Use [$training-run-factual-analysis](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-run-factual-analysis\SKILL.md)
+```
+
+```text
+Skill invocation:
+  Use [$training-analysis-archive](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-analysis-archive\SKILL.md)
 ```
 
 ## 4. General Prompt Boundary Rules
@@ -190,64 +195,56 @@ Default forbidden writes:
 
 ### 5.4 single_run_analysis_archive_task
 
-This interface is reserved as a native routine task interface.
+Skill invocation:
+  Use [$training-analysis-archive](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-analysis-archive\SKILL.md)
 
-Skill identity:
-
-- `$training-analysis-archive`
-
-Expected skill file:
-
-- `.agents/skills/training-analysis-archive/SKILL.md`
-
-Purpose: archive the current single-run factual analysis JSON into history after GPT has produced a new tuning decision or after the user authorizes archival.
+Purpose: archive a paired single-run record containing `current_training_run_analysis.json` and GPT-provided `tuning_review_payload` into history.
 
 Required input:
 
 - `training_results/current/current_training_run_analysis.json`
-- archive identity derived from `run_name` or user-provided archive id
+- `tuning_review_payload` or `tuning_review_json_source`
+- `archive_id` derived from `run_name` or user-provided archive id
 
 Default output concept:
 
 - `training_results/history/single_runs/<archive_id>/training_run_analysis.json`
+- `training_results/history/single_runs/<archive_id>/tuning_review.json`
+- `training_results/history/history_index.json`
 
 Required prompt behavior:
 
 - Do not reanalyze training outputs.
-- Do not modify current JSON unless explicitly requested.
-- Validate JSON before archiving.
 - Preserve source report facts.
+- Preserve GPT tuning rationale.
+- Do not create `archive_manifest.json`.
 - Provide no tuning decision by Codex.
 
 ### 5.5 multi_run_analysis_archive_task
 
-This interface is reserved as a native routine task interface.
+Skill invocation:
+  Use [$training-analysis-archive](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-analysis-archive\SKILL.md)
 
-Skill identity:
-
-- `$training-analysis-archive`
-
-Expected skill file:
-
-- `.agents/skills/training-analysis-archive/SKILL.md`
-
-Purpose: archive the current multi-run factual analysis JSON into history after GPT/user authorization.
+Purpose: archive a paired multi-run record containing `current_multi_run_analysis.json` and GPT-provided `tuning_review_payload` into history.
 
 Required input:
 
 - `training_results/current/current_multi_run_analysis.json`
-- archive identity derived from `plan_id`, run group id, or user-provided archive id
+- `tuning_review_payload` or `tuning_review_json_source`
+- `archive_id` derived from `plan_id`, run group id, or user-provided archive id
 
 Default output concept:
 
 - `training_results/history/multi_runs/<archive_id>/multi_run_analysis.json`
+- `training_results/history/multi_runs/<archive_id>/tuning_review.json`
+- `training_results/history/history_index.json`
 
 Required prompt behavior:
 
 - Do not reanalyze training outputs.
-- Do not modify current JSON unless explicitly requested.
-- Validate JSON before archiving.
 - Preserve source report facts.
+- Preserve GPT tuning rationale.
+- Do not create `archive_manifest.json`.
 - Provide no tuning decision by Codex.
 
 ## 6. Template: Single-Run Factual Analysis Prompt
