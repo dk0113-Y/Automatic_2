@@ -82,7 +82,7 @@ Required handling:
 - Parse `source_analysis_json`.
 - Verify `report_type` is compatible with `archive_type`.
 - For `single_run`, expect `report_type` to be `training_run_factual_analysis`.
-- For `multi_run`, expect `report_type` to be `multi_run_factual_analysis` when that report type exists.
+- For `multi_run`, validate the source report type against the declared multi-run analysis contract supplied by the task prompt.
 - Preserve the source analysis content without reinterpretation.
 - Copy the parsed JSON object to the archive content file.
 - Do not add tuning rationale into the factual analysis JSON.

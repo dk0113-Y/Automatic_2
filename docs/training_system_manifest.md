@@ -313,7 +313,7 @@ Legacy lifecycle:
 - Legacy top-k recheck writes `logs/best_recheck_eval.csv`.
 - Legacy model-selection checkpoints are stored under `checkpoints/model_select/*.pt`.
 
-The training README contains historical model-selection wording in places. The lifecycle statements above are based on inspected code in `train_q_agent.py`, `training/posthoc_selection.py`, and `training/checkpointing.py`.
+The lifecycle statements above are based on inspected code in `train_q_agent.py`, `training/posthoc_selection.py`, and `training/checkpointing.py`.
 
 ## Generated Artifact Interface
 

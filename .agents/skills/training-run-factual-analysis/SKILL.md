@@ -16,8 +16,6 @@ This skill is not a tuning guide, decision policy, router, project baseline, wor
 - Source training artifacts own run facts.
 - Codex extracts and summarizes facts only.
 - Codex must not provide tuning recommendations, accepted-baseline decisions, stop/continue decisions, branch decisions, next hyperparameters, method-level conclusions, or paper-level conclusions.
-- This skill does not route tasks or call other project documents.
-- This skill does not require cross-document orchestration.
 - This skill does not modify training code or run outputs.
 
 ## 3. Required Input
