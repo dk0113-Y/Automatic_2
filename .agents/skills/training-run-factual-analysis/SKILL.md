@@ -10,9 +10,10 @@ description: Inspect one completed DRL-path-finding run for neutral factual anal
 | Label | Contract |
 | --- | --- |
 | Input | `source_run_dir`; `output_report_path`; `destination_directory`; `run_name` |
-| Output | `neutral_factual_extraction`; `missingness_parseability`; `artifact_metadata`; `configuration_runtime_context`; `schema_defined_json`; `validation_record` |
+| Output | `neutral_factual_extraction`; `missingness_parseability`; `artifact_metadata`; `configuration_runtime_context`; `schema_defined_json`; `validation_record`; `review_facing_compact_digest` |
 | Evidence | `reproducible_launch_first`; `train_side_monitoring_primary`; `posthoc_checkpoint_selection_context`; `final_probe_supplemental`; `configuration_runtime_context` |
 | Limits | `final_probe_role=supplemental_only`; `held_out_sample_limit=preserved`; `deterministic_reproducibility_limit=finite_sample_limit_preserved`; `train_final_consistency=factual_when_provided`; `metric_movement=factual_not_causal` |
+| Compact rule | source artifacts remain full evidence; current JSON records selected factual summaries needed for GPT tuning review |
 | Input blocker | `blocked_insufficient_input` for missing/inaccessible/non-directory/ambiguous `source_run_dir` |
 
 ## 2. Extraction
@@ -37,7 +38,7 @@ Order: `reproducible_launch` -> `train_side_monitoring` -> `posthoc_selection` -
 | Extract | reward; coverage; success_rate; episode_length; repeat_visit_ratio / RVR; timeout; stall; zero_info; recent_revisit; turns; semantic monitoring fields; value truncation / cap-hit diagnostics; learner / replay / exploration fields; reward breakdown; reward events |
 | Semantic fields | `accessible_block_count`; `total_accessible_unknown_area`; `total_frontier_cluster_count`; `mean_block_area`; `local_frontier_coverage`; `local_frontier_block_area_mean` |
 | Learner fields | `loss`; `q_mean`; `target_q_mean`; `td_abs_mean`; `grad_norm`; `replay_size`; `epsilon` |
-| Report | row_counts; parseability; headers; missing_expected_columns; first_last_values_when_safe; min_max_best_recent_window_when_clear; late_stage_direction_or_slope_when_safe; empty_NaN_nonfinite_missing_unparseable_not_inspected |
+| Report | row_counts; parseability; missing_expected_columns; endpoint_or_selected_fields_only; primary_metrics_and_key_diagnostics_only; late_stage_direction_or_slope_when_safe; empty_NaN_nonfinite_missing_unparseable_not_inspected |
 
 ### 2.3 posthoc_selection
 
@@ -109,6 +110,39 @@ Validate:
 - `path_sanitization`
 - `excludes_full_csv_checkpoint_payloads_weights_private_paths_tuning_decisions`
 
+Output compactness:
+- include: gate statuses; key config; endpoint metrics; trend deltas; posthoc winner summary; best-vs-last summary; final_probe summary; missingness; validation record
+- summarize: headers; commands; artifact inventory; seed/backend details; reward events; learner diagnostics
+- exclude: full CSV headers; full raw rows; broad numeric range dumps for every field; full command traces; full artifact inventories; repeated backend explanations; checkpoint payloads; model weights; private absolute paths; full logs; full CSV contents
+- use arrays only for short required lists; otherwise use counts, key names, and summaries
+- inspect broadly; record selectively
+
+Review-facing density:
+
+| Group | Compact content |
+| --- | --- |
+| `reproducible_launch` | evidence gate: `reproducible_launch_status`; `contract_verdict`; required seed/backend status fields; blocking missingness or parse failures |
+| root identity | `run_name`; sanitized `source_run_dir`; source git commit when present; `factual_summary_status`; `tuning_recommendation_provided=false` |
+| `configuration_and_runtime` | key config: `total_env_steps`; `budget_mode`; `epsilon_decay_steps`; `epsilon_end`; `min_replay_size`; `batch_size`; `final_greedy_episodes`; relevant reward settings; runtime duration; device; run mode; performance switches summary |
+| `train_side_monitoring` | endpoint metrics; initial-to-final delta and safe late-stage delta for reward, coverage, success_rate, episode_length, RVR, timeout; key diagnostics: timeout, stall, zero_info, recent_revisit, turns; learner context: loss, grad_norm, replay_size, epsilon |
+| `posthoc_selection` | `winner_step`; `candidate_count`; `valid_candidate_count`; `selected_candidate_steps`; best-vs-last summary; checkpoint metadata summary only |
+| `supplemental_final_probe` | episode count; seed base; winner row key metrics; ranking summary; parseability; limitation tags |
+| `files_inspected` | concise paths or category summary |
+| `commands_run` | purpose summary, not full trace |
+| validation record | schema checks; diff scope; source read-only status; forbidden artifact status |
+
+Density labels:
+- `headers=count_and_missing_expected_only`
+- `raw_rows=endpoint_or_selected_fields_only`
+- `numeric_ranges=primary_metrics_and_key_diagnostics_only`
+- `commands_run=purpose_summary_not_full_trace`
+- `files_inspected=concise_paths_or_category_summary`
+- `artifact_inventory=summary_only`
+- `reward_events=key_diagnostics_only`
+- `semantic_monitoring=key_fields_only`
+- `learner_monitoring=key_fields_only`
+- `seed_backend_details=status_summary_plus_required_fields`
+
 ## 4. Validation
 
 Checklist:
@@ -124,6 +158,14 @@ Checklist:
 - `write_scope`
 - `forbidden_artifact_status`
 - `no_tuning_decision_status`
+- `compact_report_density`
+- `no_full_headers_dump`
+- `no_raw_row_dump`
+- `no_broad_numeric_range_dump`
+- `no_full_command_trace`
+- `no_full_artifact_inventory`
+- `no_private_paths`
+- `no_forbidden_artifacts`
 
 ## 5. Blockers
 
@@ -134,3 +176,4 @@ Block:
 - `path_privacy_violation`: tracked outputs use sanitized paths, repository-relative paths, or stable labels.
 - `decision_scope_violation`: factual-only output; tuning, next-parameter, baseline, stop/continue, branch, method, paper, routing, project-baseline, and workflow decisions are outside this skill.
 - `evidence_role_violation`: `final_probe` is supplemental only; deterministic reproducibility keeps finite-sample limits.
+- `output_density_violation`: current JSON contains full headers, raw rows, broad range dumps, full command traces, or source-artifact-like dumps instead of compact summaries.
