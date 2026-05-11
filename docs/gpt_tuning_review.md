@@ -104,7 +104,7 @@ Use `工程约束核对` only when the recommendation depends on launcher behavi
 Output requirements:
 - State `recommendation_type` explicitly.
 - Explain the evidence basis for the recommendation.
-- For `next_run_plan`, include a concrete executable PowerShell launch command.
+- For `next_run_plan`, include a concrete executable PowerShell launcher command. The command block must be launcher-only and assume execution from the source training repository root. Start with `.\scripts\launch_formal_train_stable.ps1 ...`; do not prepend `cd <source_training_repo>;`, do not use local absolute paths, and do not include working-directory placeholders inside the command block. If a working-directory reminder is needed, state it in prose outside the command block.
 - For `multi_run_comparison_needed`, state the bounded comparison and the uncertainty it resolves.
 - For `hold_current_baseline`, state the reference-baseline or pause reason and remaining uncertainty.
 - For insufficient evidence, state the failed gate or missing evidence and required evidence action.
