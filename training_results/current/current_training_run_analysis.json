@@ -4,22 +4,24 @@
   "generated_by": "codex",
   "source_run_dir": "<source_training_repo>/outputs/stable_epsend003_decay240k_minreplay8000_seed0_20260510_220342",
   "run_name": "stable_epsend003_decay240k_minreplay8000_seed0_20260510_220342",
-  "files_inspected": {
-    "artifact_groups_checked": [
-      "reproducibility_runtime_config",
-      "train_side_monitoring",
-      "posthoc_selection",
-      "supplemental_final_probe",
-      "checkpoint_metadata_only"
-    ],
-    "train_monitoring_row_counts": {
-      "train_steps": 992,
-      "train_episodes": 1002
-    },
-    "posthoc_row_count": 16,
-    "final_probe_row_count": 3,
-    "checkpoint_metadata_checked": true
-  },
+  "files_inspected": [
+    {
+      "artifact_groups_checked": [
+        "reproducibility_runtime_config",
+        "train_side_monitoring",
+        "posthoc_selection",
+        "supplemental_final_probe",
+        "checkpoint_metadata_only"
+      ],
+      "train_monitoring_row_counts": {
+        "train_steps": 992,
+        "train_episodes": 1002
+      },
+      "posthoc_row_count": 16,
+      "final_probe_row_count": 3,
+      "checkpoint_metadata_checked": true
+    }
+  ],
   "commands_run": [
     {
       "purpose": "source_artifacts_parsed_read_only",
