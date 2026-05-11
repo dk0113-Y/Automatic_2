@@ -17,7 +17,7 @@ description: Inspect one completed DRL-path-finding run for neutral factual anal
 
 ## 2. Extraction
 
-Order: `train_side_monitoring` -> `posthoc_selection` -> `supplemental_final_probe` -> `configuration_runtime`.
+Order: `reproducible_launch` -> `train_side_monitoring` -> `posthoc_selection` -> `supplemental_final_probe` -> `configuration_runtime`.
 
 ### 2.1 reproducible_launch
 
@@ -132,5 +132,5 @@ Block:
 - `source_integrity_violation`: training code and source run outputs are read-only.
 - `artifact_copy_violation`: checkpoints, model weights, full logs, full CSVs, raw outputs, plots, trajectories, and binary artifacts are metadata-only.
 - `path_privacy_violation`: tracked outputs use sanitized paths, repository-relative paths, or stable labels.
-- `decision_scope_violation`: factual-only output; excludes tuning recommendations, next hyperparameters, accepted-baseline decisions, stop/continue decisions, branch decisions, method-level conclusions, paper-level conclusions, routing rules, project-baseline instructions, and workflow decisions.
+- `decision_scope_violation`: factual-only output; tuning, next-parameter, baseline, stop/continue, branch, method, paper, routing, project-baseline, and workflow decisions are outside this skill.
 - `evidence_role_violation`: `final_probe` is supplemental only; deterministic reproducibility keeps finite-sample limits.
