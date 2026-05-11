@@ -5,156 +5,124 @@
   "source_run_dir": "<source_training_repo>/outputs/stable_epsend003_decay240k_minreplay8000_seed0_20260510_220342",
   "run_name": "stable_epsend003_decay240k_minreplay8000_seed0_20260510_220342",
   "files_inspected": [
-    "<source_run_dir>/logs/reproducibility_contract.json",
-    "<source_run_dir>/logs/config_snapshot.json",
-    "<source_run_dir>/logs/benchmark_summary.json",
-    "<source_run_dir>/logs/artifact_index.json",
-    "<source_run_dir>/logs/train_steps.csv",
-    "<source_run_dir>/logs/train_episodes.csv",
-    "<source_run_dir>/logs/metric_snapshot.json",
-    "<source_run_dir>/logs/posthoc_candidate_scores.csv",
-    "<source_run_dir>/logs/posthoc_selection_summary.json",
-    "<source_run_dir>/logs/formal_selection_manifest.json",
-    "<source_run_dir>/logs/best_vs_last_gap_summary.json",
-    "<source_run_dir>/logs/final_probe.csv",
-    "<source_run_dir>/logs/final_probe_summary.json",
-    "<source_run_dir>/checkpoints/best.pt metadata",
-    "<source_run_dir>/checkpoints/last.pt metadata",
-    "<source_run_dir>/logs/training_summary.txt first 60 lines",
-    "<source_run_dir>/logs/training_summary.txt keyword scan"
+    {
+      "category": "reproducibility_runtime_config",
+      "paths": [
+        "logs/reproducibility_contract.json",
+        "logs/config_snapshot.json",
+        "logs/benchmark_summary.json",
+        "logs/artifact_index.json",
+        "logs/training_summary.txt"
+      ],
+      "status": "parsed_or_summarized"
+    },
+    {
+      "category": "train_side_monitoring",
+      "paths": [
+        "logs/train_steps.csv",
+        "logs/train_episodes.csv",
+        "logs/metric_snapshot.json"
+      ],
+      "row_counts": {
+        "train_steps": 992,
+        "train_episodes": 1002
+      },
+      "header_counts": {
+        "train_steps": 58,
+        "train_episodes": 56
+      }
+    },
+    {
+      "category": "posthoc_selection",
+      "paths": [
+        "logs/posthoc_candidate_scores.csv",
+        "logs/posthoc_selection_summary.json",
+        "logs/formal_selection_manifest.json",
+        "logs/best_vs_last_gap_summary.json"
+      ],
+      "row_counts": {
+        "posthoc_candidate_scores": 16
+      }
+    },
+    {
+      "category": "supplemental_final_probe",
+      "paths": [
+        "logs/final_probe.csv",
+        "logs/final_probe_summary.json"
+      ],
+      "row_counts": {
+        "final_probe": 3
+      }
+    },
+    {
+      "category": "checkpoint_metadata_only",
+      "summary": {
+        "checkpoint_file_count": 18,
+        "best_pt": {
+          "path": "checkpoints/best.pt",
+          "exists": true,
+          "size_bytes": 4755358
+        },
+        "last_pt": {
+          "path": "checkpoints/last.pt",
+          "exists": true,
+          "size_bytes": 14173678
+        }
+      }
+    }
   ],
   "commands_run": [
     {
-      "command": "Get-Content -Raw <target_repo>/.agents/skills/training-run-factual-analysis/SKILL.md",
-      "purpose": "read selected skill contract"
+      "purpose": "read selected skill and verify target/source state",
+      "summary": "skill read; target git status; source git status; source run existence check"
     },
     {
-      "command": "git status --short --branch",
-      "cwd": "<target_repo>",
-      "purpose": "check target repository before analysis"
+      "purpose": "inspect source artifacts read-only",
+      "summary": "log inventory; checkpoint metadata listing; training summary first lines"
     },
     {
-      "command": "git status --short --branch",
-      "cwd": "<source_training_repo>",
-      "purpose": "check source repository before analysis"
+      "purpose": "parse source artifacts into compact factual summaries",
+      "summary": "structured JSON/CSV parser; no full logs, CSVs, raw rows, or checkpoint payloads copied"
     },
     {
-      "command": "Test-Path/Get-ChildItem <source_run_dir>",
-      "purpose": "verify source run directory and list top-level artifacts"
-    },
-    {
-      "command": "Get-ChildItem <source_run_dir>/logs and <source_run_dir>/checkpoints",
-      "purpose": "inspect artifact inventory and checkpoint metadata only"
-    },
-    {
-      "command": "Get-Content -TotalCount 1 <source_run_dir>/logs/train_steps.csv, train_episodes.csv, final_probe.csv",
-      "purpose": "inspect CSV headers"
-    },
-    {
-      "command": "python structured JSON/CSV summary parser over selected source artifacts",
-      "purpose": "extract factual summaries without copying full logs or CSVs"
-    },
-    {
-      "command": "python generate current_training_run_analysis.json",
-      "purpose": "write authorized current factual JSON report"
-    },
-    {
-      "command": "git status --short --branch",
-      "cwd": "<target_repo>",
-      "purpose": "validate target diff scope"
-    },
-    {
-      "command": "git diff --name-only",
-      "cwd": "<target_repo>",
-      "purpose": "confirm only authorized output file changed"
-    },
-    {
-      "command": "git diff --check",
-      "cwd": "<target_repo>",
-      "purpose": "validate whitespace/conflict markers"
-    },
-    {
-      "command": "git diff --cached --check",
-      "cwd": "<target_repo>",
-      "purpose": "validate staged diff state before staging"
-    },
-    {
-      "command": "git status --short --branch",
-      "cwd": "<source_training_repo>",
-      "purpose": "postcheck source repository read-only status"
-    },
-    {
-      "command": "git status --short -- outputs/<run_name>",
-      "cwd": "<source_training_repo>",
-      "purpose": "postcheck source run output path read-only status"
-    },
-    {
-      "command": "python json schema/status validation for current_training_run_analysis.json",
-      "cwd": "<target_repo>",
-      "purpose": "validate required keys and constants"
-    },
-    {
-      "command": "Select-String current_training_run_analysis.json for private paths and forbidden decision wording",
-      "cwd": "<target_repo>",
-      "purpose": "validate path sanitization and factual-only scope"
-    },
-    {
-      "command": "Select-String current_training_run_analysis.json for status constants",
-      "cwd": "<target_repo>",
-      "purpose": "confirm factual summary, reproducible launch, and tuning false statuses"
-    },
-    {
-      "command": "Get-Content -TotalCount 60 and Select-String keyword scan <source_run_dir>/logs/training_summary.txt",
-      "purpose": "inspect stdout summary artifact without copying full log"
+      "purpose": "validate output",
+      "summary": "json parse; required keys/constants; compactness checks; diff scope; source read-only postcheck"
     }
   ],
   "reproducible_launch_status": "reproducible_launch_confirmed",
   "reproducible_launch": {
-    "artifacts_inspected": [
-      "logs/reproducibility_contract.json",
-      "logs/config_snapshot.json",
-      "logs/benchmark_summary.json",
-      "logs/artifact_index.json"
-    ],
-    "contract_verdict": "strict_contract_ready",
-    "contract_notes": [
-      "Strict reproducibility inputs and backend readbacks are present for this artifact contract."
-    ],
-    "strict_reproducibility": true,
-    "deterministic_algorithms_enabled": true,
-    "deterministic_algorithms_warn_only": false,
-    "PYTHONHASHSEED": {
-      "value": 0,
-      "present": true
-    },
-    "CUBLAS_WORKSPACE_CONFIG": {
-      "value": ":4096:8",
-      "present": true
-    },
-    "backend_requested_flags": {
-      "enable_tf32": false,
-      "enable_cudnn_benchmark": false,
-      "enable_amp": false,
-      "enable_inference_amp": false,
-      "enable_torch_compile": false,
-      "enable_channels_last": false
-    },
-    "backend_runtime_readback": {
-      "requested_device": "cuda",
+    "evidence_gate": {
+      "status": "reproducible_launch_confirmed",
+      "contract_verdict": "strict_contract_ready",
       "strict_reproducibility": true,
+      "blocking_missingness_or_parse_failures": false
+    },
+    "seed_backend_status": {
+      "deterministic_algorithms_enabled": true,
       "deterministic_algorithms_warn_only": false,
-      "cublas_workspace_config_action": {
-        "name": "CUBLAS_WORKSPACE_CONFIG",
-        "value": ":4096:8",
-        "preexisting": true,
-        "set_by_script": false,
-        "status": "preexisting"
+      "PYTHONHASHSEED": {
+        "value": 0,
+        "present": true
       },
-      "torch.backends.cudnn.deterministic": true,
-      "torch.backends.cudnn.benchmark": false,
-      "torch.backends.cuda.matmul.allow_tf32": false,
-      "torch.backends.cudnn.allow_tf32": false,
-      "torch.are_deterministic_algorithms_enabled()": true
+      "CUBLAS_WORKSPACE_CONFIG": {
+        "value": ":4096:8",
+        "present": true
+      },
+      "requested_flags": {
+        "enable_tf32": false,
+        "enable_cudnn_benchmark": false,
+        "enable_amp": false,
+        "enable_inference_amp": false,
+        "enable_torch_compile": false,
+        "enable_channels_last": false
+      },
+      "runtime_readback": {
+        "torch.backends.cudnn.deterministic": true,
+        "torch.backends.cudnn.benchmark": false,
+        "torch.backends.cuda.matmul.allow_tf32": false,
+        "torch.backends.cudnn.allow_tf32": false,
+        "torch.are_deterministic_algorithms_enabled()": true
+      }
     },
     "fixed_seed_fields": {
       "use_fixed_train_episode_seeds": true,
@@ -164,1075 +132,126 @@
       "use_fixed_model_select_seeds": true,
       "fixed_model_select_seed_base": 20262323
     },
-    "seed_policy": {
-      "python_random_seed_policy": "set_seed(cfg.seed) calls random.seed(seed) before model/system initialization.",
-      "numpy_seed_policy": "set_seed(cfg.seed) calls numpy.random.seed(seed) before model/system initialization.",
-      "torch_seed_policy": "set_seed(cfg.seed) calls torch.manual_seed(seed) before model/system initialization.",
-      "torch_cuda_seed_policy": "set_seed(cfg.seed) calls torch.cuda.manual_seed_all(seed) when CUDA is available.",
-      "model_initialization_seed_policy": "ExplorationQNetwork construction occurs after set_seed(cfg.seed), so initial weights are controlled by the global torch seed.",
-      "replay_sampling_rng_policy": "ReplayBuffer.sample uses CPU torch.randint from the global torch RNG; no dedicated replay torch.Generator is configured.",
-      "epsilon_action_rng_policy": "TransitionCollector epsilon branch and random-only actions use the global Python random module; no dedicated action RNG is configured.",
-      "train_episode_seed_policy": "When use_fixed_train_episode_seeds is true, train episode maps use fixed_train_episode_seed_base + episode_index - 1.",
-      "final_probe_seed_policy": "When use_fixed_eval_seeds is true, final_probe uses fixed_final_probe_seed_base + episode_index.",
-      "posthoc_candidate_final_probe_seed_policy": "Post-hoc candidate final probes use the final_probe seed policy and the configured fixed_final_probe_seed_base when fixed eval seeds are enabled."
+    "launch_record_summary": {
+      "argv_item_count": 31,
+      "cwd_sanitized": "source_repo:.",
+      "source_git_branch": "main",
+      "source_git_commit_sha": "736a925ef3402d89056c7e9edca6c895674465e0"
     },
-    "launch_command_sanitized": ".\\train_q_agent.py --device cuda --run-name stable_epsend003_decay240k_minreplay8000_seed0 --seed 0 --total-env-steps 500000 --epsilon-decay-steps 240000 --epsilon-end 0.03 --min-replay-size 8000 --final-greedy-episodes 100 --fixed-train-episode-seed-base 20259323 --fixed-final-probe-seed-base 20261323 --strict-reproducibility --no-deterministic-warn-only --no-enable-tf32 --no-enable-cudnn-benchmark --no-enable-amp --no-enable-inference-amp --no-enable-torch-compile --no-enable-channels-last --use-fixed-train-episode-seeds --use-fixed-eval-seeds",
-    "argv_sanitized": [
-      ".\\train_q_agent.py",
-      "--device",
-      "cuda",
-      "--run-name",
-      "stable_epsend003_decay240k_minreplay8000_seed0",
-      "--seed",
-      0,
-      "--total-env-steps",
-      500000,
-      "--epsilon-decay-steps",
-      240000,
-      "--epsilon-end",
-      0.03,
-      "--min-replay-size",
-      8000,
-      "--final-greedy-episodes",
-      100,
-      "--fixed-train-episode-seed-base",
-      20259323,
-      "--fixed-final-probe-seed-base",
-      20261323,
-      "--strict-reproducibility",
-      "--no-deterministic-warn-only",
-      "--no-enable-tf32",
-      "--no-enable-cudnn-benchmark",
-      "--no-enable-amp",
-      "--no-enable-inference-amp",
-      "--no-enable-torch-compile",
-      "--no-enable-channels-last",
-      "--use-fixed-train-episode-seeds",
-      "--use-fixed-eval-seeds"
-    ],
-    "cwd_sanitized": "source_repo:.",
-    "source_git_branch": "main",
-    "source_git_commit_sha": "736a925ef3402d89056c7e9edca6c895674465e0",
-    "reproducibility_limitations": [
-      "PYTHONHASHSEED can only be fully effective when set before interpreter startup.",
-      "CUBLAS_WORKSPACE_CONFIG should be set before CUDA/CUBLAS use.",
-      "warn_only deterministic mode may warn rather than fail.",
-      "Replay sampling currently uses global torch RNG unless a dedicated generator is implemented.",
-      "Epsilon action selection currently uses global Python random unless a dedicated RNG is implemented."
-    ],
-    "stdout_summary_inspected": {
-      "path": "logs/training_summary.txt",
-      "inspection": "first_60_lines_and_keyword_scan",
-      "fields_seen": [
-        "run_dir",
-        "run_mode",
-        "budget_mode",
-        "total_runtime_sec",
-        "total_runtime_hms",
-        "total_train_episodes_completed",
-        "recent_train",
-        "final_probe_best",
-        "train_final_consistency_verdict",
-        "best_checkpoint_env_steps",
-        "last_checkpoint_env_steps",
-        "final_probe_source"
-      ]
-    }
+    "limitations": [
+      "finite-sample reproducibility limits preserved",
+      "global RNG policies recorded in source artifact"
+    ]
   },
   "train_side_monitoring": {
-    "files": {
-      "train_steps_csv": {
+    "parseability": {
+      "train_steps": {
         "path": "logs/train_steps.csv",
         "row_count": 992,
         "header_count": 58,
-        "headers": [
-          "budget_mode",
-          "env_steps",
-          "episode_idx",
-          "train_episode_idx",
-          "completed_train_episodes",
-          "replay_size",
-          "epsilon",
-          "loss",
-          "q_mean",
-          "target_q_mean",
-          "td_abs_mean",
-          "grad_norm",
-          "learner_steps",
-          "recent_mean_reward",
-          "recent_mean_coverage",
-          "recent_success_rate",
-          "recent_mean_episode_length",
-          "recent_mean_repeat_visit_ratio",
-          "recent_accessible_block_count",
-          "recent_total_accessible_unknown_area",
-          "recent_total_frontier_cluster_count",
-          "recent_mean_block_area",
-          "recent_local_frontier_coverage",
-          "recent_local_frontier_block_area_mean",
-          "recent_value_total_block_count_before_cap",
-          "recent_value_packed_block_count",
-          "recent_value_truncated_block_count",
-          "recent_value_block_cap_hit_flag",
-          "recent_value_total_entry_count_before_cap",
-          "recent_value_packed_entry_count",
-          "recent_value_truncated_entry_count",
-          "recent_value_entry_cap_hit_block_count",
-          "recent_value_entry_cap_hit_flag",
-          "recent_value_max_frontier_clusters_per_block",
-          "recent_value_mean_frontier_clusters_per_block",
-          "recent_info_reward_sum",
-          "recent_step_penalty_sum",
-          "recent_recent_revisit_penalty_sum",
-          "recent_turn_penalty_sum",
-          "recent_timeout_penalty_sum",
-          "recent_terminal_bonus_sum",
-          "recent_delta_empty_sum",
-          "recent_delta_obstacle_sum",
-          "recent_empty_info_gain_sum",
-          "recent_obstacle_info_gain_sum",
-          "recent_weighted_obstacle_info_gain_sum",
-          "recent_weighted_info_gain_sum",
-          "recent_empty_info_reward_sum",
-          "recent_obstacle_info_reward_sum",
-          "recent_obstacle_info_contribution_ratio",
-          "recent_recent_revisit_trigger_count",
-          "recent_stall_trigger_count",
-          "recent_zero_info_step_count",
-          "recent_turn_ge_90_count",
-          "recent_turn_135_count",
-          "recent_turn_180_count",
-          "recent_turn_penalty_weight_sum",
-          "recent_timeout_flag"
-        ]
+        "missing_expected_columns": [],
+        "parseability": "parsed"
       },
-      "train_episodes_csv": {
+      "train_episodes": {
         "path": "logs/train_episodes.csv",
         "row_count": 1002,
         "header_count": 56,
-        "headers": [
-          "phase",
-          "budget_mode",
-          "env_steps",
-          "episode_idx",
-          "train_episode_idx",
-          "phase_episode_idx",
-          "completed_train_episodes",
-          "episode_seed",
-          "map_fingerprint",
-          "epsilon",
-          "episode_reward",
-          "episode_length",
-          "final_coverage",
-          "success",
-          "repeat_visit_ratio",
-          "done_reason",
-          "accessible_block_count",
-          "total_accessible_unknown_area",
-          "total_frontier_cluster_count",
-          "mean_block_area",
-          "local_frontier_coverage",
-          "local_frontier_block_area_mean",
-          "value_total_block_count_before_cap",
-          "value_packed_block_count",
-          "value_truncated_block_count",
-          "value_block_cap_hit_flag",
-          "value_total_entry_count_before_cap",
-          "value_packed_entry_count",
-          "value_truncated_entry_count",
-          "value_entry_cap_hit_block_count",
-          "value_entry_cap_hit_flag",
-          "value_max_frontier_clusters_per_block",
-          "value_mean_frontier_clusters_per_block",
-          "info_reward_sum",
-          "step_penalty_sum",
-          "recent_revisit_penalty_sum",
-          "turn_penalty_sum",
-          "timeout_penalty_sum",
-          "terminal_bonus_sum",
-          "delta_empty_sum",
-          "delta_obstacle_sum",
-          "empty_info_gain_sum",
-          "obstacle_info_gain_sum",
-          "weighted_obstacle_info_gain_sum",
-          "weighted_info_gain_sum",
-          "empty_info_reward_sum",
-          "obstacle_info_reward_sum",
-          "obstacle_info_contribution_ratio",
-          "recent_revisit_trigger_count",
-          "stall_trigger_count",
-          "zero_info_step_count",
-          "turn_ge_90_count",
-          "turn_135_count",
-          "turn_180_count",
-          "turn_penalty_weight_sum",
-          "timeout_flag"
-        ]
+        "missing_expected_columns": [],
+        "parseability": "parsed"
       },
-      "metric_snapshot_json": {
+      "metric_snapshot": {
         "path": "logs/metric_snapshot.json",
-        "top_level_keys": [
-          "schema_version",
-          "artifact_type",
-          "experiment_mode",
-          "formal_protocol_revision",
-          "source_of_truth_repo",
-          "run_dir",
-          "generated_at",
-          "recent_train",
-          "checkpoint_validation_summary",
-          "best_checkpoint_selection_summary",
-          "posthoc_candidate_selection_summary",
-          "posthoc_final_probe_summary",
-          "formal_selection_manifest",
-          "final_probe",
-          "diagnostic_last_checkpoint_summary",
-          "best_vs_last_gap_summary",
-          "training_dynamics_summary",
-          "train_final_consistency_summary",
-          "recent_train_support_summary",
-          "last_checkpoint_env_steps",
-          "last_checkpoint_train_episode_idx",
-          "best_checkpoint_env_steps",
-          "best_checkpoint_train_episode_idx",
-          "final_probe_source",
-          "formal_final_object",
-          "automatic_tuning_ranking_basis",
-          "unified_metrics",
-          "insufficient_evidence_flags",
-          "timing_summary"
-        ]
+        "parseability": "parsed"
       }
     },
-    "train_steps_first_row": {
-      "env_steps": 4512,
-      "episode_idx": 7,
-      "train_episode_idx": 7,
-      "completed_train_episodes": 1,
-      "replay_size": 4510,
-      "epsilon": 0.9818286666666667,
-      "loss": null,
-      "q_mean": null,
-      "target_q_mean": null,
-      "td_abs_mean": null,
-      "grad_norm": null,
-      "learner_steps": 0,
-      "recent_mean_reward": 9.975186347961426,
-      "recent_mean_coverage": 0.4528000056743622,
-      "recent_success_rate": 0,
-      "recent_mean_episode_length": 600,
-      "recent_mean_repeat_visit_ratio": 0.6268124580383301,
-      "recent_timeout_flag": 1
+    "endpoint_metrics": {
+      "reward": 133.27475,
+      "coverage": 0.915399,
+      "success_rate": 0.6,
+      "episode_length": 432.709991,
+      "repeat_visit_ratio": 0.24096,
+      "timeout": 0.4
     },
-    "train_steps_last_row": {
-      "env_steps": 500000,
-      "episode_idx": 1002,
-      "train_episode_idx": 1002,
-      "completed_train_episodes": 996,
+    "initial_to_final_delta": {
+      "reward": 123.299563,
+      "coverage": 0.462599,
+      "success_rate": 0.6,
+      "episode_length": -167.290009,
+      "repeat_visit_ratio": -0.385853,
+      "timeout": -0.6
+    },
+    "late_stage_delta_last_100_rows": {
+      "reward": -2.837296,
+      "coverage": -0.011267,
+      "success_rate": -0.05,
+      "episode_length": -1.300018,
+      "repeat_visit_ratio": 0.009644,
+      "timeout": 0.05
+    },
+    "key_diagnostics_endpoint": {
+      "timeout": 0.4,
+      "stall": 208.800003,
+      "zero_info": 264.959991,
+      "recent_revisit": 50.470001,
+      "turn_ge_90": 164.630005,
+      "turn_135": 43.529999,
+      "turn_180": 31.559999
+    },
+    "learner_context_endpoint": {
+      "loss": 3.063654,
+      "grad_norm": 38.144417,
       "replay_size": 100000,
       "epsilon": 0.03,
-      "loss": 3.0636541843414307,
-      "q_mean": 18.593402862548828,
-      "target_q_mean": 18.82858657836914,
-      "td_abs_mean": 3.4012136459350586,
-      "grad_norm": 38.14441680908203,
-      "learner_steps": 61500,
-      "recent_mean_reward": 133.27474975585938,
-      "recent_mean_coverage": 0.9153990149497986,
-      "recent_success_rate": 0.6000000238418579,
-      "recent_mean_episode_length": 432.7099914550781,
-      "recent_mean_repeat_visit_ratio": 0.2409595102071762,
-      "recent_timeout_flag": 0.4000000059604645
+      "q_mean": 18.593403,
+      "target_q_mean": 18.828587,
+      "td_abs_mean": 3.401214
     },
-    "train_steps_numeric_ranges": {
-      "env_steps": {
-        "count": 992,
-        "min": 4512,
-        "max": 500000,
-        "first": 4512,
-        "last": 500000
-      },
-      "learner_steps": {
-        "count": 992,
-        "min": 0,
-        "max": 61500,
-        "first": 0,
-        "last": 61500
-      },
-      "epsilon": {
-        "count": 992,
-        "min": 0.03,
-        "max": 0.9818286666666667,
-        "first": 0.9818286666666667,
-        "last": 0.03
-      },
-      "loss": {
-        "count": 984,
-        "min": 0.0698314905166626,
-        "max": 4.053531169891357,
-        "first": 0.20041291415691376,
-        "last": 3.0636541843414307
-      },
-      "q_mean": {
-        "count": 984,
-        "min": -0.08919933438301086,
-        "max": 22.734119415283203,
-        "first": -0.08919933438301086,
-        "last": 18.593402862548828
-      },
-      "target_q_mean": {
-        "count": 984,
-        "min": -0.1603272408246994,
-        "max": 22.813987731933594,
-        "first": 0.14887142181396484,
-        "last": 18.82858657836914
-      },
-      "td_abs_mean": {
-        "count": 984,
-        "min": 0.25126808881759644,
-        "max": 4.427933692932129,
-        "first": 0.4158612787723541,
-        "last": 3.4012136459350586
-      },
-      "grad_norm": {
-        "count": 984,
-        "min": 0.9747932553291321,
-        "max": 45.325252532958984,
-        "first": 0.9954335689544678,
-        "last": 38.14441680908203
-      },
-      "recent_mean_reward": {
-        "count": 992,
-        "min": 2.7191126346588135,
-        "max": 139.24281311035156,
-        "first": 9.975186347961426,
-        "last": 133.27474975585938
-      },
-      "recent_mean_coverage": {
-        "count": 992,
-        "min": 0.41232219338417053,
-        "max": 0.9412900805473328,
-        "first": 0.4528000056743622,
-        "last": 0.9153990149497986
-      },
-      "recent_success_rate": {
-        "count": 992,
-        "min": 0,
-        "max": 0.7300000190734863,
-        "first": 0,
-        "last": 0.6000000238418579
-      },
-      "recent_mean_episode_length": {
-        "count": 992,
-        "min": 425,
-        "max": 600,
-        "first": 600,
-        "last": 432.7099914550781
-      },
-      "recent_mean_repeat_visit_ratio": {
-        "count": 992,
-        "min": 0.2267175316810608,
-        "max": 0.6441347599029541,
-        "first": 0.6268124580383301,
-        "last": 0.2409595102071762
-      },
-      "recent_timeout_flag": {
-        "count": 992,
-        "min": 0.27000001072883606,
-        "max": 1,
-        "first": 1,
-        "last": 0.4000000059604645
-      }
+    "semantic_monitoring_key_fields": {
+      "accessible_block_count": 5.056231,
+      "total_accessible_unknown_area": 436.800812,
+      "total_frontier_cluster_count": 10.609714,
+      "mean_block_area": 123.407738,
+      "local_frontier_coverage": 0.023969,
+      "local_frontier_block_area_mean": 0.386662
     },
-    "train_steps_tail_delta_last_100_rows": {
-      "recent_mean_reward": -2.8372955322265625,
-      "recent_mean_coverage": -0.01126706600189209,
-      "recent_success_rate": -0.04999995231628418,
-      "recent_mean_episode_length": -1.300018310546875,
-      "recent_mean_repeat_visit_ratio": 0.009644374251365662,
-      "loss": 0.5007917881011963,
-      "grad_norm": 3.0275840759277344
+    "reward_events_key_diagnostics": {
+      "recent_revisit_trigger_count": 50.470001,
+      "stall_trigger_count": 208.800003,
+      "zero_info_step_count": 264.959991,
+      "turn_ge_90_count": 164.630005,
+      "timeout_flag": 0.4
     },
-    "train_episodes_first_row": {
-      "env_steps": 600,
-      "episode_idx": 1,
-      "train_episode_idx": 1,
-      "completed_train_episodes": 0,
-      "episode_seed": 20259323,
-      "epsilon": 1,
-      "episode_reward": 3.301272191080022,
-      "episode_length": 600,
-      "final_coverage": 0.3914,
-      "success": 0,
-      "repeat_visit_ratio": 0.6772046589018302,
-      "done_reason": "max_episode_steps",
-      "timeout_flag": 1
-    },
-    "train_episodes_last_row": {
-      "env_steps": 499863,
-      "episode_idx": 1002,
-      "train_episode_idx": 1002,
-      "completed_train_episodes": 996,
-      "episode_seed": 20260324,
-      "epsilon": 0.03,
-      "episode_reward": 144.61531728676442,
-      "episode_length": 474,
-      "final_coverage": 0.9502,
-      "success": 1,
-      "repeat_visit_ratio": 0.2231578947368421,
-      "done_reason": "coverage_reached",
-      "timeout_flag": 0
-    },
-    "train_episodes_numeric_ranges": {
-      "env_steps": {
-        "count": 1002,
-        "min": 600,
-        "max": 499863,
-        "first": 600,
-        "last": 499863
-      },
-      "episode_reward": {
-        "count": 1002,
-        "min": -42.15922322156281,
-        "max": 176.38912176999392,
-        "first": 3.301272191080022,
-        "last": 144.61531728676442
-      },
-      "episode_length": {
-        "count": 1002,
-        "min": 161,
-        "max": 600,
-        "first": 600,
-        "last": 474
-      },
-      "final_coverage": {
-        "count": 1002,
-        "min": 0.248,
-        "max": 0.9618,
-        "first": 0.3914,
-        "last": 0.9502
-      },
-      "success": {
-        "count": 1002,
-        "min": 0,
-        "max": 1,
-        "first": 0,
-        "last": 1
-      },
-      "repeat_visit_ratio": {
-        "count": 1002,
-        "min": 0.012048192771084338,
-        "max": 0.7936772046589018,
-        "first": 0.6772046589018302,
-        "last": 0.2231578947368421
-      },
-      "timeout_flag": {
-        "count": 1002,
-        "min": 0,
-        "max": 1,
-        "first": 1,
-        "last": 0
-      }
-    },
-    "recent_train_from_metric_snapshot": {
-      "source": "logs/train_steps.csv",
-      "env_steps": 500000,
-      "learner_steps": 61500,
-      "optimizer_monitoring": {
-        "loss": 3.0636541843414307,
-        "q_mean": 18.593402862548828,
-        "target_q_mean": 18.82858657836914,
-        "td_abs_mean": 3.4012136459350586,
-        "grad_norm": 38.14441680908203,
-        "replay_size": 100000,
-        "epsilon": 0.03
-      },
-      "metrics": {
-        "reward": 133.27474975585938,
-        "coverage": 0.9153990149497986,
-        "success_rate": 0.6000000238418579,
-        "episode_length": 432.7099914550781,
-        "repeat_visit_ratio": 0.2409595102071762
-      },
-      "reward_breakdown": {
-        "info_reward_sum": 142.69728088378906,
-        "step_penalty_sum": -8.654199600219727,
-        "recent_revisit_penalty_sum": -5.046999931335449,
-        "turn_penalty_sum": -4.52133321762085,
-        "timeout_penalty_sum": -3.200000047683716,
-        "terminal_bonus_sum": 12.0
-      },
-      "reward_events": {
-        "delta_empty_sum": 1412.239990234375,
-        "delta_obstacle_sum": 328.3299865722656,
-        "empty_info_gain_sum": 44.952999114990234,
-        "obstacle_info_gain_sum": 10.451067924499512,
-        "weighted_obstacle_info_gain_sum": 2.612766981124878,
-        "weighted_info_gain_sum": 47.565765380859375,
-        "empty_info_reward_sum": 134.85897827148438,
-        "obstacle_info_reward_sum": 7.838302135467529,
-        "obstacle_info_contribution_ratio": 0.05499764531850815,
-        "recent_revisit_trigger_count": 50.470001220703125,
-        "stall_trigger_count": 208.8000030517578,
-        "zero_info_step_count": 264.9599914550781,
-        "turn_ge_90_count": 164.6300048828125,
-        "turn_135_count": 43.529998779296875,
-        "turn_180_count": 31.559999465942383,
-        "turn_penalty_weight_sum": 90.4266586303711,
-        "timeout_flag": 0.4000000059604645
-      },
-      "semantic_monitoring": {
-        "accessible_block_count": 5.056231498718262,
-        "total_accessible_unknown_area": 436.8008117675781,
-        "total_frontier_cluster_count": 10.609713554382324,
-        "mean_block_area": 123.4077377319336,
-        "local_frontier_coverage": 0.023968815803527832,
-        "local_frontier_block_area_mean": 0.38666221499443054,
-        "value_total_block_count_before_cap": 5.056231498718262,
-        "value_packed_block_count": 5.056231498718262,
-        "value_truncated_block_count": 0.0,
-        "value_block_cap_hit_flag": 0.0,
-        "value_total_entry_count_before_cap": 10.609713554382324,
-        "value_packed_entry_count": 10.540450096130371,
-        "value_truncated_entry_count": 0.0692628026008606,
-        "value_entry_cap_hit_block_count": 0.03854621574282646,
-        "value_entry_cap_hit_flag": 0.03854621574282646,
-        "value_max_frontier_clusters_per_block": 4.590066909790039,
-        "value_mean_frontier_clusters_per_block": 2.5414884090423584
-      },
-      "raw_row": {
-        "budget_mode": "env_steps",
-        "env_steps": 500000,
-        "episode_idx": 1002,
-        "train_episode_idx": 1002,
-        "completed_train_episodes": 996,
-        "replay_size": 100000,
-        "epsilon": 0.03,
-        "loss": 3.0636541843414307,
-        "q_mean": 18.593402862548828,
-        "target_q_mean": 18.82858657836914,
-        "td_abs_mean": 3.4012136459350586,
-        "grad_norm": 38.14441680908203,
-        "learner_steps": 61500,
-        "recent_mean_reward": 133.27474975585938,
-        "recent_mean_coverage": 0.9153990149497986,
-        "recent_success_rate": 0.6000000238418579,
-        "recent_mean_episode_length": 432.7099914550781,
-        "recent_mean_repeat_visit_ratio": 0.2409595102071762,
-        "recent_accessible_block_count": 5.056231498718262,
-        "recent_total_accessible_unknown_area": 436.8008117675781,
-        "recent_total_frontier_cluster_count": 10.609713554382324,
-        "recent_mean_block_area": 123.4077377319336,
-        "recent_local_frontier_coverage": 0.023968815803527832,
-        "recent_local_frontier_block_area_mean": 0.38666221499443054,
-        "recent_value_total_block_count_before_cap": 5.056231498718262,
-        "recent_value_packed_block_count": 5.056231498718262,
-        "recent_value_truncated_block_count": 0.0,
-        "recent_value_block_cap_hit_flag": 0.0,
-        "recent_value_total_entry_count_before_cap": 10.609713554382324,
-        "recent_value_packed_entry_count": 10.540450096130371,
-        "recent_value_truncated_entry_count": 0.0692628026008606,
-        "recent_value_entry_cap_hit_block_count": 0.03854621574282646,
-        "recent_value_entry_cap_hit_flag": 0.03854621574282646,
-        "recent_value_max_frontier_clusters_per_block": 4.590066909790039,
-        "recent_value_mean_frontier_clusters_per_block": 2.5414884090423584,
-        "recent_info_reward_sum": 142.69728088378906,
-        "recent_step_penalty_sum": -8.654199600219727,
-        "recent_recent_revisit_penalty_sum": -5.046999931335449,
-        "recent_turn_penalty_sum": -4.52133321762085,
-        "recent_timeout_penalty_sum": -3.200000047683716,
-        "recent_terminal_bonus_sum": 12.0,
-        "recent_delta_empty_sum": 1412.239990234375,
-        "recent_delta_obstacle_sum": 328.3299865722656,
-        "recent_empty_info_gain_sum": 44.952999114990234,
-        "recent_obstacle_info_gain_sum": 10.451067924499512,
-        "recent_weighted_obstacle_info_gain_sum": 2.612766981124878,
-        "recent_weighted_info_gain_sum": 47.565765380859375,
-        "recent_empty_info_reward_sum": 134.85897827148438,
-        "recent_obstacle_info_reward_sum": 7.838302135467529,
-        "recent_obstacle_info_contribution_ratio": 0.05499764531850815,
-        "recent_recent_revisit_trigger_count": 50.470001220703125,
-        "recent_stall_trigger_count": 208.8000030517578,
-        "recent_zero_info_step_count": 264.9599914550781,
-        "recent_turn_ge_90_count": 164.6300048828125,
-        "recent_turn_135_count": 43.529998779296875,
-        "recent_turn_180_count": 31.559999465942383,
-        "recent_turn_penalty_weight_sum": 90.4266586303711,
-        "recent_timeout_flag": 0.4000000059604645
-      }
-    },
-    "semantic_monitoring_last_train_step": {
-      "recent_accessible_block_count": 5.056231498718262,
-      "recent_total_accessible_unknown_area": 436.8008117675781,
-      "recent_total_frontier_cluster_count": 10.609713554382324,
-      "recent_mean_block_area": 123.4077377319336,
-      "recent_local_frontier_coverage": 0.023968815803527832,
-      "recent_local_frontier_block_area_mean": 0.38666221499443054
-    },
-    "value_truncation_cap_hit_last_train_step": {
-      "recent_value_total_block_count_before_cap": 5.056231498718262,
-      "recent_value_packed_block_count": 5.056231498718262,
-      "recent_value_truncated_block_count": 0,
-      "recent_value_block_cap_hit_flag": 0,
-      "recent_value_total_entry_count_before_cap": 10.609713554382324,
-      "recent_value_packed_entry_count": 10.540450096130371,
-      "recent_value_truncated_entry_count": 0.0692628026008606,
-      "recent_value_entry_cap_hit_block_count": 0.03854621574282646,
-      "recent_value_entry_cap_hit_flag": 0.03854621574282646
-    },
-    "reward_breakdown_last_train_step": {
-      "recent_info_reward_sum": 142.69728088378906,
-      "recent_step_penalty_sum": -8.654199600219727,
-      "recent_recent_revisit_penalty_sum": -5.046999931335449,
-      "recent_turn_penalty_sum": -4.52133321762085,
-      "recent_timeout_penalty_sum": -3.200000047683716,
-      "recent_terminal_bonus_sum": 12
-    },
-    "reward_events_last_train_step": {
-      "recent_delta_empty_sum": 1412.239990234375,
-      "recent_delta_obstacle_sum": 328.3299865722656,
-      "recent_empty_info_gain_sum": 44.952999114990234,
-      "recent_obstacle_info_gain_sum": 10.451067924499512,
-      "recent_weighted_obstacle_info_gain_sum": 2.612766981124878,
-      "recent_weighted_info_gain_sum": 47.565765380859375,
-      "recent_empty_info_reward_sum": 134.85897827148438,
-      "recent_obstacle_info_reward_sum": 7.838302135467529,
-      "recent_obstacle_info_contribution_ratio": 0.05499764531850815,
-      "recent_recent_revisit_trigger_count": 50.470001220703125,
-      "recent_stall_trigger_count": 208.8000030517578,
-      "recent_zero_info_step_count": 264.9599914550781,
-      "recent_turn_ge_90_count": 164.6300048828125,
-      "recent_turn_135_count": 43.529998779296875,
-      "recent_turn_180_count": 31.559999465942383,
-      "recent_turn_penalty_weight_sum": 90.4266586303711,
-      "recent_timeout_flag": 0.4000000059604645
-    },
-    "parseability": {
-      "empty_csvs": [],
-      "nonfinite_values_not_inspected": false
-    }
-  },
-  "posthoc_selection": {
-    "files": {
-      "posthoc_candidate_scores_csv": {
-        "path": "logs/posthoc_candidate_scores.csv",
-        "row_count": 16,
-        "header_count": 19,
-        "headers": [
-          "selection_rank",
-          "selected",
-          "candidate_step",
-          "checkpoint_path",
-          "window_start_env_steps",
-          "window_end_env_steps",
-          "window_row_count",
-          "valid_candidate",
-          "reward",
-          "coverage",
-          "success_rate",
-          "episode_length",
-          "repeat_visit_ratio",
-          "reward_z",
-          "coverage_z",
-          "success_rate_z",
-          "episode_length_z",
-          "repeat_visit_ratio_z",
-          "selection_score"
-        ]
-      },
-      "posthoc_selection_summary_json": "logs/posthoc_selection_summary.json",
-      "formal_selection_manifest_json": "logs/formal_selection_manifest.json",
-      "best_vs_last_gap_summary_json": "logs/best_vs_last_gap_summary.json"
-    },
-    "protocol_name": "formal_posthoc_trainselect_v1",
-    "candidate_start_step": 200000,
-    "candidate_end_step": 500000,
-    "checkpoint_interval": 20000,
-    "selection_window_env_steps": 40000,
-    "selection_weights": {
-      "reward": 0.35,
-      "coverage": 0.25,
-      "success_rate": 0.2,
-      "episode_length": -0.1,
-      "repeat_visit_ratio": -0.1
-    },
-    "ranking_tie_break": [
-      "selection_score_desc",
-      "success_rate_z_desc",
-      "coverage_z_desc",
-      "reward_z_desc",
-      "candidate_step_asc"
-    ],
-    "candidate_count": 16,
-    "valid_candidate_count": 16,
-    "selected_candidate_count": 3,
-    "selected_candidate_steps": [
-      360000,
-      460000,
-      480000
-    ],
-    "selected_candidates": [
-      {
-        "selection_rank": 1,
-        "candidate_step": 360000,
-        "checkpoint_path": "checkpoints/ckpt_step_360000.pt",
-        "window_start_env_steps": 320000,
-        "window_end_env_steps": 360000,
-        "window_row_count": 81,
-        "reward": 136.20683721848476,
-        "coverage": 0.9327172114525313,
-        "success_rate": 0.6762963010941023,
-        "episode_length": 436.70036749192224,
-        "repeat_visit_ratio": 0.24299202013162918,
-        "selection_score": 1.2293175913486565,
-        "valid_candidate": true
-      },
-      {
-        "selection_rank": 2,
-        "candidate_step": 460000,
-        "checkpoint_path": "checkpoints/ckpt_step_460000.pt",
-        "window_start_env_steps": 420000,
-        "window_end_env_steps": 460000,
-        "window_row_count": 81,
-        "reward": 135.20086368513697,
-        "coverage": 0.9226433583247808,
-        "success_rate": 0.6438271609353431,
-        "episode_length": 438.1872822325907,
-        "repeat_visit_ratio": 0.23562673838050277,
-        "selection_score": 1.0169795621071482,
-        "valid_candidate": true
-      },
-      {
-        "selection_rank": 3,
-        "candidate_step": 480000,
-        "checkpoint_path": "checkpoints/ckpt_step_480000.pt",
-        "window_start_env_steps": 440000,
-        "window_end_env_steps": 480000,
-        "window_row_count": 81,
-        "reward": 134.02364641354407,
-        "coverage": 0.9214767821041154,
-        "success_rate": 0.5966666642530465,
-        "episode_length": 444.9828389485677,
-        "repeat_visit_ratio": 0.24750453252115368,
-        "selection_score": 0.8266570724538005,
-        "valid_candidate": true
-      }
-    ],
-    "winner_step": 480000,
-    "winner_checkpoint_path": "checkpoints/ckpt_step_480000.pt",
-    "best_checkpoint_metadata": {
-      "path": "checkpoints/best.pt",
-      "exists": true,
-      "size_bytes": 4755358
-    },
-    "last_checkpoint_metadata": {
-      "path": "checkpoints/last.pt",
-      "exists": true,
-      "size_bytes": 14173678
-    },
-    "selected_candidate_checkpoint_metadata": [
-      {
-        "path": "checkpoints/ckpt_step_360000.pt",
-        "exists": true,
-        "size_bytes": 4743598
-      },
-      {
-        "path": "checkpoints/ckpt_step_460000.pt",
-        "exists": true,
-        "size_bytes": 4743598
-      },
-      {
-        "path": "checkpoints/ckpt_step_480000.pt",
-        "exists": true,
-        "size_bytes": 4743598
-      }
-    ],
-    "best_vs_last_gap_summary": {
-      "comparison_mode": "heldout_winner_vs_train_endpoint_recent_window",
-      "direction_note": "Positive best_minus_last is better for reward/coverage/success; negative is better for episode_length/repeat_visit_ratio.",
-      "last_env_steps": 500000,
-      "details": {
-        "reward": {
-          "best": 136.41049194335938,
-          "last": 133.27474975585938,
-          "best_minus_last": 3.1357421875
-        },
-        "coverage": {
-          "best": 0.916979968547821,
-          "last": 0.9153990149497986,
-          "best_minus_last": 0.001580953598022461
-        },
-        "success_rate": {
-          "best": 0.75,
-          "last": 0.6000000238418579,
-          "best_minus_last": 0.1499999761581421
-        },
-        "episode_length": {
-          "best": 389.2900085449219,
-          "last": 432.7099914550781,
-          "best_minus_last": -43.41998291015625
-        },
-        "repeat_visit_ratio": {
-          "best": 0.2110099047422409,
-          "last": 0.2409595102071762,
-          "best_minus_last": -0.029949605464935303
-        }
-      }
-    },
-    "candidate_score_row_count": 16,
-    "parseability": "parsed"
-  },
-  "supplemental_final_probe": {
-    "role": "supplemental_only_after_train_side_and_posthoc_facts",
-    "files": {
-      "final_probe_csv": {
-        "path": "logs/final_probe.csv",
-        "row_count": 3,
-        "header_count": 64,
-        "headers": [
-          "tag",
-          "source",
-          "budget_mode",
-          "env_steps",
-          "episode_idx",
-          "train_episode_idx",
-          "completed_train_episodes",
-          "learner_steps",
-          "checkpoint_path",
-          "seed_base",
-          "selection_rank",
-          "eval_episodes",
-          "eval_mean_reward",
-          "eval_mean_coverage",
-          "eval_success_rate",
-          "eval_mean_episode_length",
-          "eval_mean_repeat_visit_ratio",
-          "eval_mean_accessible_block_count",
-          "eval_mean_total_accessible_unknown_area",
-          "eval_mean_total_frontier_cluster_count",
-          "eval_mean_mean_block_area",
-          "eval_mean_local_frontier_coverage",
-          "eval_mean_local_frontier_block_area_mean",
-          "eval_mean_value_total_block_count_before_cap",
-          "eval_mean_value_packed_block_count",
-          "eval_mean_value_truncated_block_count",
-          "eval_mean_value_block_cap_hit_flag",
-          "eval_mean_value_total_entry_count_before_cap",
-          "eval_mean_value_packed_entry_count",
-          "eval_mean_value_truncated_entry_count",
-          "eval_mean_value_entry_cap_hit_block_count",
-          "eval_mean_value_entry_cap_hit_flag",
-          "eval_mean_value_max_frontier_clusters_per_block",
-          "eval_mean_value_mean_frontier_clusters_per_block",
-          "eval_mean_info_reward_sum",
-          "eval_mean_step_penalty_sum",
-          "eval_mean_recent_revisit_penalty_sum",
-          "eval_mean_turn_penalty_sum",
-          "eval_mean_timeout_penalty_sum",
-          "eval_mean_terminal_bonus_sum",
-          "eval_mean_delta_empty_sum",
-          "eval_mean_delta_obstacle_sum",
-          "eval_mean_empty_info_gain_sum",
-          "eval_mean_obstacle_info_gain_sum",
-          "eval_mean_weighted_obstacle_info_gain_sum",
-          "eval_mean_weighted_info_gain_sum",
-          "eval_mean_empty_info_reward_sum",
-          "eval_mean_obstacle_info_reward_sum",
-          "eval_mean_obstacle_info_contribution_ratio",
-          "eval_mean_recent_revisit_trigger_count",
-          "eval_mean_stall_trigger_count",
-          "eval_mean_zero_info_step_count",
-          "eval_mean_turn_ge_90_count",
-          "eval_mean_turn_135_count",
-          "eval_mean_turn_180_count",
-          "eval_mean_turn_penalty_weight_sum",
-          "eval_mean_timeout_flag",
-          "posthoc_selection_rank",
-          "posthoc_selection_score",
-          "posthoc_window_start_env_steps",
-          "posthoc_window_end_env_steps",
-          "posthoc_window_row_count",
-          "formal_winner",
-          "final_probe_rank"
-        ]
-      },
-      "final_probe_summary_json": "logs/final_probe_summary.json"
-    },
-    "ranking_order": [
-      "success_rate",
-      "coverage",
-      "reward"
-    ],
-    "seed_base": 20261323,
-    "final_probe_episode_count": 100,
-    "selected_candidate_steps": [
-      360000,
-      460000,
-      480000
-    ],
-    "winner_step": 480000,
-    "winner_checkpoint_path": "checkpoints/ckpt_step_480000.pt",
-    "best_pt_path": "checkpoints/best.pt",
-    "last_pt_path": "checkpoints/last.pt",
-    "final_probe_rows": [
-      {
-        "final_probe_rank": 1,
-        "formal_winner": true,
-        "source": "posthoc_final_winner",
-        "env_steps": 480000,
-        "checkpoint_path": "checkpoints/ckpt_step_480000.pt",
-        "selection_rank": 3,
-        "eval_episodes": 100,
-        "reward": 136.41049194335938,
-        "coverage": 0.916979968547821,
-        "success_rate": 0.75,
-        "episode_length": 389.2900085449219,
-        "repeat_visit_ratio": 0.2110099047422409,
-        "timeout_flag": 0.25,
-        "stall_trigger_count": 170.22999572753906,
-        "zero_info_step_count": 223.5399932861328,
-        "recent_revisit_trigger_count": 58.02000045776367,
-        "turn_ge_90_count": 156.30999755859375,
-        "posthoc_selection_score": 0.8266570724538005
-      },
-      {
-        "final_probe_rank": 2,
-        "formal_winner": false,
-        "source": "posthoc_candidate_final_probe",
-        "env_steps": 460000,
-        "checkpoint_path": "checkpoints/ckpt_step_460000.pt",
-        "selection_rank": 2,
-        "eval_episodes": 100,
-        "reward": 117.46324157714844,
-        "coverage": 0.879940927028656,
-        "success_rate": 0.5199999809265137,
-        "episode_length": 440.17999267578125,
-        "repeat_visit_ratio": 0.320850670337677,
-        "timeout_flag": 0.47999998927116394,
-        "stall_trigger_count": 233.24000549316406,
-        "zero_info_step_count": 280.7900085449219,
-        "recent_revisit_trigger_count": 91.87000274658203,
-        "turn_ge_90_count": 194.36000061035156,
-        "posthoc_selection_score": 1.0169795621071482
-      },
-      {
-        "final_probe_rank": 3,
-        "formal_winner": false,
-        "source": "posthoc_candidate_final_probe",
-        "env_steps": 360000,
-        "checkpoint_path": "checkpoints/ckpt_step_360000.pt",
-        "selection_rank": 1,
-        "eval_episodes": 100,
-        "reward": 108.53202056884766,
-        "coverage": 0.8588060736656189,
-        "success_rate": 0.4699999988079071,
-        "episode_length": 472.5299987792969,
-        "repeat_visit_ratio": 0.3433386981487274,
-        "timeout_flag": 0.5299999713897705,
-        "stall_trigger_count": 261.92999267578125,
-        "zero_info_step_count": 318.4800109863281,
-        "recent_revisit_trigger_count": 112.98999786376953,
-        "turn_ge_90_count": 219.50999450683594,
-        "posthoc_selection_score": 1.2293175913486565
-      }
-    ],
-    "winner_row": {
-      "tag": "final_probe",
-      "source": "posthoc_final_winner",
-      "budget_mode": "env_steps",
-      "env_steps": 480000,
-      "episode_idx": 1002,
-      "train_episode_idx": 947,
-      "completed_train_episodes": 996,
-      "learner_steps": 59000,
-      "checkpoint_path": "checkpoints/ckpt_step_480000.pt",
-      "seed_base": 20261323,
-      "selection_rank": 3,
-      "eval_episodes": 100,
-      "eval_mean_reward": 136.41049194335938,
-      "eval_mean_coverage": 0.916979968547821,
-      "eval_success_rate": 0.75,
-      "eval_mean_episode_length": 389.2900085449219,
-      "eval_mean_repeat_visit_ratio": 0.2110099047422409,
-      "eval_mean_accessible_block_count": 5.275144100189209,
-      "eval_mean_total_accessible_unknown_area": 450.01422119140625,
-      "eval_mean_total_frontier_cluster_count": 10.756282806396484,
-      "eval_mean_mean_block_area": 113.97216796875,
-      "eval_mean_local_frontier_coverage": 0.026283759623765945,
-      "eval_mean_local_frontier_block_area_mean": 0.42195576429367065,
-      "eval_mean_value_total_block_count_before_cap": 5.275144100189209,
-      "eval_mean_value_packed_block_count": 5.274158477783203,
-      "eval_mean_value_truncated_block_count": 0.0009854014497250319,
-      "eval_mean_value_block_cap_hit_flag": 0.000948905129916966,
-      "eval_mean_value_total_entry_count_before_cap": 10.756282806396484,
-      "eval_mean_value_packed_entry_count": 10.686610221862793,
-      "eval_mean_value_truncated_entry_count": 0.06967237591743469,
-      "eval_mean_value_entry_cap_hit_block_count": 0.0368269644677639,
-      "eval_mean_value_entry_cap_hit_flag": 0.0368269644677639,
-      "eval_mean_value_max_frontier_clusters_per_block": 4.465956211090088,
-      "eval_mean_value_mean_frontier_clusters_per_block": 2.4066736698150635,
-      "eval_mean_info_reward_sum": 141.63446044921875,
-      "eval_mean_step_penalty_sum": -7.785799503326416,
-      "eval_mean_recent_revisit_penalty_sum": -5.802000522613525,
-      "eval_mean_turn_penalty_sum": -4.636166572570801,
-      "eval_mean_timeout_penalty_sum": -2.0,
-      "eval_mean_terminal_bonus_sum": 15.0,
-      "eval_mean_delta_empty_sum": 1403.1600341796875,
-      "eval_mean_delta_obstacle_sum": 320.1300048828125,
-      "eval_mean_empty_info_gain_sum": 44.66397476196289,
-      "eval_mean_obstacle_info_gain_sum": 10.190053939819336,
-      "eval_mean_weighted_obstacle_info_gain_sum": 2.547513484954834,
-      "eval_mean_weighted_info_gain_sum": 47.211483001708984,
-      "eval_mean_empty_info_reward_sum": 133.99191284179688,
-      "eval_mean_obstacle_info_reward_sum": 7.64254093170166,
-      "eval_mean_obstacle_info_contribution_ratio": 0.05383702740073204,
-      "eval_mean_recent_revisit_trigger_count": 58.02000045776367,
-      "eval_mean_stall_trigger_count": 170.22999572753906,
-      "eval_mean_zero_info_step_count": 223.5399932861328,
-      "eval_mean_turn_ge_90_count": 156.30999755859375,
-      "eval_mean_turn_135_count": 30.0,
-      "eval_mean_turn_180_count": 45.93000030517578,
-      "eval_mean_turn_penalty_weight_sum": 92.72332000732422,
-      "eval_mean_timeout_flag": 0.25,
-      "posthoc_selection_rank": 3,
-      "posthoc_selection_score": 0.8266570724538005,
-      "posthoc_window_start_env_steps": 440000,
-      "posthoc_window_end_env_steps": 480000,
-      "posthoc_window_row_count": 81,
-      "formal_winner": true,
-      "final_probe_rank": 1
-    },
-    "train_final_consistency_summary": {
+    "train_final_consistency": {
       "verdict": "supports_final_probe",
       "details": {
         "reward": {
-          "recent_train": 133.27474975585938,
-          "final_probe": 136.41049194335938,
-          "delta": 3.1357421875,
+          "recent_train": 133.27475,
+          "final_probe": 136.410492,
+          "delta": 3.135742,
           "verdict": "aligned"
         },
         "coverage": {
-          "recent_train": 0.9153990149497986,
-          "final_probe": 0.916979968547821,
-          "delta": 0.001580953598022461,
+          "recent_train": 0.915399,
+          "final_probe": 0.91698,
+          "delta": 0.001581,
           "verdict": "aligned"
         },
         "success_rate": {
-          "recent_train": 0.6000000238418579,
+          "recent_train": 0.6,
           "final_probe": 0.75,
-          "delta": 0.1499999761581421,
+          "delta": 0.15,
           "verdict": "final_probe_stronger"
         },
         "episode_length": {
-          "recent_train": 432.7099914550781,
-          "final_probe": 389.2900085449219,
-          "delta": -43.41998291015625,
+          "recent_train": 432.709991,
+          "final_probe": 389.290009,
+          "delta": -43.419983,
           "verdict": "aligned"
         },
         "repeat_visit_ratio": {
-          "recent_train": 0.2409595102071762,
-          "final_probe": 0.2110099047422409,
-          "delta": -0.029949605464935303,
+          "recent_train": 0.24096,
+          "final_probe": 0.21101,
+          "delta": -0.02995,
           "verdict": "aligned"
         }
       },
@@ -1246,378 +265,272 @@
         "recent_train and final_probe are directionally consistent on the tracked training-quality metrics.",
         "final_probe outperformed recent_train on: success_rate."
       ]
+    }
+  },
+  "posthoc_selection": {
+    "parseability": {
+      "candidate_scores": {
+        "path": "logs/posthoc_candidate_scores.csv",
+        "row_count": 16,
+        "header_count": 19,
+        "missing_expected_columns": [],
+        "parseability": "parsed"
+      },
+      "selection_summary": {
+        "path": "logs/posthoc_selection_summary.json",
+        "parseability": "parsed"
+      },
+      "formal_selection_manifest": {
+        "path": "logs/formal_selection_manifest.json",
+        "parseability": "parsed"
+      },
+      "best_vs_last_gap_summary": {
+        "path": "logs/best_vs_last_gap_summary.json",
+        "parseability": "parsed"
+      }
     },
-    "parseability": "parsed"
+    "protocol_name": "formal_posthoc_trainselect_v1",
+    "candidate_window": {
+      "start_step": 200000,
+      "end_step": 500000,
+      "checkpoint_interval": 20000,
+      "selection_window_env_steps": 40000
+    },
+    "selection_weights": {
+      "reward": 0.35,
+      "coverage": 0.25,
+      "success_rate": 0.2,
+      "episode_length": -0.1,
+      "repeat_visit_ratio": -0.1
+    },
+    "candidate_count": 16,
+    "valid_candidate_count": 16,
+    "selected_candidate_steps": [
+      360000,
+      460000,
+      480000
+    ],
+    "selected_candidate_summaries": [
+      {
+        "selection_rank": 1,
+        "candidate_step": 360000,
+        "window_row_count": 81,
+        "reward": 136.206837,
+        "coverage": 0.932717,
+        "success_rate": 0.676296,
+        "episode_length": 436.700367,
+        "repeat_visit_ratio": 0.242992,
+        "selection_score": 1.229318
+      },
+      {
+        "selection_rank": 2,
+        "candidate_step": 460000,
+        "window_row_count": 81,
+        "reward": 135.200864,
+        "coverage": 0.922643,
+        "success_rate": 0.643827,
+        "episode_length": 438.187282,
+        "repeat_visit_ratio": 0.235627,
+        "selection_score": 1.01698
+      },
+      {
+        "selection_rank": 3,
+        "candidate_step": 480000,
+        "window_row_count": 81,
+        "reward": 134.023646,
+        "coverage": 0.921477,
+        "success_rate": 0.596667,
+        "episode_length": 444.982839,
+        "repeat_visit_ratio": 0.247505,
+        "selection_score": 0.826657
+      }
+    ],
+    "winner_step": 480000,
+    "winner_checkpoint_path": "checkpoints/ckpt_step_480000.pt",
+    "checkpoint_metadata_summary": {
+      "best_pt": {
+        "path": "checkpoints/best.pt",
+        "exists": true,
+        "size_bytes": 4755358
+      },
+      "last_pt": {
+        "path": "checkpoints/last.pt",
+        "exists": true,
+        "size_bytes": 14173678
+      },
+      "selected_candidate_count": 3,
+      "checkpoint_payloads_copied": false
+    },
+    "best_vs_last_gap_summary": {
+      "comparison_mode": "heldout_winner_vs_train_endpoint_recent_window",
+      "direction_note": "Positive best_minus_last is better for reward/coverage/success; negative is better for episode_length/repeat_visit_ratio.",
+      "last_env_steps": 500000,
+      "details": {
+        "reward": {
+          "best": 136.410492,
+          "last": 133.27475,
+          "best_minus_last": 3.135742
+        },
+        "coverage": {
+          "best": 0.91698,
+          "last": 0.915399,
+          "best_minus_last": 0.001581
+        },
+        "success_rate": {
+          "best": 0.75,
+          "last": 0.6,
+          "best_minus_last": 0.15
+        },
+        "episode_length": {
+          "best": 389.290009,
+          "last": 432.709991,
+          "best_minus_last": -43.419983
+        },
+        "repeat_visit_ratio": {
+          "best": 0.21101,
+          "last": 0.24096,
+          "best_minus_last": -0.02995
+        }
+      }
+    }
+  },
+  "supplemental_final_probe": {
+    "role": "supplemental_only_after_train_side_and_posthoc_facts",
+    "parseability": {
+      "path": "logs/final_probe.csv",
+      "row_count": 3,
+      "header_count": 64,
+      "missing_expected_columns": [],
+      "parseability": "parsed"
+    },
+    "episode_count": 100,
+    "seed_base": 20261323,
+    "selected_candidate_steps": [
+      360000,
+      460000,
+      480000
+    ],
+    "winner_step": 480000,
+    "winner_key_metrics": {
+      "env_steps": 480000,
+      "checkpoint_path": "checkpoints/ckpt_step_480000.pt",
+      "reward": 136.410492,
+      "coverage": 0.91698,
+      "success_rate": 0.75,
+      "episode_length": 389.290009,
+      "repeat_visit_ratio": 0.21101,
+      "timeout": 0.25,
+      "stall": 170.229996,
+      "zero_info": 223.539993,
+      "recent_revisit": 58.02
+    },
+    "ranking_summary": [
+      {
+        "final_probe_rank": 1,
+        "formal_winner": true,
+        "env_steps": 480000,
+        "checkpoint_path": "checkpoints/ckpt_step_480000.pt",
+        "selection_rank": 3,
+        "reward": 136.410492,
+        "coverage": 0.91698,
+        "success_rate": 0.75,
+        "episode_length": 389.290009,
+        "repeat_visit_ratio": 0.21101,
+        "timeout": 0.25
+      },
+      {
+        "final_probe_rank": 2,
+        "formal_winner": false,
+        "env_steps": 460000,
+        "checkpoint_path": "checkpoints/ckpt_step_460000.pt",
+        "selection_rank": 2,
+        "reward": 117.463242,
+        "coverage": 0.879941,
+        "success_rate": 0.52,
+        "episode_length": 440.179993,
+        "repeat_visit_ratio": 0.320851,
+        "timeout": 0.48
+      },
+      {
+        "final_probe_rank": 3,
+        "formal_winner": false,
+        "env_steps": 360000,
+        "checkpoint_path": "checkpoints/ckpt_step_360000.pt",
+        "selection_rank": 1,
+        "reward": 108.532021,
+        "coverage": 0.858806,
+        "success_rate": 0.47,
+        "episode_length": 472.529999,
+        "repeat_visit_ratio": 0.343339,
+        "timeout": 0.53
+      }
+    ],
+    "limitation_tags": [
+      "final_probe_supplemental_only",
+      "held_out_sample_limit_preserved",
+      "not_a_tuning_decision"
+    ]
   },
   "configuration_and_runtime": {
-    "files": [
-      "logs/config_snapshot.json",
-      "logs/benchmark_summary.json",
-      "logs/artifact_index.json"
-    ],
-    "schema_version": "formal_train_artifacts/v4",
-    "experiment_mode": "formal_train",
-    "run_mode": "cli",
-    "git_branch": "main",
-    "git_commit_sha": "736a925ef3402d89056c7e9edca6c895674465e0",
-    "budget_fields": {
+    "key_config": {
       "total_env_steps": 500000,
       "budget_mode": "env_steps",
-      "total_train_episodes": 600
-    },
-    "exploration_replay_learner": {
       "epsilon_decay_steps": 240000,
       "epsilon_end": 0.03,
       "min_replay_size": 8000,
-      "batch_size": 128
-    },
-    "reward_config": {
+      "batch_size": 128,
+      "final_greedy_episodes": 100,
       "reward_info_scale": 3.0,
       "reward_revisit_penalty": 0.1,
       "reward_turn_penalty_scale": 0.05
     },
-    "map_eval_config": {
-      "scan_radius": 10,
-      "rows": 40,
-      "cols": 60,
-      "final_greedy_episodes": 100
-    },
     "runtime": {
-      "total_runtime_sec": 14027.640898799997,
-      "total_runtime_hms": "03:53:48",
-      "device": "cuda"
+      "duration_sec": 14027.640899,
+      "duration_hms": "03:53:48",
+      "device": "cuda",
+      "run_mode": "cli"
     },
-    "performance_switches": {
+    "performance_switches_summary": {
       "enable_amp": false,
       "enable_inference_amp": false,
-      "amp_dtype": "fp16",
       "enable_torch_compile": false,
-      "compile_mode": "default",
       "enable_cudnn_benchmark": false,
       "enable_tf32": false,
       "strict_reproducibility": true,
       "deterministic_warn_only": false,
-      "enable_channels_last": false,
-      "generate_plots_on_finish": false,
-      "save_train_representative_trajectories": false,
-      "save_train_special_trajectories": false,
-      "save_final_probe_trajectories": false
+      "enable_channels_last": false
     },
-    "observed_run_contract": {
-      "budget_mode": "env_steps",
-      "final_env_steps": 480000,
-      "final_train_episode_idx": 996,
-      "total_env_steps_configured": 500000,
-      "final_training_env_steps": 500000,
-      "final_probe_winner_env_steps": 480000,
-      "last_checkpoint_env_steps": 500000,
-      "best_checkpoint_env_steps": 480000,
-      "winner_step": 480000,
-      "final_probe_episode_count": 100,
-      "train_episodes_header": [
-        "phase",
-        "budget_mode",
-        "env_steps",
-        "episode_idx",
-        "train_episode_idx",
-        "phase_episode_idx",
-        "completed_train_episodes",
-        "episode_seed",
-        "map_fingerprint",
-        "epsilon",
-        "episode_reward",
-        "episode_length",
-        "final_coverage",
-        "success",
-        "repeat_visit_ratio",
-        "done_reason",
-        "accessible_block_count",
-        "total_accessible_unknown_area",
-        "total_frontier_cluster_count",
-        "mean_block_area",
-        "local_frontier_coverage",
-        "local_frontier_block_area_mean",
-        "value_total_block_count_before_cap",
-        "value_packed_block_count",
-        "value_truncated_block_count",
-        "value_block_cap_hit_flag",
-        "value_total_entry_count_before_cap",
-        "value_packed_entry_count",
-        "value_truncated_entry_count",
-        "value_entry_cap_hit_block_count",
-        "value_entry_cap_hit_flag",
-        "value_max_frontier_clusters_per_block",
-        "value_mean_frontier_clusters_per_block",
-        "info_reward_sum",
-        "step_penalty_sum",
-        "recent_revisit_penalty_sum",
-        "turn_penalty_sum",
-        "timeout_penalty_sum",
-        "terminal_bonus_sum",
-        "delta_empty_sum",
-        "delta_obstacle_sum",
-        "empty_info_gain_sum",
-        "obstacle_info_gain_sum",
-        "weighted_obstacle_info_gain_sum",
-        "weighted_info_gain_sum",
-        "empty_info_reward_sum",
-        "obstacle_info_reward_sum",
-        "obstacle_info_contribution_ratio",
-        "recent_revisit_trigger_count",
-        "stall_trigger_count",
-        "zero_info_step_count",
-        "turn_ge_90_count",
-        "turn_135_count",
-        "turn_180_count",
-        "turn_penalty_weight_sum",
-        "timeout_flag"
-      ],
-      "train_steps_header": [
-        "budget_mode",
-        "env_steps",
-        "episode_idx",
-        "train_episode_idx",
-        "completed_train_episodes",
-        "replay_size",
-        "epsilon",
-        "loss",
-        "q_mean",
-        "target_q_mean",
-        "td_abs_mean",
-        "grad_norm",
-        "learner_steps",
-        "recent_mean_reward",
-        "recent_mean_coverage",
-        "recent_success_rate",
-        "recent_mean_episode_length",
-        "recent_mean_repeat_visit_ratio",
-        "recent_accessible_block_count",
-        "recent_total_accessible_unknown_area",
-        "recent_total_frontier_cluster_count",
-        "recent_mean_block_area",
-        "recent_local_frontier_coverage",
-        "recent_local_frontier_block_area_mean",
-        "recent_value_total_block_count_before_cap",
-        "recent_value_packed_block_count",
-        "recent_value_truncated_block_count",
-        "recent_value_block_cap_hit_flag",
-        "recent_value_total_entry_count_before_cap",
-        "recent_value_packed_entry_count",
-        "recent_value_truncated_entry_count",
-        "recent_value_entry_cap_hit_block_count",
-        "recent_value_entry_cap_hit_flag",
-        "recent_value_max_frontier_clusters_per_block",
-        "recent_value_mean_frontier_clusters_per_block",
-        "recent_info_reward_sum",
-        "recent_step_penalty_sum",
-        "recent_recent_revisit_penalty_sum",
-        "recent_turn_penalty_sum",
-        "recent_timeout_penalty_sum",
-        "recent_terminal_bonus_sum",
-        "recent_delta_empty_sum",
-        "recent_delta_obstacle_sum",
-        "recent_empty_info_gain_sum",
-        "recent_obstacle_info_gain_sum",
-        "recent_weighted_obstacle_info_gain_sum",
-        "recent_weighted_info_gain_sum",
-        "recent_empty_info_reward_sum",
-        "recent_obstacle_info_reward_sum",
-        "recent_obstacle_info_contribution_ratio",
-        "recent_recent_revisit_trigger_count",
-        "recent_stall_trigger_count",
-        "recent_zero_info_step_count",
-        "recent_turn_ge_90_count",
-        "recent_turn_135_count",
-        "recent_turn_180_count",
-        "recent_turn_penalty_weight_sum",
-        "recent_timeout_flag"
-      ],
-      "model_select_eval_header": [],
-      "best_recheck_eval_header": [],
-      "final_probe_header": [
-        "tag",
-        "source",
-        "budget_mode",
-        "env_steps",
-        "episode_idx",
-        "train_episode_idx",
-        "completed_train_episodes",
-        "learner_steps",
-        "checkpoint_path",
-        "seed_base",
-        "selection_rank",
-        "eval_episodes",
-        "eval_mean_reward",
-        "eval_mean_coverage",
-        "eval_success_rate",
-        "eval_mean_episode_length",
-        "eval_mean_repeat_visit_ratio",
-        "eval_mean_accessible_block_count",
-        "eval_mean_total_accessible_unknown_area",
-        "eval_mean_total_frontier_cluster_count",
-        "eval_mean_mean_block_area",
-        "eval_mean_local_frontier_coverage",
-        "eval_mean_local_frontier_block_area_mean",
-        "eval_mean_value_total_block_count_before_cap",
-        "eval_mean_value_packed_block_count",
-        "eval_mean_value_truncated_block_count",
-        "eval_mean_value_block_cap_hit_flag",
-        "eval_mean_value_total_entry_count_before_cap",
-        "eval_mean_value_packed_entry_count",
-        "eval_mean_value_truncated_entry_count",
-        "eval_mean_value_entry_cap_hit_block_count",
-        "eval_mean_value_entry_cap_hit_flag",
-        "eval_mean_value_max_frontier_clusters_per_block",
-        "eval_mean_value_mean_frontier_clusters_per_block",
-        "eval_mean_info_reward_sum",
-        "eval_mean_step_penalty_sum",
-        "eval_mean_recent_revisit_penalty_sum",
-        "eval_mean_turn_penalty_sum",
-        "eval_mean_timeout_penalty_sum",
-        "eval_mean_terminal_bonus_sum",
-        "eval_mean_delta_empty_sum",
-        "eval_mean_delta_obstacle_sum",
-        "eval_mean_empty_info_gain_sum",
-        "eval_mean_obstacle_info_gain_sum",
-        "eval_mean_weighted_obstacle_info_gain_sum",
-        "eval_mean_weighted_info_gain_sum",
-        "eval_mean_empty_info_reward_sum",
-        "eval_mean_obstacle_info_reward_sum",
-        "eval_mean_obstacle_info_contribution_ratio",
-        "eval_mean_recent_revisit_trigger_count",
-        "eval_mean_stall_trigger_count",
-        "eval_mean_zero_info_step_count",
-        "eval_mean_turn_ge_90_count",
-        "eval_mean_turn_135_count",
-        "eval_mean_turn_180_count",
-        "eval_mean_turn_penalty_weight_sum",
-        "eval_mean_timeout_flag",
-        "posthoc_selection_rank",
-        "posthoc_selection_score",
-        "posthoc_window_start_env_steps",
-        "posthoc_window_end_env_steps",
-        "posthoc_window_row_count",
-        "formal_winner",
-        "final_probe_rank"
-      ]
+    "source_git": {
+      "branch": "main",
+      "commit": "736a925ef3402d89056c7e9edca6c895674465e0"
     },
-    "artifact_inventory_metadata": {
+    "artifact_inventory_summary": {
       "csv_count": 7,
       "checkpoint_count": 18,
       "structured_summary_count": 9,
       "stdout_summary_count": 1,
       "plot_count": 0,
-      "trajectory_count": 0,
-      "checkpoint_entries_metadata_only": [
-        {
-          "path": "checkpoints/best.pt",
-          "exists": true,
-          "required": true,
-          "category": "formal_primary_checkpoint"
-        },
-        {
-          "path": "checkpoints/last.pt",
-          "exists": true,
-          "required": true,
-          "category": "diagnostic_endpoint_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_200000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_220000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_240000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_260000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_280000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_300000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_320000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_340000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_360000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_380000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_400000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_420000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_440000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_460000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_480000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        },
-        {
-          "path": "checkpoints/ckpt_step_500000.pt",
-          "exists": true,
-          "required": false,
-          "category": "posthoc_candidate_checkpoint"
-        }
-      ]
+      "trajectory_count": 0
+    },
+    "validation_record": {
+      "schema_checks": [
+        "json_parse",
+        "required_top_level_keys",
+        "constants",
+        "factual_summary_status_neutral",
+        "tuning_recommendation_provided_false"
+      ],
+      "compactness_checks": [
+        "no_full_headers_dump",
+        "no_raw_row_dump",
+        "no_broad_numeric_range_dump",
+        "no_full_command_trace",
+        "no_full_artifact_inventory"
+      ],
+      "diff_scope": "passed: training_results/current/current_training_run_analysis.json only",
+      "source_read_only_status": "passed: source repository and source run output path unchanged; unrelated pre-existing untracked source-repo directory ignored",
+      "forbidden_artifact_status": "passed: metadata only; no checkpoint/model/log/CSV/raw artifact payloads copied",
+      "compactness_status": "passed: compact review-facing digest; no full headers, raw rows, broad range dumps, full command traces, or full artifact inventories"
     }
   },
   "missing_artifacts": [],
