@@ -116,6 +116,7 @@ Density contract:
 | --- | --- |
 | Gate | status + contract verdict + blocking missingness only |
 | Identity | run_name + sanitized source_run_dir + source git commit when useful |
+| `files_inspected` | array shape preserved; compact summary may be one object inside the array; never a bare object |
 | Config | total_env_steps, epsilon_decay_steps, epsilon_end, min_replay_size, batch_size, reward settings, runtime |
 | Train-side | endpoint metrics, initial-to-final delta, late-stage delta, key diagnostics, learner context |
 | Posthoc | winner_step, selected_candidate_steps, candidate counts, best-vs-last summary |
