@@ -28,10 +28,12 @@ Validation: selected_skill_contract; json_parse; required_top_level_keys; factua
 ### 2.2 single_run_analysis_archive_task
 Skill invocation:
   Use [$training-analysis-archive](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-analysis-archive\SKILL.md)
-Inputs: current factual JSON; `tuning_review_payload` or `tuning_review_json_source`; `archive_id`
-Outputs: single-run archive factual JSON; single-run archive tuning review JSON; `training_results/history/history_index.json`
+Inputs: current factual JSON; GPT-provided strict `tuning_review_md_digest` generated from the immediately preceding GPT tuning review answer; `archive_id`
+Outputs: single-run archive factual JSON; single-run archive `tuning_review.md`; `training_results/history/history_index.json`
 Writes: archive pair plus history index
-Validation: selected_skill_contract; source_json; tuning_review_json; archive_id; history_index; portable command metadata labels `source_training_repo`, `<source_training_repo>`, `command_arguments`; diff_scope; commit_push
+Validation: selected_skill_contract; source_json; tuning_review_md_digest; archive_id; history_index; diff_scope; commit_push
+Transition guard: Until `$training-analysis-archive` supports the Markdown digest contract, use this interface as a prompt-validation target only, not for real archive execution.
+Digest rule: Codex preserves the supplied GPT digest without re-summarizing, reanalyzing metrics, changing `recommendation_type`, or changing tuning meaning.
 
 ### 2.3 multi_run_analysis_archive_task
 Skill invocation:
