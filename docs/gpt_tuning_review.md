@@ -35,9 +35,10 @@ Evidence rules:
 | --- | --- | --- |
 | `reproducible_launch_status` | `reproducible_launch_confirmed` | Do not provide `next_run_plan`; use `requires_more_evidence` or `repeat_or_repair_run`. |
 | `factual_summary_status` | `factual_summary_ready` | Do not provide `next_run_plan`; use `requires_more_evidence` or `repeat_or_repair_run`. |
-| Source run | formal, complete, non-contradictory | Treat non-formal/debug/profile/incomplete/contradictory evidence as diagnostic only. |
 
-If admission fails, explain the blocking condition and the evidence action needed before formal tuning judgement.
+If `reproducible_launch.contract_verdict == strict_contract_ready` is present, use it as support for `reproducible_launch_status`, not as a separate gate.
+
+If either required status is missing or not in the required value, explain the blocking condition and the evidence action needed before formal tuning judgement.
 
 ## 4. Analysis Procedure
 
