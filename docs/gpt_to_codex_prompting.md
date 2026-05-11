@@ -27,32 +27,11 @@ Generated Codex prompts are one English prompt block with these sections:
 
 Prompt blocks omit model settings and reasoning settings.
 
-## 3. Canonical Skill Invocation
-
-Use this exact Markdown-link form for callable local skills:
-
-```text
-Skill invocation:
-  Use [$<skill-name>](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\<skill-name>\SKILL.md)
-```
-
-Current concrete invocations:
-
-```text
-Skill invocation:
-  Use [$training-run-factual-analysis](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-run-factual-analysis\SKILL.md)
-```
-
-```text
-Skill invocation:
-  Use [$training-analysis-archive](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-analysis-archive\SKILL.md)
-```
-
-Interfaces without a concrete `Skill invocation` field are reserved contracts. They become callable when an accepted local `SKILL.md` exists and the interface records the canonical invocation.
-
-## 4. Global Packaging Rules
+## 3. Global Packaging Rules
 
 Routine prompts include execution scope, source inputs, allowed writes, validation, commit and push policy, and final report requirements. Generated prompts use the selected task interface and concrete skill.
+
+Copy the Skill invocation exactly from the selected task interface when a concrete skill exists. Interfaces without a concrete Skill invocation remain reserved until an accepted local `SKILL.md` exists and the interface records the concrete invocation.
 
 Training repository writes or source output writes require explicit task authorization. Archive and factual-analysis prompts do not copy checkpoints, model weights, full logs, full CSVs, raw outputs, plots, trajectories, or binary artifacts.
 
@@ -62,11 +41,9 @@ Codex must commit and push after validation passes and only allowed files change
 
 Final reports include files changed, validation results, remaining risks, commit and push status, commit hash when available, push target branch when available, and skipped commit or push reasons when applicable.
 
-## 5. Routine Task Interfaces
+## 4. Routine Task Interfaces
 
-### 5.1 training_run_factual_analysis_task
-
-Purpose: analyze one completed training run into the current structured JSON factual analysis.
+### 4.1 training_run_factual_analysis_task
 
 Skill invocation:
   Use [$training-run-factual-analysis](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-run-factual-analysis\SKILL.md)
@@ -78,7 +55,7 @@ Required input:
 Default output:
 - `training_results/current/current_training_run_analysis.json`
 
-Required prompt behavior:
+Prompt requirements:
 - Verify reproducible-launch evidence first.
 - Treat train-side monitoring as primary factual evidence.
 - Treat post-hoc selection as checkpoint-selection context.
@@ -99,9 +76,7 @@ Default forbidden scope:
 
 Validation focus: JSON parse validation, schema completeness validation by skill contract, `factual_summary_status` validation, `tuning_recommendation_provided=false` validation, diff-scope validation, repository/source-output status checks, and forbidden-artifact checks.
 
-### 5.2 single_run_analysis_archive_task
-
-Purpose: archive a paired single-run record containing `current_training_run_analysis.json` and a GPT-provided `tuning_review_payload` into history.
+### 4.2 single_run_analysis_archive_task
 
 Skill invocation:
   Use [$training-analysis-archive](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-analysis-archive\SKILL.md)
@@ -116,7 +91,7 @@ Default output concept:
 - `training_results/history/single_runs/<archive_id>/tuning_review.json`
 - `training_results/history/history_index.json`
 
-Required prompt behavior:
+Prompt requirements:
 - Preserve the source factual analysis as the Codex-owned factual record.
 - Preserve the GPT tuning-review payload as the GPT-owned rationale record.
 - Update `history_index.json` with one paired archive entry using repository-relative paths.
@@ -126,9 +101,7 @@ Required prompt behavior:
 
 Validation focus: source and tuning-review JSON parse/report-type checks, archive id conflict check, history index single-entry check, allowed-file diff check, no `archive_manifest.json`, and no forbidden artifact copy.
 
-### 5.3 multi_run_analysis_archive_task
-
-Purpose: archive a paired multi-run record containing `current_multi_run_analysis.json` and a GPT-provided `tuning_review_payload` into history.
+### 4.3 multi_run_analysis_archive_task
 
 Skill invocation:
   Use [$training-analysis-archive](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-analysis-archive\SKILL.md)
@@ -143,7 +116,7 @@ Default output concept:
 - `training_results/history/multi_runs/<archive_id>/tuning_review.json`
 - `training_results/history/history_index.json`
 
-Required prompt behavior:
+Prompt requirements:
 - Preserve the source multi-run factual analysis.
 - Preserve the GPT tuning-review payload.
 - Update `history_index.json` with one paired archive entry using repository-relative paths.
@@ -151,9 +124,7 @@ Required prompt behavior:
 
 Validation focus: source and tuning-review JSON parse/report-type checks, declared multi-run report-type check, archive id conflict check, history index single-entry check, allowed-file diff check, no `archive_manifest.json`, and no forbidden artifact copy.
 
-### 5.4 Reserved multi_run_script_generation_task
-
-Reserved purpose: generate executable multi-run training scripts or launch-command sets from a GPT-provided parameter plan.
+### 4.4 Reserved multi_run_script_generation_task
 
 Skill identity:
 - `$multi-run-script-generation`
@@ -169,14 +140,12 @@ Required input:
 Default output concept:
 - generated multi-run script or launch-command file
 
-Prompt behavior:
+Prompt requirements:
 - Include explicit write authorization for any training-repository target.
 - Keep execution and launch behavior explicit in the task prompt.
-- Align task details with the concrete skill once this interface becomes callable.
+- Align task details with the concrete skill when this interface becomes callable.
 
-### 5.5 Reserved multi_run_factual_analysis_task
-
-Reserved purpose: analyze multiple completed training runs into a structured current multi-run factual comparison.
+### 4.5 Reserved multi_run_factual_analysis_task
 
 Skill identity:
 - `$multi-run-factual-analysis`
@@ -192,7 +161,7 @@ Required input:
 Default output:
 - `training_results/current/current_multi_run_analysis.json`
 
-Required prompt behavior:
+Prompt requirements:
 - Verify reproducible-launch evidence per run.
 - Treat train-side monitoring as primary factual evidence per run.
 - Provide cross-run factual comparison only.
@@ -201,45 +170,7 @@ Required prompt behavior:
 
 Validation focus: JSON parse validation, schema completeness validation by future skill contract, per-run reproducibility checks, diff-scope validation, repository/source-output status checks, and forbidden-artifact checks.
 
-## 6. Compact Prompt Skeleton
-
-Use this compact skeleton with task-specific details from the selected interface and concrete skill.
-
-```text
-Task title:
-  <title>
-Task type:
-  <task_type>
-Skill invocation:
-  Use [$<skill-name>](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\<skill-name>\SKILL.md)
-Working context:
-  Target repository: C:\Users\Dk\Desktop\SCI\Automatic_2
-Source inputs:
-  <task-specific inputs>
-Output destination:
-  <task-specific output path or output concept>
-Goal:
-  <one bounded execution goal>
-Required reading:
-  - <concrete skill path>
-  - <task-specific context files>
-Allowed writes:
-  - <authorized paths>
-Forbidden writes:
-  - training repository or source run outputs unless explicitly authorized
-  - checkpoints, model weights, full logs, full CSVs, raw outputs, plots, trajectories, or binary artifacts
-  - task-specific forbidden paths
-Required procedure:
-  Follow the concrete skill, preserve task boundaries, and use repository-relative paths or stable labels in tracked outputs.
-Validation:
-  Require JSON parse validation, schema completeness validation by skill contract, task status and field checks, diff-scope validation, repository/source-output checks when relevant, and forbidden-artifact checks.
-Commit and push policy:
-  Commit and push after validation passes and only allowed files changed, unless the user explicitly disables commit/push for the task. Do not commit or push when validation fails, forbidden files changed, forbidden artifacts were copied, JSON outputs are invalid, the training repository was modified without authorization, source run outputs were modified, or a task-specific blocking condition is present.
-Final report requirements:
-  Report files changed, validation results, preservation or schema checks, forbidden-scope confirmations, commit and push status, commit hash, push target branch, and remaining risks.
-```
-
-## 7. Update Policy
+## 5. Update Policy
 
 When a reserved interface obtains an accepted `SKILL.md` file, replace its `Skill identity` and `Expected skill file` fields with the canonical concrete `Skill invocation` field. Keep the surrounding interface structure stable.
 
