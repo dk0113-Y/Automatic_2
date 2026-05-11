@@ -4,166 +4,46 @@
   "generated_by": "codex",
   "source_run_dir": "<source_training_repo>/outputs/stable_epsend003_decay240k_minreplay8000_seed0_20260510_220342",
   "run_name": "stable_epsend003_decay240k_minreplay8000_seed0_20260510_220342",
-  "files_inspected": [
-    {
-      "category": "reproducibility_runtime_config",
-      "paths": [
-        "logs/reproducibility_contract.json",
-        "logs/config_snapshot.json",
-        "logs/benchmark_summary.json",
-        "logs/artifact_index.json",
-        "logs/training_summary.txt"
-      ],
-      "status": "parsed_or_summarized"
+  "files_inspected": {
+    "artifact_groups_checked": [
+      "reproducibility_runtime_config",
+      "train_side_monitoring",
+      "posthoc_selection",
+      "supplemental_final_probe",
+      "checkpoint_metadata_only"
+    ],
+    "train_monitoring_row_counts": {
+      "train_steps": 992,
+      "train_episodes": 1002
     },
-    {
-      "category": "train_side_monitoring",
-      "paths": [
-        "logs/train_steps.csv",
-        "logs/train_episodes.csv",
-        "logs/metric_snapshot.json"
-      ],
-      "row_counts": {
-        "train_steps": 992,
-        "train_episodes": 1002
-      },
-      "header_counts": {
-        "train_steps": 58,
-        "train_episodes": 56
-      }
-    },
-    {
-      "category": "posthoc_selection",
-      "paths": [
-        "logs/posthoc_candidate_scores.csv",
-        "logs/posthoc_selection_summary.json",
-        "logs/formal_selection_manifest.json",
-        "logs/best_vs_last_gap_summary.json"
-      ],
-      "row_counts": {
-        "posthoc_candidate_scores": 16
-      }
-    },
-    {
-      "category": "supplemental_final_probe",
-      "paths": [
-        "logs/final_probe.csv",
-        "logs/final_probe_summary.json"
-      ],
-      "row_counts": {
-        "final_probe": 3
-      }
-    },
-    {
-      "category": "checkpoint_metadata_only",
-      "summary": {
-        "checkpoint_file_count": 18,
-        "best_pt": {
-          "path": "checkpoints/best.pt",
-          "exists": true,
-          "size_bytes": 4755358
-        },
-        "last_pt": {
-          "path": "checkpoints/last.pt",
-          "exists": true,
-          "size_bytes": 14173678
-        }
-      }
-    }
-  ],
+    "posthoc_row_count": 16,
+    "final_probe_row_count": 3,
+    "checkpoint_metadata_checked": true
+  },
   "commands_run": [
     {
-      "purpose": "read selected skill and verify target/source state",
-      "summary": "skill read; target git status; source git status; source run existence check"
+      "purpose": "source_artifacts_parsed_read_only",
+      "status": "passed"
     },
     {
-      "purpose": "inspect source artifacts read-only",
-      "summary": "log inventory; checkpoint metadata listing; training summary first lines"
+      "purpose": "compact_report_written",
+      "status": "passed"
     },
     {
-      "purpose": "parse source artifacts into compact factual summaries",
-      "summary": "structured JSON/CSV parser; no full logs, CSVs, raw rows, or checkpoint payloads copied"
-    },
-    {
-      "purpose": "validate output",
-      "summary": "json parse; required keys/constants; compactness checks; diff scope; source read-only postcheck"
+      "purpose": "validation_passed",
+      "status": "passed"
     }
   ],
   "reproducible_launch_status": "reproducible_launch_confirmed",
   "reproducible_launch": {
-    "evidence_gate": {
-      "status": "reproducible_launch_confirmed",
-      "contract_verdict": "strict_contract_ready",
-      "strict_reproducibility": true,
-      "blocking_missingness_or_parse_failures": false
-    },
-    "seed_backend_status": {
-      "deterministic_algorithms_enabled": true,
-      "deterministic_algorithms_warn_only": false,
-      "PYTHONHASHSEED": {
-        "value": 0,
-        "present": true
-      },
-      "CUBLAS_WORKSPACE_CONFIG": {
-        "value": ":4096:8",
-        "present": true
-      },
-      "requested_flags": {
-        "enable_tf32": false,
-        "enable_cudnn_benchmark": false,
-        "enable_amp": false,
-        "enable_inference_amp": false,
-        "enable_torch_compile": false,
-        "enable_channels_last": false
-      },
-      "runtime_readback": {
-        "torch.backends.cudnn.deterministic": true,
-        "torch.backends.cudnn.benchmark": false,
-        "torch.backends.cuda.matmul.allow_tf32": false,
-        "torch.backends.cudnn.allow_tf32": false,
-        "torch.are_deterministic_algorithms_enabled()": true
-      }
-    },
-    "fixed_seed_fields": {
-      "use_fixed_train_episode_seeds": true,
-      "fixed_train_episode_seed_base": 20259323,
-      "use_fixed_eval_seeds": true,
-      "fixed_final_probe_seed_base": 20261323,
-      "use_fixed_model_select_seeds": true,
-      "fixed_model_select_seed_base": 20262323
-    },
-    "launch_record_summary": {
-      "argv_item_count": 31,
-      "cwd_sanitized": "source_repo:.",
-      "source_git_branch": "main",
-      "source_git_commit_sha": "736a925ef3402d89056c7e9edca6c895674465e0"
-    },
-    "limitations": [
-      "finite-sample reproducibility limits preserved",
-      "global RNG policies recorded in source artifact"
-    ]
+    "status": "reproducible_launch_confirmed",
+    "contract_verdict": "strict_contract_ready",
+    "strict_reproducibility": true,
+    "blocking_missingness_or_parse_failures": false,
+    "source_git_commit_sha": "736a925ef3402d89056c7e9edca6c895674465e0",
+    "limitation_tag": "finite_sample_reproducibility_limit_preserved"
   },
   "train_side_monitoring": {
-    "parseability": {
-      "train_steps": {
-        "path": "logs/train_steps.csv",
-        "row_count": 992,
-        "header_count": 58,
-        "missing_expected_columns": [],
-        "parseability": "parsed"
-      },
-      "train_episodes": {
-        "path": "logs/train_episodes.csv",
-        "row_count": 1002,
-        "header_count": 56,
-        "missing_expected_columns": [],
-        "parseability": "parsed"
-      },
-      "metric_snapshot": {
-        "path": "logs/metric_snapshot.json",
-        "parseability": "parsed"
-      }
-    },
     "endpoint_metrics": {
       "reward": 133.27475,
       "coverage": 0.915399,
@@ -206,103 +86,22 @@
       "target_q_mean": 18.828587,
       "td_abs_mean": 3.401214
     },
-    "semantic_monitoring_key_fields": {
-      "accessible_block_count": 5.056231,
-      "total_accessible_unknown_area": 436.800812,
-      "total_frontier_cluster_count": 10.609714,
-      "mean_block_area": 123.407738,
-      "local_frontier_coverage": 0.023969,
-      "local_frontier_block_area_mean": 0.386662
-    },
-    "reward_events_key_diagnostics": {
-      "recent_revisit_trigger_count": 50.470001,
-      "stall_trigger_count": 208.800003,
-      "zero_info_step_count": 264.959991,
-      "turn_ge_90_count": 164.630005,
-      "timeout_flag": 0.4
-    },
     "train_final_consistency": {
       "verdict": "supports_final_probe",
-      "details": {
-        "reward": {
-          "recent_train": 133.27475,
-          "final_probe": 136.410492,
-          "delta": 3.135742,
-          "verdict": "aligned"
-        },
-        "coverage": {
-          "recent_train": 0.915399,
-          "final_probe": 0.91698,
-          "delta": 0.001581,
-          "verdict": "aligned"
-        },
-        "success_rate": {
-          "recent_train": 0.6,
-          "final_probe": 0.75,
-          "delta": 0.15,
-          "verdict": "final_probe_stronger"
-        },
-        "episode_length": {
-          "recent_train": 432.709991,
-          "final_probe": 389.290009,
-          "delta": -43.419983,
-          "verdict": "aligned"
-        },
-        "repeat_visit_ratio": {
-          "recent_train": 0.24096,
-          "final_probe": 0.21101,
-          "delta": -0.02995,
-          "verdict": "aligned"
-        }
-      },
-      "counts": {
-        "aligned": 4,
-        "final_probe_stronger": 1,
-        "final_probe_weaker": 0,
-        "insufficient_evidence": 0
-      },
-      "notes": [
-        "recent_train and final_probe are directionally consistent on the tracked training-quality metrics.",
-        "final_probe outperformed recent_train on: success_rate."
-      ]
+      "aligned_count": 4,
+      "final_probe_stronger_count": 1,
+      "final_probe_weaker_count": 0,
+      "key_metric_deltas": {
+        "reward": 3.135742,
+        "coverage": 0.001581,
+        "success_rate": 0.15,
+        "episode_length": -43.419983,
+        "repeat_visit_ratio": -0.02995
+      }
     }
   },
   "posthoc_selection": {
-    "parseability": {
-      "candidate_scores": {
-        "path": "logs/posthoc_candidate_scores.csv",
-        "row_count": 16,
-        "header_count": 19,
-        "missing_expected_columns": [],
-        "parseability": "parsed"
-      },
-      "selection_summary": {
-        "path": "logs/posthoc_selection_summary.json",
-        "parseability": "parsed"
-      },
-      "formal_selection_manifest": {
-        "path": "logs/formal_selection_manifest.json",
-        "parseability": "parsed"
-      },
-      "best_vs_last_gap_summary": {
-        "path": "logs/best_vs_last_gap_summary.json",
-        "parseability": "parsed"
-      }
-    },
     "protocol_name": "formal_posthoc_trainselect_v1",
-    "candidate_window": {
-      "start_step": 200000,
-      "end_step": 500000,
-      "checkpoint_interval": 20000,
-      "selection_window_env_steps": 40000
-    },
-    "selection_weights": {
-      "reward": 0.35,
-      "coverage": 0.25,
-      "success_rate": 0.2,
-      "episode_length": -0.1,
-      "repeat_visit_ratio": -0.1
-    },
     "candidate_count": 16,
     "valid_candidate_count": 16,
     "selected_candidate_steps": [
@@ -310,110 +109,32 @@
       460000,
       480000
     ],
-    "selected_candidate_summaries": [
-      {
-        "selection_rank": 1,
-        "candidate_step": 360000,
-        "window_row_count": 81,
-        "reward": 136.206837,
-        "coverage": 0.932717,
-        "success_rate": 0.676296,
-        "episode_length": 436.700367,
-        "repeat_visit_ratio": 0.242992,
-        "selection_score": 1.229318
-      },
-      {
-        "selection_rank": 2,
-        "candidate_step": 460000,
-        "window_row_count": 81,
-        "reward": 135.200864,
-        "coverage": 0.922643,
-        "success_rate": 0.643827,
-        "episode_length": 438.187282,
-        "repeat_visit_ratio": 0.235627,
-        "selection_score": 1.01698
-      },
-      {
-        "selection_rank": 3,
-        "candidate_step": 480000,
-        "window_row_count": 81,
-        "reward": 134.023646,
-        "coverage": 0.921477,
-        "success_rate": 0.596667,
-        "episode_length": 444.982839,
-        "repeat_visit_ratio": 0.247505,
-        "selection_score": 0.826657
-      }
-    ],
     "winner_step": 480000,
-    "winner_checkpoint_path": "checkpoints/ckpt_step_480000.pt",
-    "checkpoint_metadata_summary": {
-      "best_pt": {
-        "path": "checkpoints/best.pt",
-        "exists": true,
-        "size_bytes": 4755358
-      },
-      "last_pt": {
-        "path": "checkpoints/last.pt",
-        "exists": true,
-        "size_bytes": 14173678
-      },
-      "selected_candidate_count": 3,
-      "checkpoint_payloads_copied": false
-    },
     "best_vs_last_gap_summary": {
       "comparison_mode": "heldout_winner_vs_train_endpoint_recent_window",
-      "direction_note": "Positive best_minus_last is better for reward/coverage/success; negative is better for episode_length/repeat_visit_ratio.",
       "last_env_steps": 500000,
-      "details": {
-        "reward": {
-          "best": 136.410492,
-          "last": 133.27475,
-          "best_minus_last": 3.135742
-        },
-        "coverage": {
-          "best": 0.91698,
-          "last": 0.915399,
-          "best_minus_last": 0.001581
-        },
-        "success_rate": {
-          "best": 0.75,
-          "last": 0.6,
-          "best_minus_last": 0.15
-        },
-        "episode_length": {
-          "best": 389.290009,
-          "last": 432.709991,
-          "best_minus_last": -43.419983
-        },
-        "repeat_visit_ratio": {
-          "best": 0.21101,
-          "last": 0.24096,
-          "best_minus_last": -0.02995
-        }
+      "metric_deltas": {
+        "reward": 3.135742,
+        "coverage": 0.001581,
+        "success_rate": 0.15,
+        "episode_length": -43.419983,
+        "repeat_visit_ratio": -0.02995
       }
+    },
+    "checkpoint_metadata_summary": {
+      "best_pt_exists": true,
+      "last_pt_exists": true,
+      "selected_candidate_count": 3,
+      "checkpoint_payloads_copied": false
     }
   },
   "supplemental_final_probe": {
-    "role": "supplemental_only_after_train_side_and_posthoc_facts",
-    "parseability": {
-      "path": "logs/final_probe.csv",
-      "row_count": 3,
-      "header_count": 64,
-      "missing_expected_columns": [],
-      "parseability": "parsed"
-    },
+    "role": "supplemental_only",
     "episode_count": 100,
     "seed_base": 20261323,
-    "selected_candidate_steps": [
-      360000,
-      460000,
-      480000
-    ],
     "winner_step": 480000,
     "winner_key_metrics": {
       "env_steps": 480000,
-      "checkpoint_path": "checkpoints/ckpt_step_480000.pt",
       "reward": 136.410492,
       "coverage": 0.91698,
       "success_rate": 0.75,
@@ -424,13 +145,11 @@
       "zero_info": 223.539993,
       "recent_revisit": 58.02
     },
-    "ranking_summary": [
+    "candidate_ranking_summary": [
       {
-        "final_probe_rank": 1,
-        "formal_winner": true,
+        "rank": 1,
         "env_steps": 480000,
-        "checkpoint_path": "checkpoints/ckpt_step_480000.pt",
-        "selection_rank": 3,
+        "formal_winner": true,
         "reward": 136.410492,
         "coverage": 0.91698,
         "success_rate": 0.75,
@@ -439,11 +158,9 @@
         "timeout": 0.25
       },
       {
-        "final_probe_rank": 2,
-        "formal_winner": false,
+        "rank": 2,
         "env_steps": 460000,
-        "checkpoint_path": "checkpoints/ckpt_step_460000.pt",
-        "selection_rank": 2,
+        "formal_winner": false,
         "reward": 117.463242,
         "coverage": 0.879941,
         "success_rate": 0.52,
@@ -452,11 +169,9 @@
         "timeout": 0.48
       },
       {
-        "final_probe_rank": 3,
-        "formal_winner": false,
+        "rank": 3,
         "env_steps": 360000,
-        "checkpoint_path": "checkpoints/ckpt_step_360000.pt",
-        "selection_rank": 1,
+        "formal_winner": false,
         "reward": 108.532021,
         "coverage": 0.858806,
         "success_rate": 0.47,
@@ -468,18 +183,19 @@
     "limitation_tags": [
       "final_probe_supplemental_only",
       "held_out_sample_limit_preserved",
+      "not_superiority_evidence",
       "not_a_tuning_decision"
     ]
   },
   "configuration_and_runtime": {
-    "key_config": {
-      "total_env_steps": 500000,
-      "budget_mode": "env_steps",
-      "epsilon_decay_steps": 240000,
-      "epsilon_end": 0.03,
-      "min_replay_size": 8000,
-      "batch_size": 128,
-      "final_greedy_episodes": 100,
+    "total_env_steps": 500000,
+    "budget_mode": "env_steps",
+    "epsilon_decay_steps": 240000,
+    "epsilon_end": 0.03,
+    "min_replay_size": 8000,
+    "batch_size": 128,
+    "final_greedy_episodes": 100,
+    "reward_settings": {
       "reward_info_scale": 3.0,
       "reward_revisit_penalty": 0.1,
       "reward_turn_penalty_scale": 0.05
@@ -487,50 +203,19 @@
     "runtime": {
       "duration_sec": 14027.640899,
       "duration_hms": "03:53:48",
-      "device": "cuda",
-      "run_mode": "cli"
+      "device": "cuda"
     },
-    "performance_switches_summary": {
-      "enable_amp": false,
-      "enable_inference_amp": false,
-      "enable_torch_compile": false,
-      "enable_cudnn_benchmark": false,
-      "enable_tf32": false,
-      "strict_reproducibility": true,
-      "deterministic_warn_only": false,
-      "enable_channels_last": false
-    },
-    "source_git": {
-      "branch": "main",
-      "commit": "736a925ef3402d89056c7e9edca6c895674465e0"
-    },
-    "artifact_inventory_summary": {
-      "csv_count": 7,
-      "checkpoint_count": 18,
-      "structured_summary_count": 9,
-      "stdout_summary_count": 1,
-      "plot_count": 0,
-      "trajectory_count": 0
-    },
+    "strict_reproducibility": true,
+    "source_git_commit": "736a925ef3402d89056c7e9edca6c895674465e0",
     "validation_record": {
-      "schema_checks": [
-        "json_parse",
-        "required_top_level_keys",
-        "constants",
-        "factual_summary_status_neutral",
-        "tuning_recommendation_provided_false"
-      ],
-      "compactness_checks": [
-        "no_full_headers_dump",
-        "no_raw_row_dump",
-        "no_broad_numeric_range_dump",
-        "no_full_command_trace",
-        "no_full_artifact_inventory"
-      ],
-      "diff_scope": "passed: training_results/current/current_training_run_analysis.json only",
-      "source_read_only_status": "passed: source repository and source run output path unchanged; unrelated pre-existing untracked source-repo directory ignored",
-      "forbidden_artifact_status": "passed: metadata only; no checkpoint/model/log/CSV/raw artifact payloads copied",
-      "compactness_status": "passed: compact review-facing digest; no full headers, raw rows, broad range dumps, full command traces, or full artifact inventories"
+      "json_parse": "passed",
+      "required_top_level_keys": "passed",
+      "factual_summary_status": "factual_summary_ready",
+      "tuning_recommendation_provided_false": "passed",
+      "diff_scope": "passed",
+      "source_read_only": "passed",
+      "forbidden_artifact_status": "passed",
+      "compact_report_density": "passed"
     }
   },
   "missing_artifacts": [],

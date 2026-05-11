@@ -110,38 +110,18 @@ Validate:
 - `path_sanitization`
 - `excludes_full_csv_checkpoint_payloads_weights_private_paths_tuning_decisions`
 
-Output compactness:
-- include: gate statuses; key config; endpoint metrics; trend deltas; posthoc winner summary; best-vs-last summary; final_probe summary; missingness; validation record
-- summarize: headers; commands; artifact inventory; seed/backend details; reward events; learner diagnostics
-- exclude: full CSV headers; full raw rows; broad numeric range dumps for every field; full command traces; full artifact inventories; repeated backend explanations; checkpoint payloads; model weights; private absolute paths; full logs; full CSV contents
-- use arrays only for short required lists; otherwise use counts, key names, and summaries
-- inspect broadly; record selectively
+Density contract:
 
-Review-facing density:
-
-| Group | Compact content |
+| Item | Contract |
 | --- | --- |
-| `reproducible_launch` | evidence gate: `reproducible_launch_status`; `contract_verdict`; required seed/backend status fields; blocking missingness or parse failures |
-| root identity | `run_name`; sanitized `source_run_dir`; source git commit when present; `factual_summary_status`; `tuning_recommendation_provided=false` |
-| `configuration_and_runtime` | key config: `total_env_steps`; `budget_mode`; `epsilon_decay_steps`; `epsilon_end`; `min_replay_size`; `batch_size`; `final_greedy_episodes`; relevant reward settings; runtime duration; device; run mode; performance switches summary |
-| `train_side_monitoring` | endpoint metrics; initial-to-final delta and safe late-stage delta for reward, coverage, success_rate, episode_length, RVR, timeout; key diagnostics: timeout, stall, zero_info, recent_revisit, turns; learner context: loss, grad_norm, replay_size, epsilon |
-| `posthoc_selection` | `winner_step`; `candidate_count`; `valid_candidate_count`; `selected_candidate_steps`; best-vs-last summary; checkpoint metadata summary only |
-| `supplemental_final_probe` | episode count; seed base; winner row key metrics; ranking summary; parseability; limitation tags |
-| `files_inspected` | concise paths or category summary |
-| `commands_run` | purpose summary, not full trace |
-| validation record | schema checks; diff scope; source read-only status; forbidden artifact status |
-
-Density labels:
-- `headers=count_and_missing_expected_only`
-- `raw_rows=endpoint_or_selected_fields_only`
-- `numeric_ranges=primary_metrics_and_key_diagnostics_only`
-- `commands_run=purpose_summary_not_full_trace`
-- `files_inspected=concise_paths_or_category_summary`
-- `artifact_inventory=summary_only`
-- `reward_events=key_diagnostics_only`
-- `semantic_monitoring=key_fields_only`
-- `learner_monitoring=key_fields_only`
-- `seed_backend_details=status_summary_plus_required_fields`
+| Gate | status + contract verdict + blocking missingness only |
+| Identity | run_name + sanitized source_run_dir + source git commit when useful |
+| Config | total_env_steps, epsilon_decay_steps, epsilon_end, min_replay_size, batch_size, reward settings, runtime |
+| Train-side | endpoint metrics, initial-to-final delta, late-stage delta, key diagnostics, learner context |
+| Posthoc | winner_step, selected_candidate_steps, candidate counts, best-vs-last summary |
+| Final probe | episode count, winner metrics, compact ranking summary, limitation tags |
+| Validation | schema, diff scope, source read-only, artifact status |
+| Exclude | full headers, raw rows, broad numeric ranges, full command traces, full artifact inventories, repeated backend explanations, source-artifact dumps |
 
 ## 4. Validation
 
@@ -159,11 +139,7 @@ Checklist:
 - `forbidden_artifact_status`
 - `no_tuning_decision_status`
 - `compact_report_density`
-- `no_full_headers_dump`
-- `no_raw_row_dump`
-- `no_broad_numeric_range_dump`
-- `no_full_command_trace`
-- `no_full_artifact_inventory`
+- `no_source_artifact_dumps`
 - `no_private_paths`
 - `no_forbidden_artifacts`
 
@@ -176,4 +152,4 @@ Block:
 - `path_privacy_violation`: tracked outputs use sanitized paths, repository-relative paths, or stable labels.
 - `decision_scope_violation`: factual-only output; tuning, next-parameter, baseline, stop/continue, branch, method, paper, routing, project-baseline, and workflow decisions are outside this skill.
 - `evidence_role_violation`: `final_probe` is supplemental only; deterministic reproducibility keeps finite-sample limits.
-- `output_density_violation`: current JSON contains full headers, raw rows, broad range dumps, full command traces, or source-artifact-like dumps instead of compact summaries.
+- `output_density_violation`: current JSON includes source-artifact dumps instead of tuning-review summaries.
