@@ -19,13 +19,16 @@ Archiving and 落盘 are handled by a separate archive workflow and are out of s
 | Priority | Evidence | Use |
 | --- | --- | --- |
 | Required | `training_results/current/current_training_run_analysis.json` or `training_results/current/current_multi_run_analysis.json` | Current compact factual evidence and gate status. |
-| Use when available | Matched archived `tuning_review.json` | Prior hypothesis, prior recommendation, expected validation focus, and command intent. |
-| Use when available | Relevant `training_results/history/history_index.json` entries | Tuning-chain continuity and prior experiments. |
+| Use when available | Relevant `training_results/history/history_index.json` entries | Locate matched prior tuning review path, tuning-chain continuity, and prior experiments. |
+| Use when available | Matched archived `tuning_review.md` digest, or legacy `tuning_review.json` when the relevant history entry still points to the old format. | Prior hypothesis, prior recommendation, expected validation focus, and command intent. |
 | Use when available | Relevant archived factual analyses | Historical evidence context. |
 | Use only when needed | `docs/training_system_manifest.md` | Tuning surface, launcher context, method mainline, and method-redesign boundary. |
 
 Evidence rules:
 - Use compact factual reports and tracked history.
+- Use `history_index.json` to locate the relevant prior tuning review path.
+- Read the matched prior review in whatever format `history_index.json` records: `tuning_review.md` digest for new single-run archives, or `tuning_review.json` for legacy archives.
+- Do not require old archives to be migrated, and do not treat legacy `tuning_review.json` presence as a blocker.
 - Require Codex factual analysis before raw/full artifact evidence is used.
 - Do not directly inspect full logs, full CSVs, checkpoints, model weights, raw outputs, plots, trajectories, or generated run artifacts.
 
@@ -42,7 +45,7 @@ If either required status is missing or not in the required value, explain the b
 
 ## 4. Analysis Procedure
 
-1. Identify the current run intent from run name, compact config, current report facts, and available prior review.
+1. Identify the current run intent from run name, compact config, current report facts, and matched prior review when available.
 2. Match the current run to the prior hypothesis or prior recommendation when available.
 3. Set `prior_rationale_validation.validation_status` using the fixed enum below.
 4. Separate supporting evidence, contradicting evidence, unverified items, and limitations.
