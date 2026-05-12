@@ -17,7 +17,7 @@ Rules:
 
 ### Final Prompt Format
 
-When GPT outputs a Codex prompt, output exactly one `text` fenced block and no prose outside it. Inside that block, do not use nested fenced code blocks or literal triple-backtick sequences. Write shell/PowerShell commands as indented plain text. Preserve Windows paths exactly, especially `Automatic_2\.agents`. For digest tasks, keep `BEGIN_TUNING_REVIEW_MD_DIGEST` and `END_TUNING_REVIEW_MD_DIGEST` on their own unindented lines and write command lines as indented plain text inside the digest.
+When GPT outputs a Codex prompt, output exactly one `text` fenced block and no prose outside it. Keep the final Codex prompt operational only; do not include copy-safety explanations, self-check lists, invalid-path examples, or valid/invalid path demonstrations. Inside that block, do not use nested fenced code blocks or literal triple-backtick sequences. Write shell/PowerShell commands as indented plain text. Preserve Windows paths exactly, especially `Automatic_2\.agents`. For digest tasks, keep `BEGIN_TUNING_REVIEW_MD_DIGEST` and `END_TUNING_REVIEW_MD_DIGEST` on their own unindented lines and write command lines as indented plain text inside the digest.
 
 ## 2. Task Interfaces
 
