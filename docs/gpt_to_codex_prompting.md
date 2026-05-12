@@ -32,6 +32,7 @@ Inputs: current factual JSON; GPT-provided strict `tuning_review_md_digest` gene
 Outputs: single-run archive factual JSON; single-run archive `tuning_review.md`; `training_results/history/history_index.json`
 Writes: archive pair plus history index
 Validation: selected_skill_contract; source_json; tuning_review_md_digest; archive_id; history_index; diff_scope; commit_push
+Digest block rule: Embed the supplied digest between `BEGIN_TUNING_REVIEW_MD_DIGEST` and `END_TUNING_REVIEW_MD_DIGEST`; do not wrap the entire digest in a Markdown fenced code block. The digest may contain its own fenced PowerShell command block.
 Transition guard: Until `$training-analysis-archive` supports the Markdown digest contract, use this interface as a prompt-validation target only, not for real archive execution.
 Digest rule: Codex preserves the supplied GPT digest without re-summarizing, reanalyzing metrics, changing `recommendation_type`, or changing tuning meaning.
 
