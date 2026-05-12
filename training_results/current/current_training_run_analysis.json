@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "report_type": "training_run_factual_analysis",
   "generated_by": "codex",
-  "source_run_dir": "<source_training_repo>/outputs/stable_epsend003_decay240k_minreplay8000_seed0_20260510_220342",
-  "run_name": "stable_epsend003_decay240k_minreplay8000_seed0_20260510_220342",
+  "source_run_dir": "<source_training_repo>/outputs/stable_epsend004_budget500k_decay240k_minreplay8000_seed0_20260511_195904",
+  "run_name": "stable_epsend004_budget500k_decay240k_minreplay8000_seed0_20260511_195904",
   "files_inspected": [
     {
       "artifact_groups_checked": [
@@ -13,16 +13,22 @@
         "supplemental_final_probe",
         "checkpoint_metadata_only"
       ],
+      "required_structured_artifacts_present": true,
       "train_monitoring_row_counts": {
         "train_steps": 992,
-        "train_episodes": 1002
+        "train_episodes": 1035
       },
-      "posthoc_row_count": 16,
+      "posthoc_candidate_score_row_count": 16,
       "final_probe_row_count": 3,
-      "checkpoint_metadata_checked": true
+      "checkpoint_metadata_checked": true,
+      "checkpoint_payloads_copied": false
     }
   ],
   "commands_run": [
+    {
+      "purpose": "required_docs_and_skill_read",
+      "status": "passed"
+    },
     {
       "purpose": "source_artifacts_parsed_read_only",
       "status": "passed"
@@ -41,86 +47,190 @@
     "status": "reproducible_launch_confirmed",
     "contract_verdict": "strict_contract_ready",
     "strict_reproducibility": true,
-    "blocking_missingness_or_parse_failures": false,
+    "deterministic_algorithms_enabled": true,
+    "deterministic_algorithms_warn_only": false,
+    "determinism_environment": {
+      "PYTHONHASHSEED": {
+        "present": true,
+        "value": 0
+      },
+      "CUBLAS_WORKSPACE_CONFIG": {
+        "present": true,
+        "value": ":4096:8"
+      }
+    },
+    "backend_requested_flags": {
+      "enable_tf32": false,
+      "enable_cudnn_benchmark": false,
+      "enable_amp": false,
+      "enable_inference_amp": false,
+      "enable_torch_compile": false,
+      "enable_channels_last": false
+    },
+    "backend_runtime_readback": {
+      "requested_device": "cuda",
+      "actual_device": "cuda:0",
+      "torch.backends.cudnn.deterministic": true,
+      "torch.backends.cudnn.benchmark": false,
+      "torch.backends.cuda.matmul.allow_tf32": false,
+      "torch.backends.cudnn.allow_tf32": false,
+      "torch.are_deterministic_algorithms_enabled()": true
+    },
+    "fixed_seed_fields": {
+      "use_fixed_train_episode_seeds": true,
+      "fixed_train_episode_seed_base": 20259323,
+      "use_fixed_eval_seeds": true,
+      "fixed_final_probe_seed_base": 20261323,
+      "use_fixed_model_select_seeds": true,
+      "fixed_model_select_seed_base": 20262323
+    },
+    "source_git_branch": "main",
     "source_git_commit_sha": "736a925ef3402d89056c7e9edca6c895674465e0",
+    "blocking_missingness_or_parse_failures": false,
     "limitation_tag": "finite_sample_reproducibility_limit_preserved"
   },
   "train_side_monitoring": {
+    "primary_evidence_role": "train_side_monitoring_primary",
     "endpoint_metrics": {
-      "reward": 133.27475,
-      "coverage": 0.915399,
-      "success_rate": 0.6,
-      "episode_length": 432.709991,
-      "repeat_visit_ratio": 0.24096,
-      "timeout": 0.4
+      "env_steps": 500000,
+      "completed_train_episodes": 1029,
+      "reward": 147.496902,
+      "coverage": 0.943017,
+      "success_rate": 0.86,
+      "episode_length": 375.720001,
+      "repeat_visit_ratio": 0.187273,
+      "timeout": 0.14
     },
     "initial_to_final_delta": {
-      "reward": 123.299563,
-      "coverage": 0.462599,
-      "success_rate": 0.6,
-      "episode_length": -167.290009,
-      "repeat_visit_ratio": -0.385853,
-      "timeout": -0.6
+      "reward": 137.521716,
+      "coverage": 0.490217,
+      "success_rate": 0.86,
+      "episode_length": -224.279999,
+      "repeat_visit_ratio": -0.439539,
+      "timeout": -0.86
     },
     "late_stage_delta_last_100_rows": {
-      "reward": -2.837296,
-      "coverage": -0.011267,
-      "success_rate": -0.05,
-      "episode_length": -1.300018,
-      "repeat_visit_ratio": 0.009644,
-      "timeout": 0.05
+      "reward": 10.173904,
+      "coverage": 0.022883,
+      "success_rate": 0.12,
+      "episode_length": -29.320008,
+      "repeat_visit_ratio": -0.042357,
+      "timeout": -0.12
     },
     "key_diagnostics_endpoint": {
-      "timeout": 0.4,
-      "stall": 208.800003,
-      "zero_info": 264.959991,
-      "recent_revisit": 50.470001,
-      "turn_ge_90": 164.630005,
-      "turn_135": 43.529999,
-      "turn_180": 31.559999
+      "stall": 144.029999,
+      "zero_info": 199.220001,
+      "recent_revisit": 45.470001,
+      "turn_ge_90": 135.419998,
+      "turn_135": 31.120001,
+      "turn_180": 32.75,
+      "timeout": 0.14
+    },
+    "semantic_monitoring_endpoint": {
+      "accessible_block_count": 5.259257,
+      "total_accessible_unknown_area": 434.696594,
+      "total_frontier_cluster_count": 10.541758,
+      "mean_block_area": 108.314308,
+      "local_frontier_coverage": 0.027239,
+      "local_frontier_block_area_mean": 0.432129
     },
     "learner_context_endpoint": {
-      "loss": 3.063654,
-      "grad_norm": 38.144417,
+      "loss": 2.886127,
+      "q_mean": 20.968273,
+      "target_q_mean": 20.398151,
+      "td_abs_mean": 3.261101,
+      "grad_norm": 35.149357,
       "replay_size": 100000,
-      "epsilon": 0.03,
-      "q_mean": 18.593403,
-      "target_q_mean": 18.828587,
-      "td_abs_mean": 3.401214
+      "epsilon": 0.04
+    },
+    "reward_breakdown_endpoint": {
+      "info_reward_sum": 147.345657,
+      "step_penalty_sum": -7.5144,
+      "recent_revisit_penalty_sum": -4.547,
+      "turn_penalty_sum": -3.867333,
+      "timeout_penalty_sum": -1.12,
+      "terminal_bonus_sum": 17.200001
     },
     "train_final_consistency": {
-      "verdict": "supports_final_probe",
-      "aligned_count": 4,
-      "final_probe_stronger_count": 1,
-      "final_probe_weaker_count": 0,
-      "key_metric_deltas": {
-        "reward": 3.135742,
-        "coverage": 0.001581,
-        "success_rate": 0.15,
-        "episode_length": -43.419983,
-        "repeat_visit_ratio": -0.02995
-      }
+      "comparison_role": "final_probe_winner_vs_train_endpoint_recent_window",
+      "final_probe_winner_minus_train_endpoint": {
+        "reward": -17.159301,
+        "coverage": -0.045463,
+        "success_rate": -0.1,
+        "episode_length": 1.579987,
+        "repeat_visit_ratio": 0.038321,
+        "timeout": 0.1
+      },
+      "interpretation_boundary": "final_probe_is_supplemental_only"
     }
   },
   "posthoc_selection": {
+    "role": "checkpoint_selection_context_only",
     "protocol_name": "formal_posthoc_trainselect_v1",
+    "candidate_start_step": 200000,
+    "candidate_end_step": 500000,
+    "checkpoint_interval": 20000,
+    "selection_window_env_steps": 40000,
+    "selection_weights": {
+      "reward_z": 0.35,
+      "coverage_z": 0.25,
+      "success_rate_z": 0.2,
+      "episode_length_z": -0.1,
+      "repeat_visit_ratio_z": -0.1
+    },
     "candidate_count": 16,
     "valid_candidate_count": 16,
     "selected_candidate_steps": [
-      360000,
-      460000,
-      480000
+      500000,
+      480000,
+      400000
     ],
-    "winner_step": 480000,
+    "selected_train_side_candidates": [
+      {
+        "selection_rank": 1,
+        "candidate_step": 500000,
+        "selection_score": 1.449331,
+        "reward": 143.663998,
+        "coverage": 0.933508,
+        "success_rate": 0.790123,
+        "episode_length": 394.340248,
+        "repeat_visit_ratio": 0.19886,
+        "window_row_count": 81
+      },
+      {
+        "selection_rank": 2,
+        "candidate_step": 480000,
+        "selection_score": 1.004905,
+        "reward": 138.137806,
+        "coverage": 0.922646,
+        "success_rate": 0.730988,
+        "episode_length": 411.782099,
+        "repeat_visit_ratio": 0.22402,
+        "window_row_count": 81
+      },
+      {
+        "selection_rank": 3,
+        "candidate_step": 400000,
+        "selection_score": 0.99915,
+        "reward": 138.303945,
+        "coverage": 0.926385,
+        "success_rate": 0.714074,
+        "episode_length": 425.376048,
+        "repeat_visit_ratio": 0.228555,
+        "window_row_count": 81
+      }
+    ],
+    "final_probe_winner_step": 480000,
     "best_vs_last_gap_summary": {
       "comparison_mode": "heldout_winner_vs_train_endpoint_recent_window",
-      "last_env_steps": 500000,
-      "metric_deltas": {
-        "reward": 3.135742,
-        "coverage": 0.001581,
+      "best_step": 480000,
+      "last_step": 500000,
+      "metric_deltas_best_minus_last": {
+        "reward": 12.615372,
+        "coverage": 0.01285,
         "success_rate": 0.15,
-        "episode_length": -43.419983,
-        "repeat_visit_ratio": -0.02995
+        "episode_length": -49.480011,
+        "repeat_visit_ratio": -0.065987
       }
     },
     "checkpoint_metadata_summary": {
@@ -137,49 +247,49 @@
     "winner_step": 480000,
     "winner_key_metrics": {
       "env_steps": 480000,
-      "reward": 136.410492,
-      "coverage": 0.91698,
-      "success_rate": 0.75,
-      "episode_length": 389.290009,
-      "repeat_visit_ratio": 0.21101,
-      "timeout": 0.25,
-      "stall": 170.229996,
-      "zero_info": 223.539993,
-      "recent_revisit": 58.02
+      "reward": 130.337601,
+      "coverage": 0.897554,
+      "success_rate": 0.76,
+      "episode_length": 377.299988,
+      "repeat_visit_ratio": 0.225594,
+      "timeout": 0.24,
+      "stall": 171.320007,
+      "zero_info": 215.429993,
+      "recent_revisit": 82.059998
     },
     "candidate_ranking_summary": [
       {
         "rank": 1,
         "env_steps": 480000,
         "formal_winner": true,
-        "reward": 136.410492,
-        "coverage": 0.91698,
-        "success_rate": 0.75,
-        "episode_length": 389.290009,
-        "repeat_visit_ratio": 0.21101,
-        "timeout": 0.25
+        "reward": 130.337601,
+        "coverage": 0.897554,
+        "success_rate": 0.76,
+        "episode_length": 377.299988,
+        "repeat_visit_ratio": 0.225594,
+        "timeout": 0.24
       },
       {
         "rank": 2,
-        "env_steps": 460000,
+        "env_steps": 400000,
         "formal_winner": false,
-        "reward": 117.463242,
-        "coverage": 0.879941,
-        "success_rate": 0.52,
-        "episode_length": 440.179993,
-        "repeat_visit_ratio": 0.320851,
-        "timeout": 0.48
+        "reward": 121.236328,
+        "coverage": 0.886911,
+        "success_rate": 0.61,
+        "episode_length": 415.670013,
+        "repeat_visit_ratio": 0.275909,
+        "timeout": 0.39
       },
       {
         "rank": 3,
-        "env_steps": 360000,
+        "env_steps": 500000,
         "formal_winner": false,
-        "reward": 108.532021,
-        "coverage": 0.858806,
-        "success_rate": 0.47,
-        "episode_length": 472.529999,
-        "repeat_visit_ratio": 0.343339,
-        "timeout": 0.53
+        "reward": 117.722229,
+        "coverage": 0.884704,
+        "success_rate": 0.61,
+        "episode_length": 426.779999,
+        "repeat_visit_ratio": 0.291581,
+        "timeout": 0.39
       }
     ],
     "limitation_tags": [
@@ -192,22 +302,27 @@
   "configuration_and_runtime": {
     "total_env_steps": 500000,
     "budget_mode": "env_steps",
+    "total_train_episodes_completed": 1029,
     "epsilon_decay_steps": 240000,
-    "epsilon_end": 0.03,
+    "epsilon_end": 0.04,
     "min_replay_size": 8000,
     "batch_size": 128,
     "final_greedy_episodes": 100,
+    "map_eval_config": {
+      "rows": 40,
+      "cols": 60,
+      "scan_radius": 10
+    },
     "reward_settings": {
       "reward_info_scale": 3.0,
       "reward_revisit_penalty": 0.1,
       "reward_turn_penalty_scale": 0.05
     },
     "runtime": {
-      "duration_sec": 14027.640899,
-      "duration_hms": "03:53:48",
-      "device": "cuda"
+      "duration_sec": 14182.018004,
+      "duration_hms": "03:56:22",
+      "device": "cuda:0"
     },
-    "strict_reproducibility": true,
     "source_git_commit": "736a925ef3402d89056c7e9edca6c895674465e0",
     "validation_record": {
       "json_parse": "passed",
@@ -217,12 +332,16 @@
       "diff_scope": "passed",
       "source_read_only": "passed",
       "forbidden_artifact_status": "passed",
-      "compact_report_density": "passed"
+      "compact_report_density": "passed",
+      "git_diff_check": "passed",
+      "git_diff_cached_check": "passed"
     }
   },
   "missing_artifacts": [],
   "parse_failures": [],
-  "unverified_items": [],
+  "unverified_items": [
+    "source_training_repo_had_preexisting_untracked_directory_before_analysis; no source writes performed by this task"
+  ],
   "forbidden_artifact_findings": [],
   "factual_summary_status": "factual_summary_ready",
   "tuning_recommendation_provided": false
