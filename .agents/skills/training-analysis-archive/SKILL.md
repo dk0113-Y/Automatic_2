@@ -67,7 +67,7 @@ Marker rules:
 | Markers are on their own unindented lines | yes |
 | Exactly one digest block | yes, unless task explicitly authorizes otherwise |
 | Whole digest is not wrapped in a Markdown fenced code block | yes |
-| Internal fenced PowerShell command block | allowed |
+| Literal triple-backtick sequences inside digest | no |
 
 Preservation rules:
 - Extract only marker body.
@@ -100,9 +100,9 @@ Enum validation:
 - `prior_validation_status`, `validation_status`: `supported`, `partially_supported`, `refuted`, `not_verifiable`, `not_applicable`
 
 Command validation when `recommendation_type = next_run_plan`:
-- Fenced PowerShell command block exists.
+- The `command` field contains a launcher command line written as plain text or indented plain text.
 - Command starts with `.\scripts\launch_formal_train_stable.ps1`.
-- Command does not include `cd <source_training_repo>;`, local absolute paths, or working-directory placeholders.
+- Command does not include `cd <source_training_repo>;`, local absolute paths, working-directory placeholders, or literal triple-backtick sequences.
 
 Safety validation:
 - No private local absolute paths.

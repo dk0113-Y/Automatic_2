@@ -15,6 +15,10 @@ Rules:
 - Commit and push after validation passes and only allowed files changed, unless explicitly disabled.
 - Final report includes files changed, validation result, commit/push status, commit hash, push target, and remaining risks.
 
+### Final Prompt Format
+
+When GPT outputs a Codex prompt, output exactly one `text` fenced block and no prose outside it. Inside that block, do not use nested fenced code blocks or literal triple-backtick sequences. Write shell/PowerShell commands as indented plain text. Preserve Windows paths exactly, especially `Automatic_2\.agents`. For digest tasks, keep `BEGIN_TUNING_REVIEW_MD_DIGEST` and `END_TUNING_REVIEW_MD_DIGEST` on their own unindented lines and write command lines as indented plain text inside the digest.
+
 ## 2. Task Interfaces
 
 ### 2.1 training_run_factual_analysis_task
@@ -32,7 +36,7 @@ Inputs: current factual JSON; GPT-provided strict `tuning_review_md_digest` gene
 Outputs: single-run archive factual JSON; single-run archive `tuning_review.md`; `training_results/history/history_index.json`
 Writes: archive pair plus history index
 Validation: selected_skill_contract; source_json; tuning_review_md_digest; archive_id; history_index; diff_scope; commit_push
-Digest block rule: Embed the supplied digest between `BEGIN_TUNING_REVIEW_MD_DIGEST` and `END_TUNING_REVIEW_MD_DIGEST`; both markers must appear on their own unindented lines. Do not wrap the entire digest in a Markdown fenced code block. The digest may contain its own fenced PowerShell command block.
+Digest block rule: Include the supplied digest between the required `BEGIN_TUNING_REVIEW_MD_DIGEST` and `END_TUNING_REVIEW_MD_DIGEST` markers owned by Final Prompt Format.
 Digest rule: Codex preserves the supplied GPT digest without re-summarizing, reanalyzing metrics, changing `recommendation_type`, or changing tuning meaning.
 
 ### 2.3 multi_run_analysis_archive_task
