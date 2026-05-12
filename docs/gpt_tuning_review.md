@@ -65,6 +65,9 @@ If either required status is missing or not in the required value, explain the b
 Decision rules:
 - Use `next_run_plan` when admissible train-side evidence supports one concrete bounded performance-improvement run.
 - If current run improves train-side performance, identify the next parameter, config, or reward dimension likely to improve performance further instead of defaulting to robustness confirmation.
+- Before selecting `recommendation_type`, rank plausible tuning surfaces by evidence-to-mechanism relevance, not launcher convenience.
+- When current diagnostics warrant it, compare exploration schedule, replay/start dynamics, reward-function knobs, and learning/replay dynamics that may require launcher/config extension.
+- If reward-function knobs best explain remaining diagnostics or reward-breakdown bottlenecks, recommend a bounded implementation/config task even when they are not launcher-ready.
 - Broader tuning directions may include exploration schedule, learning/training dynamics, replay/update dynamics, and reward-function-related parameters when configurable or proposed as bounded implementation work.
 - Use `hold_current_baseline` only when no grounded next direction is available or the user asks to pause.
 - Use `requires_more_evidence` when current evidence cannot support formal judgement.
