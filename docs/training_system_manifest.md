@@ -54,6 +54,9 @@ Launcher-ready parameters exposed by `scripts/launch_formal_train_stable.ps1`:
 | `EpsilonEnd` | Linear epsilon terminal value. |
 | `MinReplaySize` | Replay warm threshold before learner updates. |
 | `FinalGreedyEpisodes` | Held-out final-probe episode count. |
+| `RewardRevisitPenalty`, `RewardTurnPenaltyScale`, `RewardTimeoutPenalty`, `RewardStepPenalty`, `RewardTerminalBonus`, `RewardInfoScale`, `RewardObstacleWeight` | Reward coefficients exposed for formal train-performance tuning. |
+| `BatchSize`, `ReplayCapacity`, `NStep`, `Gamma`, `LearningRate`, `TargetUpdateInterval`, `GradClipNorm` | Replay and learner knobs exposed for formal train-performance tuning. |
+| `CollectStepsPerIter`, `LearnerUpdatesPerIter`, `TrainEveryEnvSteps` | Rollout/update cadence knobs exposed for formal train-performance tuning. |
 | `FixedTrainEpisodeSeedBase` | Fixed train episode seed base. |
 | `FixedFinalProbeSeedBase` | Fixed final-probe seed base. |
 
@@ -78,8 +81,8 @@ Full logs, full CSVs, checkpoints, plots, trajectories, binary artifacts, and ra
 | Category | Examples / fields | Access level | GPT action |
 | --- | --- | --- | --- |
 | A. Launcher-ready knobs | Stable-launch training parameters. | launcher-ready | May generate launcher-only `next_run_plan` if evidence supports. |
-| B. CLI / `TrainConfig` knobs not exposed by stable launcher | Training dynamics, replay, learner, post-hoc selection, and map/state sizing fields. | CLI/config-supported; stable launcher extension may be needed. | Do not invent launcher flags. Propose bounded launcher/config implementation task before training when needed. |
-| C. Reward-function knobs | Reward coefficients and timeout shaping fields. | `TrainConfig` / CLI-supported if `parse_args()` exposes them; stable launcher may require extension. | May identify a bounded tuning direction when evidence ties reward shaping to train-side metrics, diagnostics, or behavior patterns. If not launcher-ready, request bounded implementation work. |
+| B. CLI / `TrainConfig` knobs not exposed by stable launcher | Remaining training dynamics, replay, learner, post-hoc selection, and map/state sizing fields. | CLI/config-supported; stable launcher extension may be needed. | Do not invent launcher flags. Propose bounded launcher/config implementation task before training when needed. |
+| C. Reward-function knobs not exposed by stable launcher | Remaining reward coefficients and timeout-shaping fields. | `TrainConfig` / CLI-supported if `parse_args()` exposes them; stable launcher extension may be needed. | May identify a bounded tuning direction when evidence ties reward shaping to train-side metrics, diagnostics, or behavior patterns. If not launcher-ready, request bounded implementation work. |
 | D. Config-only fields without direct CLI flag | Fields present in `TrainConfig` without a direct `parse_args()` flag. | config/code-level | Cannot be launched through the current stable launcher unless exposed. Propose bounded implementation/config task before training. |
 | E. Runtime-only / profiling toggles | Throughput, backend, profiling, plot, and trajectory export toggles. | runtime/profiling | Do not treat runtime speedup as system-performance superiority. Do not use for active tuning unless the user explicitly asks for runtime/profiling optimization. |
 | F. Method-level redesign boundary | Architecture, representation, algorithm, reward-mechanism, action-space, or environment-semantics changes. | method-level | Use `method_redesign_discussion_only` or bounded user-approved implementation discussion. Do not generate unattended training command. |
@@ -93,18 +96,25 @@ Category A field list:
 - `Seed`
 - `FixedTrainEpisodeSeedBase`
 - `FixedFinalProbeSeedBase`
+- `RewardRevisitPenalty`
+- `RewardTurnPenaltyScale`
+- `RewardTimeoutPenalty`
+- `RewardStepPenalty`
+- `RewardTerminalBonus`
+- `RewardInfoScale`
+- `RewardObstacleWeight`
+- `BatchSize`
+- `ReplayCapacity`
+- `NStep`
+- `Gamma`
+- `LearningRate`
+- `TargetUpdateInterval`
+- `GradClipNorm`
+- `CollectStepsPerIter`
+- `LearnerUpdatesPerIter`
+- `TrainEveryEnvSteps`
 
 Category B field list:
-- `collect_steps_per_iter`
-- `learner_updates_per_iter`
-- `train_every_env_steps`
-- `replay_capacity`
-- `batch_size`
-- `n_step`
-- `gamma`
-- `learning_rate`
-- `grad_clip_norm`
-- `target_update_interval`
 - `periodic_checkpoint_interval_env_steps`
 - `posthoc_candidate_start_env_steps`
 - `posthoc_candidate_end_env_steps`
@@ -118,17 +128,10 @@ Category B field list:
 - `max_entries_per_block`
 
 Category C field list:
-- `reward_info_scale`
-- `reward_obstacle_weight`
-- `reward_step_penalty`
-- `reward_terminal_bonus`
-- `reward_revisit_penalty`
-- `reward_turn_penalty_scale`
 - `reward_turn_weight_45`
 - `reward_turn_weight_90`
 - `reward_turn_weight_135`
 - `reward_turn_weight_180`
-- `reward_timeout_penalty`
 
 Category D field list:
 - `trajectory_history_steps`
