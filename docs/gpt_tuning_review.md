@@ -76,6 +76,7 @@ Decision rules:
 - Use `method_redesign_discussion_only` only for method-level changes outside tuning/config scope.
 - If a change can be launched through existing parameters, provide `next_run_plan` with a launcher-only command.
 - If a change requires code/config editing outside existing launcher parameters, state the bounded implementation task instead of inventing a launcher command.
+- For non-launcher-ready tuning knobs, include the target knob, current value when available, proposed first test value or bounded value set, direction of change, evidence rationale, validation focus, and required launcher/config exposure before training; if evidence supports the direction but not a concrete value, say so and recommend the minimal exposure needed to choose the next value.
 
 ## 6. Output Format
 
@@ -94,7 +95,7 @@ Output requirements:
 - State whether the current run becomes the current train-side reference baseline when applicable.
 - For `next_run_plan`, include target uncertainty, hypothesis, expected validation focus, and a launcher-only PowerShell command when supported by existing launcher/config parameters.
 - Command block starts with `.\scripts\launch_formal_train_stable.ps1`; do not prepend `cd <source_training_repo>;`, do not use local absolute paths, and do not include working-directory placeholders.
-- If the next change requires code/config editing rather than a launcher parameter, state the bounded implementation task instead of inventing a launcher command.
+- If the next change requires code/config editing rather than a launcher parameter, state the bounded implementation task plus the candidate tuning specification, or state that evidence supports the direction but not a concrete value.
 - Do not output `tuning_review_payload` JSON, archive digest, or Codex archive prompt.
 
 ## 7. Direct Boundaries
