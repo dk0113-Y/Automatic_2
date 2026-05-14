@@ -1,0 +1,690 @@
+{
+  "schema_version": "1.0",
+  "report_type": "training_run_factual_analysis",
+  "generated_by": "codex",
+  "source_run_dir": "source_training_repo/outputs/stable_epsdecay300k_epsend004_budget500k_minreplay8000_seed0_20260512_192305",
+  "run_name": "stable_epsdecay300k_epsend004_budget500k_minreplay8000_seed0_20260512_192305",
+  "files_inspected": [
+    {
+      "path": "logs/reproducibility_contract.json",
+      "exists": true,
+      "parse_status": "parsed"
+    },
+    {
+      "path": "logs/config_snapshot.json",
+      "exists": true,
+      "parse_status": "parsed"
+    },
+    {
+      "path": "logs/metric_snapshot.json",
+      "exists": true,
+      "parse_status": "parsed"
+    },
+    {
+      "path": "logs/train_steps.csv",
+      "exists": true,
+      "parse_status": "parsed",
+      "row_count": 992,
+      "missing_expected_columns": []
+    },
+    {
+      "path": "logs/train_episodes.csv",
+      "exists": true,
+      "parse_status": "parsed",
+      "row_count": 980,
+      "missing_expected_columns": []
+    },
+    {
+      "path": "logs/posthoc_candidate_scores.csv",
+      "exists": true,
+      "parse_status": "parsed",
+      "row_count": 16,
+      "missing_expected_columns": []
+    },
+    {
+      "path": "logs/posthoc_selection_summary.json",
+      "exists": true,
+      "parse_status": "parsed"
+    },
+    {
+      "path": "logs/final_probe.csv",
+      "exists": true,
+      "parse_status": "parsed",
+      "row_count": 3,
+      "missing_expected_columns": []
+    },
+    {
+      "path": "logs/final_probe_summary.json",
+      "exists": true,
+      "parse_status": "parsed"
+    },
+    {
+      "path": "logs/best_vs_last_gap_summary.json",
+      "exists": true,
+      "parse_status": "parsed"
+    },
+    {
+      "path": "logs/benchmark_summary.json",
+      "exists": true,
+      "parse_status": "parsed"
+    },
+    {
+      "path": "logs/artifact_index.json",
+      "exists": true,
+      "parse_status": "parsed"
+    },
+    {
+      "path": "logs/formal_selection_manifest.json",
+      "exists": true,
+      "parse_status": "parsed"
+    }
+  ],
+  "commands_run": [
+    {
+      "command": "git status --short --branch",
+      "cwd": "target_repository",
+      "purpose": "record target repository pre-analysis status",
+      "result": "completed"
+    },
+    {
+      "command": "Get-Content docs/gpt_to_codex_prompting.md",
+      "cwd": "target_repository",
+      "purpose": "required workflow reading",
+      "result": "completed"
+    },
+    {
+      "command": "Get-Content .agents/skills/training-run-factual-analysis/SKILL.md",
+      "cwd": "target_repository",
+      "purpose": "selected skill contract reading",
+      "result": "completed"
+    },
+    {
+      "command": "Test-Path and list source run directory",
+      "cwd": "target_repository",
+      "purpose": "confirm source_run_dir accessibility without writing source artifacts",
+      "result": "completed"
+    },
+    {
+      "command": "git status --short --branch",
+      "cwd": "source_training_repo",
+      "purpose": "record source repository pre-analysis status",
+      "result": "completed"
+    },
+    {
+      "command": "read structured JSON summaries and compact CSV metadata from source run logs",
+      "cwd": "target_repository",
+      "purpose": "neutral factual extraction without copying source artifacts",
+      "result": "completed"
+    },
+    {
+      "command": "python report-generation script",
+      "cwd": "target_repository",
+      "purpose": "write authorized current factual JSON only",
+      "result": "completed"
+    }
+  ],
+  "reproducible_launch_status": "reproducible_launch_confirmed",
+  "reproducible_launch": {
+    "contract_verdict": "strict_contract_ready",
+    "strict_reproducibility": true,
+    "deterministic_algorithms_enabled": true,
+    "deterministic_algorithms_warn_only": false,
+    "requested_device": "cuda",
+    "actual_device": "cuda:0",
+    "source_git_branch": "main",
+    "source_git_commit_sha": "736a925ef3402d89056c7e9edca6c895674465e0",
+    "determinism_environment_variables": {
+      "PYTHONHASHSEED": {
+        "value": 0,
+        "present": true
+      },
+      "CUBLAS_WORKSPACE_CONFIG": {
+        "value": ":4096:8",
+        "present": true
+      }
+    },
+    "backend_requested_flags": {
+      "enable_tf32": false,
+      "enable_cudnn_benchmark": false,
+      "enable_amp": false,
+      "enable_inference_amp": false,
+      "enable_torch_compile": false,
+      "enable_channels_last": false
+    },
+    "backend_runtime_readback": {
+      "torch.backends.cudnn.deterministic": true,
+      "torch.backends.cudnn.benchmark": false,
+      "torch.backends.cuda.matmul.allow_tf32": false,
+      "torch.backends.cudnn.allow_tf32": false,
+      "torch.are_deterministic_algorithms_enabled()": true
+    },
+    "fixed_seed_policy": {
+      "train_episode_seed_policy": "When use_fixed_train_episode_seeds is true, train episode maps use fixed_train_episode_seed_base + episode_index - 1.",
+      "final_probe_seed_policy": "When use_fixed_eval_seeds is true, final_probe uses fixed_final_probe_seed_base + episode_index."
+    },
+    "status_basis": "strict_contract_ready with strict deterministic settings and fixed train/final-probe seed policies recorded"
+  },
+  "train_side_monitoring": {
+    "role": "primary_decision_evidence_for_active_train_side_loop",
+    "row_counts": {
+      "train_steps": 992,
+      "train_episodes": 980
+    },
+    "endpoint": {
+      "source": "logs/train_steps.csv",
+      "env_steps": 500000,
+      "learner_steps": 61500,
+      "metrics": {
+        "reward": 127.75473,
+        "coverage": 0.902678,
+        "success_rate": 0.56,
+        "episode_length": 447.700012,
+        "repeat_visit_ratio": 0.287353
+      },
+      "optimizer_monitoring": {
+        "loss": 2.382077,
+        "q_mean": 17.926388,
+        "target_q_mean": 17.82703,
+        "td_abs_mean": 2.728875,
+        "grad_norm": 28.216141,
+        "replay_size": 100000,
+        "epsilon": 0.04
+      },
+      "reward_breakdown": {
+        "info_reward_sum": 140.787903,
+        "step_penalty_sum": -8.954,
+        "recent_revisit_penalty_sum": -6.592,
+        "turn_penalty_sum": -5.167167,
+        "timeout_penalty_sum": -3.52,
+        "terminal_bonus_sum": 11.2
+      },
+      "key_diagnostics": {
+        "recent_revisit_trigger_count": 65.919998,
+        "stall_trigger_count": 219.669998,
+        "zero_info_step_count": 277.089996,
+        "turn_ge_90_count": 182.289993,
+        "turn_135_count": 47.82,
+        "turn_180_count": 39.959999,
+        "turn_penalty_weight_sum": 103.34333,
+        "timeout_flag": 0.44
+      },
+      "semantic_monitoring": {
+        "accessible_block_count": 5.030505,
+        "total_accessible_unknown_area": 452.829346,
+        "total_frontier_cluster_count": 10.594117,
+        "mean_block_area": 118.172997,
+        "local_frontier_coverage": 0.02321,
+        "local_frontier_block_area_mean": 0.389187,
+        "value_truncated_block_count": 0.0,
+        "value_block_cap_hit_flag": 0.0,
+        "value_truncated_entry_count": 0.080209,
+        "value_entry_cap_hit_flag": 0.046908
+      }
+    },
+    "initial_to_endpoint_delta_from_train_steps": {
+      "reward": 117.779544,
+      "coverage": 0.449878,
+      "success_rate": 0.56,
+      "episode_length": -152.299988,
+      "repeat_visit_ratio": -0.339459
+    },
+    "late_stage_window": {
+      "definition": "last_25_percent_of_train_step_logging_rows_min_4_rows",
+      "row_count": 248,
+      "fraction_of_logging_points": 0.25,
+      "start_env_steps": 376512,
+      "end_env_steps": 500000
+    },
+    "late_phase_slope_per_1000_env_steps": {
+      "reward": 0.02563417,
+      "coverage": 7.85e-06,
+      "success_rate": 0.00032826,
+      "episode_length": -0.08362704,
+      "repeat_visit_ratio": -3.994e-05,
+      "stall_trigger_count": 0.03765309,
+      "zero_info_step_count": -0.08736038,
+      "turn_180_count": -0.00855329,
+      "recent_revisit_penalty_sum": 0.00315888,
+      "terminal_bonus_sum": 0.00656514
+    },
+    "last_window_slope_per_1000_env_steps": {
+      "reward": -0.04183975,
+      "coverage": -0.00010259,
+      "success_rate": -0.00083703,
+      "episode_length": 0.10574446,
+      "repeat_visit_ratio": 0.00042525,
+      "stall_trigger_count": 0.29524313,
+      "zero_info_step_count": 0.1500446,
+      "turn_180_count": 0.00475129,
+      "recent_revisit_penalty_sum": -0.00414172,
+      "terminal_bonus_sum": -0.01674062
+    },
+    "train_final_consistency": {
+      "verdict": "supports_final_probe",
+      "details": {
+        "reward": {
+          "recent_train": 127.75473022460938,
+          "final_probe": 129.3256378173828,
+          "delta": 1.5709075927734375,
+          "verdict": "aligned"
+        },
+        "coverage": {
+          "recent_train": 0.9026780128479004,
+          "final_probe": 0.9083320498466492,
+          "delta": 0.005654036998748779,
+          "verdict": "aligned"
+        },
+        "success_rate": {
+          "recent_train": 0.5600000023841858,
+          "final_probe": 0.6700000166893005,
+          "delta": 0.11000001430511475,
+          "verdict": "final_probe_stronger"
+        },
+        "episode_length": {
+          "recent_train": 447.70001220703125,
+          "final_probe": 404.0,
+          "delta": -43.70001220703125,
+          "verdict": "aligned"
+        },
+        "repeat_visit_ratio": {
+          "recent_train": 0.28735285997390747,
+          "final_probe": 0.25419384241104126,
+          "delta": -0.03315901756286621,
+          "verdict": "aligned"
+        }
+      },
+      "counts": {
+        "aligned": 4,
+        "final_probe_stronger": 1,
+        "final_probe_weaker": 0,
+        "insufficient_evidence": 0
+      },
+      "notes": [
+        "recent_train and final_probe are directionally consistent on the tracked training-quality metrics.",
+        "final_probe outperformed recent_train on: success_rate."
+      ]
+    },
+    "recent_train_support_summary": {
+      "verdict": "supports_final_probe",
+      "details": {
+        "reward": {
+          "recent_train": 127.75473022460938,
+          "final_probe": 129.3256378173828,
+          "delta": 1.5709075927734375,
+          "verdict": "aligned"
+        },
+        "coverage": {
+          "recent_train": 0.9026780128479004,
+          "final_probe": 0.9083320498466492,
+          "delta": 0.005654036998748779,
+          "verdict": "aligned"
+        },
+        "success_rate": {
+          "recent_train": 0.5600000023841858,
+          "final_probe": 0.6700000166893005,
+          "delta": 0.11000001430511475,
+          "verdict": "final_probe_stronger"
+        },
+        "episode_length": {
+          "recent_train": 447.70001220703125,
+          "final_probe": 404.0,
+          "delta": -43.70001220703125,
+          "verdict": "aligned"
+        },
+        "repeat_visit_ratio": {
+          "recent_train": 0.28735285997390747,
+          "final_probe": 0.25419384241104126,
+          "delta": -0.03315901756286621,
+          "verdict": "aligned"
+        }
+      },
+      "counts": {
+        "aligned": 4,
+        "final_probe_stronger": 1,
+        "final_probe_weaker": 0,
+        "insufficient_evidence": 0
+      },
+      "notes": [
+        "recent_train and final_probe are directionally consistent on the tracked training-quality metrics.",
+        "final_probe outperformed recent_train on: success_rate."
+      ]
+    }
+  },
+  "posthoc_selection": {
+    "role": "checkpoint_selection_context_only",
+    "protocol_name": "formal_posthoc_trainselect_v1",
+    "candidate_start_step": 200000,
+    "candidate_end_step": 500000,
+    "checkpoint_interval": 20000,
+    "selection_window_env_steps": 40000,
+    "selection_weights": {
+      "reward": 0.35,
+      "coverage": 0.25,
+      "success_rate": 0.2,
+      "episode_length": -0.1,
+      "repeat_visit_ratio": -0.1
+    },
+    "candidate_count": 16,
+    "valid_candidate_count": 16,
+    "selected_candidate_count": 3,
+    "selected_candidate_steps": [
+      460000,
+      480000,
+      440000
+    ],
+    "selected_candidates": [
+      {
+        "selection_rank": 1,
+        "candidate_step": 460000,
+        "window_start_env_steps": 420000,
+        "window_end_env_steps": 460000,
+        "window_row_count": 81,
+        "reward": 137.867271,
+        "coverage": 0.930307,
+        "success_rate": 0.714691,
+        "episode_length": 433.662471,
+        "repeat_visit_ratio": 0.221396,
+        "selection_score": 1.007696,
+        "selected": true
+      },
+      {
+        "selection_rank": 2,
+        "candidate_step": 480000,
+        "window_start_env_steps": 440000,
+        "window_end_env_steps": 480000,
+        "window_row_count": 81,
+        "reward": 137.65897,
+        "coverage": 0.929823,
+        "success_rate": 0.706049,
+        "episode_length": 433.103953,
+        "repeat_visit_ratio": 0.226984,
+        "selection_score": 0.982818,
+        "selected": true
+      },
+      {
+        "selection_rank": 3,
+        "candidate_step": 440000,
+        "window_start_env_steps": 400000,
+        "window_end_env_steps": 440000,
+        "window_row_count": 81,
+        "reward": 135.403846,
+        "coverage": 0.923047,
+        "success_rate": 0.680741,
+        "episode_length": 434.55889,
+        "repeat_visit_ratio": 0.230183,
+        "selection_score": 0.864394,
+        "selected": true
+      }
+    ],
+    "formal_winner_step_after_final_probe": 440000,
+    "best_vs_last_gap_summary": {
+      "role": "diagnostic_best_vs_last",
+      "comparison_mode": "heldout_winner_vs_train_endpoint_recent_window",
+      "last_env_steps": 500000,
+      "details": {
+        "reward": {
+          "best": 129.325638,
+          "last": 127.75473,
+          "best_minus_last": 1.570908
+        },
+        "coverage": {
+          "best": 0.908332,
+          "last": 0.902678,
+          "best_minus_last": 0.005654
+        },
+        "success_rate": {
+          "best": 0.67,
+          "last": 0.56,
+          "best_minus_last": 0.11
+        },
+        "episode_length": {
+          "best": 404.0,
+          "last": 447.700012,
+          "best_minus_last": -43.700012
+        },
+        "repeat_visit_ratio": {
+          "best": 0.254194,
+          "last": 0.287353,
+          "best_minus_last": -0.033159
+        }
+      }
+    },
+    "last_checkpoint_final_probe_row_present": false
+  },
+  "supplemental_final_probe": {
+    "role": "supplemental_held_out_diagnostic_only",
+    "protocol_name": "formal_posthoc_trainselect_v1",
+    "ranking_order": [
+      "success_rate",
+      "coverage",
+      "reward"
+    ],
+    "seed_base": 20261323,
+    "episode_count": 100,
+    "selected_candidate_steps": [
+      460000,
+      480000,
+      440000
+    ],
+    "winner_step": 440000,
+    "winner_metrics": {
+      "eval_mean_reward": 129.325638,
+      "eval_mean_coverage": 0.908332,
+      "eval_success_rate": 0.67,
+      "eval_mean_episode_length": 404.0,
+      "eval_mean_repeat_visit_ratio": 0.254194,
+      "eval_mean_timeout_flag": 0.33,
+      "eval_mean_stall_trigger_count": 185.850006,
+      "eval_mean_zero_info_step_count": 239.360001,
+      "eval_mean_recent_revisit_trigger_count": 79.970001,
+      "eval_mean_turn_ge_90_count": 165.089996,
+      "eval_mean_turn_135_count": 29.139999,
+      "eval_mean_turn_180_count": 66.279999,
+      "eval_mean_turn_penalty_weight_sum": 108.93
+    },
+    "ranking_summary": [
+      {
+        "source": "posthoc_final_winner",
+        "env_steps": 440000,
+        "selection_rank": 3,
+        "final_probe_rank": 1,
+        "formal_winner": true,
+        "eval_episodes": 100,
+        "eval_mean_reward": 129.325638,
+        "eval_mean_coverage": 0.908332,
+        "eval_success_rate": 0.67,
+        "eval_mean_episode_length": 404.0,
+        "eval_mean_repeat_visit_ratio": 0.254194,
+        "eval_mean_timeout_flag": 0.33,
+        "eval_mean_stall_trigger_count": 185.850006,
+        "eval_mean_zero_info_step_count": 239.360001,
+        "eval_mean_recent_revisit_trigger_count": 79.970001,
+        "eval_mean_turn_ge_90_count": 165.089996,
+        "eval_mean_turn_135_count": 29.139999,
+        "eval_mean_turn_180_count": 66.279999,
+        "eval_mean_turn_penalty_weight_sum": 108.93
+      },
+      {
+        "source": "posthoc_candidate_final_probe",
+        "env_steps": 460000,
+        "selection_rank": 1,
+        "final_probe_rank": 2,
+        "formal_winner": false,
+        "eval_episodes": 100,
+        "eval_mean_reward": 120.524315,
+        "eval_mean_coverage": 0.881202,
+        "eval_success_rate": 0.58,
+        "eval_mean_episode_length": 416.179993,
+        "eval_mean_repeat_visit_ratio": 0.29407,
+        "eval_mean_timeout_flag": 0.42,
+        "eval_mean_stall_trigger_count": 208.880005,
+        "eval_mean_zero_info_step_count": 257.459991,
+        "eval_mean_recent_revisit_trigger_count": 89.290001,
+        "eval_mean_turn_ge_90_count": 184.979996,
+        "eval_mean_turn_135_count": 40.240002,
+        "eval_mean_turn_180_count": 69.239998,
+        "eval_mean_turn_penalty_weight_sum": 121.23333
+      },
+      {
+        "source": "posthoc_candidate_final_probe",
+        "env_steps": 480000,
+        "selection_rank": 2,
+        "final_probe_rank": 3,
+        "formal_winner": false,
+        "eval_episodes": 100,
+        "eval_mean_reward": 120.528885,
+        "eval_mean_coverage": 0.881085,
+        "eval_success_rate": 0.55,
+        "eval_mean_episode_length": 432.640015,
+        "eval_mean_repeat_visit_ratio": 0.294667,
+        "eval_mean_timeout_flag": 0.45,
+        "eval_mean_stall_trigger_count": 230.199997,
+        "eval_mean_zero_info_step_count": 276.829987,
+        "eval_mean_recent_revisit_trigger_count": 82.349998,
+        "eval_mean_turn_ge_90_count": 175.419998,
+        "eval_mean_turn_135_count": 31.629999,
+        "eval_mean_turn_180_count": 61.110001,
+        "eval_mean_turn_penalty_weight_sum": 109.756668
+      }
+    ],
+    "limitation_tags": [
+      "supplemental_only",
+      "held_out_sample_limit_preserved",
+      "finite_sample_limit_preserved"
+    ]
+  },
+  "configuration_and_runtime": {
+    "budget": {
+      "budget_mode": "env_steps",
+      "total_env_steps": 500000,
+      "total_train_episodes": 600
+    },
+    "observed_run_contract": {
+      "final_env_steps": 440000,
+      "final_train_episode_idx": 974,
+      "final_training_env_steps": 500000,
+      "final_probe_winner_env_steps": 440000,
+      "last_checkpoint_env_steps": 500000,
+      "best_checkpoint_env_steps": 440000,
+      "winner_step": 440000,
+      "final_probe_episode_count": 100
+    },
+    "exploration_replay_learner": {
+      "epsilon_start": 1.0,
+      "epsilon_decay_steps": 300000,
+      "epsilon_end": 0.04,
+      "min_replay_size": 8000,
+      "batch_size": 128,
+      "replay_capacity": 100000,
+      "collect_steps_per_iter": 16,
+      "learner_updates_per_iter": 2,
+      "train_every_env_steps": 16,
+      "gamma": 0.99,
+      "n_step": 3,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0,
+      "grad_clip_norm": 10.0,
+      "target_update_interval": 1000
+    },
+    "reward_config": {
+      "reward_info_scale": 3.0,
+      "reward_obstacle_weight": 0.25,
+      "reward_step_penalty": 0.02,
+      "reward_terminal_bonus": 20.0,
+      "reward_revisit_penalty": 0.1,
+      "reward_turn_penalty_scale": 0.05,
+      "reward_turn_weight_45": 0.0,
+      "reward_turn_weight_90": 0.333333,
+      "reward_turn_weight_135": 0.666667,
+      "reward_turn_weight_180": 1.0,
+      "reward_timeout_penalty": 8.0
+    },
+    "map_eval_config": {
+      "rows": 40,
+      "cols": 60,
+      "obstacle_ratio": 0.2,
+      "scan_radius": 10,
+      "final_greedy_episodes": 100,
+      "use_fixed_train_episode_seeds": true,
+      "fixed_train_episode_seed_base": 20259323,
+      "use_fixed_eval_seeds": true,
+      "fixed_final_probe_seed_base": 20261323
+    },
+    "posthoc_config": {
+      "periodic_checkpoint_interval_env_steps": 20000,
+      "configured_posthoc_candidate_start_env_steps": 200000,
+      "configured_posthoc_candidate_end_env_steps": 0,
+      "resolved_candidate_start_step": 200000,
+      "resolved_candidate_end_step": 500000,
+      "posthoc_selection_window_env_steps": 40000,
+      "posthoc_final_probe_topk": 3
+    },
+    "runtime": {
+      "run_mode": "cli",
+      "device": "cuda",
+      "total_runtime_sec": 14220.965711,
+      "total_runtime_hms": "03:57:01",
+      "runtime_performance_switches": {
+        "enable_amp": false,
+        "enable_inference_amp": false,
+        "enable_torch_compile": false,
+        "enable_cudnn_benchmark": false,
+        "enable_tf32": false,
+        "strict_reproducibility": true,
+        "deterministic_warn_only": false,
+        "enable_channels_last": false,
+        "generate_plots_on_finish": false,
+        "save_train_representative_trajectories": false,
+        "save_train_special_trajectories": false,
+        "save_final_probe_trajectories": false
+      }
+    },
+    "source_git": {
+      "branch": "main",
+      "commit_sha": "736a925ef3402d89056c7e9edca6c895674465e0"
+    },
+    "source_read_only_status": {
+      "source_git_status_before_after": "tracked files clean; pre_existing_untracked_directory_present",
+      "source_run_files_written_on_or_after_2026_05_13": 0
+    },
+    "forbidden_artifact_status": "metadata only; no checkpoints, model weights, full logs, full CSVs, raw outputs, plots, trajectories, or binary artifacts copied",
+    "artifact_inventory_counts": {
+      "csv": {
+        "listed": 7,
+        "exists_true": 4,
+        "required_missing": []
+      },
+      "checkpoints": {
+        "listed": 18,
+        "exists_true": 18,
+        "required_missing": []
+      },
+      "structured_summaries": {
+        "listed": 9,
+        "exists_true": 9,
+        "required_missing": []
+      },
+      "stdout_summaries": {
+        "listed": 1,
+        "exists_true": 1,
+        "required_missing": []
+      },
+      "plots": {
+        "listed": 0,
+        "exists_true": 0,
+        "required_missing": []
+      },
+      "trajectories": {
+        "listed": 0,
+        "exists_true": 0,
+        "required_missing": []
+      }
+    }
+  },
+  "missing_artifacts": [],
+  "parse_failures": [],
+  "unverified_items": [],
+  "forbidden_artifact_findings": [],
+  "factual_summary_status": "factual_summary_ready",
+  "tuning_recommendation_provided": false
+}
