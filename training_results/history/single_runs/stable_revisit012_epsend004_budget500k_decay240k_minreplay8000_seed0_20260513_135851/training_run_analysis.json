@@ -1,0 +1,531 @@
+{
+  "schema_version": "1.0",
+  "report_type": "training_run_factual_analysis",
+  "generated_by": "codex",
+  "source_run_dir": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851",
+  "run_name": "stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851",
+  "files_inspected": [
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/reproducibility_contract.json",
+      "status": "inspected",
+      "bytes": 8748
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/config_snapshot.json",
+      "status": "inspected",
+      "bytes": 20439
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/metric_snapshot.json",
+      "status": "inspected",
+      "bytes": 221596
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/artifact_index.json",
+      "status": "inspected",
+      "bytes": 5923
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/benchmark_summary.json",
+      "status": "inspected",
+      "bytes": 2165
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/train_steps.csv",
+      "status": "inspected",
+      "bytes": 921546
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/train_episodes.csv",
+      "status": "inspected",
+      "bytes": 693174
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/posthoc_candidate_scores.csv",
+      "status": "inspected",
+      "bytes": 4789
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/posthoc_selection_summary.json",
+      "status": "inspected",
+      "bytes": 65502
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/formal_selection_manifest.json",
+      "status": "inspected",
+      "bytes": 845
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/final_probe.csv",
+      "status": "inspected",
+      "bytes": 4742
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/final_probe_summary.json",
+      "status": "inspected",
+      "bytes": 14455
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/best_vs_last_gap_summary.json",
+      "status": "inspected",
+      "bytes": 1256
+    },
+    {
+      "path": "source_repo:outputs/stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851/logs/training_summary.txt",
+      "status": "inspected",
+      "bytes": 72046
+    }
+  ],
+  "commands_run": [
+    "read required skill and GPT-to-Codex prompting document",
+    "inspected compact JSON artifacts under source_repo:outputs/<run>/logs",
+    "parsed train_steps.csv and train_episodes.csv for row counts, endpoint metrics, and compact deltas",
+    "parsed posthoc and final_probe CSV summaries because eval-side artifacts were enabled and present",
+    "inspected logs/training_summary.txt key lines for stdout-summary confirmation without copying full summary",
+    "wrote compact factual JSON only to training_results/current/current_training_run_analysis.json"
+  ],
+  "reproducible_launch_status": "reproducible_launch_confirmed",
+  "reproducible_launch": {
+    "contract_verdict": "strict_contract_ready",
+    "strict_reproducibility": true,
+    "deterministic_algorithms_enabled": true,
+    "deterministic_algorithms_warn_only": false,
+    "PYTHONHASHSEED": {
+      "value": 0,
+      "present": true
+    },
+    "CUBLAS_WORKSPACE_CONFIG": {
+      "value": ":4096:8",
+      "present": true
+    },
+    "backend_requested_flags": {
+      "enable_tf32": false,
+      "enable_cudnn_benchmark": false,
+      "enable_amp": false,
+      "enable_inference_amp": false,
+      "enable_torch_compile": false,
+      "enable_channels_last": false
+    },
+    "backend_runtime_readback": {
+      "requested_device": "cuda",
+      "strict_reproducibility": true,
+      "deterministic_algorithms_warn_only": false,
+      "cublas_workspace_config_action": {
+        "name": "CUBLAS_WORKSPACE_CONFIG",
+        "value": ":4096:8",
+        "preexisting": true,
+        "set_by_script": false,
+        "status": "preexisting"
+      },
+      "torch.backends.cudnn.deterministic": true,
+      "torch.backends.cudnn.benchmark": false,
+      "torch.backends.cuda.matmul.allow_tf32": false,
+      "torch.backends.cudnn.allow_tf32": false,
+      "torch.are_deterministic_algorithms_enabled()": true
+    },
+    "fixed_seed_fields": {
+      "use_fixed_train_episode_seeds": true,
+      "fixed_train_episode_seed_base": 20259323,
+      "use_fixed_eval_seeds": true,
+      "fixed_final_probe_seed_base": 20261323,
+      "use_fixed_model_select_seeds": true,
+      "fixed_model_select_seed_base": 20262323
+    },
+    "launch_command_sanitized": ".\\train_q_agent.py --device cuda --run-name stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0 --seed 0 --total-env-steps 500000 --epsilon-decay-steps 240000 --epsilon-end 0.04 --min-replay-size 8000 --final-greedy-episodes 100 --reward-revisit-penalty 0.12 --reward-turn-penalty-scale 0.05 --reward-timeout-penalty 8 --reward-step-penalty 0.02 --reward-terminal-bonus 20 --reward-info-scale 3 --reward-obstacle-weight 0.25 --batch-size 128 --replay-capacity 100000 --n-step 3 --gamma 0.99 --learning-rate 0.0001 --target-update-interval 1000 --grad-clip-norm 10 --collect-steps-per-iter 16 --learner-updates-per-iter 2 --train-every-env-steps 16 --fixed-train-episode-seed-base 20259323 --fixed-final-probe-seed-base 20261323 --strict-reproducibility --no-deterministic-warn-only --no-enable-tf32 --no-enable-cudnn-benchmark --no-enable-amp --no-enable-inference-amp --no-enable-torch-compile --no-enable-channels-last --use-fixed-train-episode-seeds --use-fixed-eval-seeds",
+    "cwd_sanitized": "source_repo:.",
+    "source_git_branch": "main",
+    "source_git_commit_sha": "fc86f69ffcb8f4446e26bca54c22242dfb4be5bf",
+    "limitations": [
+      "PYTHONHASHSEED can only be fully effective when set before interpreter startup.",
+      "CUBLAS_WORKSPACE_CONFIG should be set before CUDA/CUBLAS use.",
+      "warn_only deterministic mode may warn rather than fail.",
+      "Replay sampling currently uses global torch RNG unless a dedicated generator is implemented.",
+      "Epsilon action selection currently uses global Python random unless a dedicated RNG is implemented."
+    ],
+    "stdout_summary_inspection": {
+      "path": "logs/training_summary.txt",
+      "status": "key_lines_inspected",
+      "confirmed_fields": [
+        "budget_mode",
+        "posthoc_candidate_selection",
+        "final_probe_best",
+        "final_probe_source"
+      ],
+      "full_summary_copied": false
+    }
+  },
+  "train_side_monitoring": {
+    "mode_detection": {
+      "train_side_only_tuning": false,
+      "train_side_only_tuning_field_present": false,
+      "test_side_evaluation_status": "enabled",
+      "skipped_test_side_evaluation": {
+        "reason": null,
+        "missingness_treatment": null
+      },
+      "formal_protocol_revision": "formal_posthoc_trainselect_v1",
+      "formal_final_object_role": "formal_acceptance_object",
+      "posthoc_artifacts_status": "present",
+      "final_probe_artifacts_status": "present",
+      "mode_evidence": "posthoc and final_probe artifacts are enabled/present; config has no true train_side_only_tuning flag"
+    },
+    "row_counts": {
+      "train_steps_rows": 992,
+      "train_episodes_rows": 1024,
+      "posthoc_candidate_rows": 16,
+      "final_probe_rows": 3
+    },
+    "parseability": {
+      "train_steps_csv": "parsed",
+      "train_episodes_csv": "parsed",
+      "metric_snapshot_json": "parsed",
+      "empty_csvs": [],
+      "nan_nonfinite_treatment": "empty_or_nonfinite_values_recorded_as_null_if_encountered"
+    },
+    "endpoint_metrics": {
+      "recent_train_window": {
+        "source": "logs/train_steps.csv:last_row_recent_window",
+        "env_steps": 500000,
+        "completed_train_episodes": 1018,
+        "reward": 140.138168,
+        "coverage": 0.935045,
+        "success_rate": 0.75,
+        "episode_length": 409.220001,
+        "repeat_visit_ratio": 0.216087,
+        "timeout": 0.25
+      },
+      "last_train_episode": {
+        "source": "logs/train_episodes.csv:last_row",
+        "env_steps": 499634,
+        "reward": 154.990341,
+        "coverage": 0.9502,
+        "success": 1,
+        "episode_length": 364,
+        "repeat_visit_ratio": 0.172603,
+        "timeout_flag": 0,
+        "done_reason": "coverage_reached"
+      }
+    },
+    "initial_to_endpoint_delta": {
+      "from_env_steps": 4512,
+      "to_env_steps": 500000,
+      "deltas": {
+        "reward": 134.265839,
+        "coverage": 0.482245,
+        "success_rate": 0.75,
+        "episode_length": -190.779999,
+        "repeat_visit_ratio": -0.410725,
+        "timeout": -0.75
+      }
+    },
+    "late_stage_delta": {
+      "from_env_steps": 400000,
+      "to_env_steps": 500000,
+      "deltas": {
+        "reward": 7.629929,
+        "coverage": 0.020291,
+        "success_rate": 0.12,
+        "episode_length": -20.910004,
+        "repeat_visit_ratio": -0.022353,
+        "timeout": -0.12
+      },
+      "directions": {
+        "reward": "increased",
+        "coverage": "increased",
+        "success_rate": "increased",
+        "episode_length": "decreased",
+        "repeat_visit_ratio": "decreased",
+        "timeout": "decreased"
+      }
+    },
+    "key_behavior_diagnostics": {
+      "source": "logs/train_steps.csv:last_row_recent_window",
+      "zero_info": 228.5,
+      "recent_revisit": 50.220001,
+      "stall": 165.949997,
+      "turn_ge_90": 167.210007,
+      "turn_135": 47.639999,
+      "turn_180": 30.370001,
+      "timeout_flag": 0.25,
+      "turn_penalty_weight_sum": 91.863327
+    },
+    "derived_exploration_efficiency": {
+      "source": "logs/train_steps.csv:last_row_recent_window",
+      "metric_role": "diagnostic_only",
+      "evidence_role": "not_standalone_superiority_evidence",
+      "use": "explain_mechanism_not_superiority_decision",
+      "coverage_gain_per_step": 0.002285,
+      "weighted_info_gain_per_step": 0.118878,
+      "zero_info_rate": 0.558379,
+      "recent_revisit_rate": 0.122721,
+      "stall_rate": 0.405528,
+      "turn_burden_rate": 0.224484,
+      "timeout_rate": 0.25
+    },
+    "reward_breakdown": {
+      "info_reward_sum": 145.942123,
+      "step_penalty_sum": -8.184401,
+      "recent_revisit_penalty_sum": -6.0264,
+      "turn_penalty_sum": -4.593167,
+      "timeout_penalty_sum": -2,
+      "terminal_bonus_sum": 15,
+      "source": "logs/train_steps.csv:last_row_recent_window"
+    },
+    "reward_event_summary": {
+      "delta_empty_sum": 1444.640015,
+      "delta_obstacle_sum": 334.649994,
+      "empty_info_gain_sum": 45.984322,
+      "obstacle_info_gain_sum": 10.652241,
+      "weighted_obstacle_info_gain_sum": 2.66306,
+      "weighted_info_gain_sum": 48.647377,
+      "obstacle_info_contribution_ratio": 0.05472,
+      "recent_revisit_trigger_count": 50.220001,
+      "stall_trigger_count": 165.949997,
+      "zero_info_step_count": 228.5,
+      "turn_ge_90_count": 167.210007,
+      "turn_135_count": 47.639999,
+      "turn_180_count": 30.370001,
+      "timeout_flag": 0.25,
+      "source": "logs/train_steps.csv:last_row_recent_window"
+    },
+    "learner_replay_exploration_context": {
+      "loss": 2.972922,
+      "q_mean": 19.301313,
+      "target_q_mean": 18.874893,
+      "td_abs_mean": 3.342526,
+      "grad_norm": 33.056908,
+      "replay_size": 100000,
+      "epsilon": 0.04,
+      "learner_steps": 61500,
+      "source": "logs/train_steps.csv:last_row",
+      "batch_size": 128,
+      "replay_capacity": 100000,
+      "n_step": 3,
+      "gamma": 0.99,
+      "learning_rate": 0.0001,
+      "target_update_interval": 1000,
+      "collect_steps_per_iter": 16,
+      "learner_updates_per_iter": 2,
+      "train_every_env_steps": 16
+    },
+    "missing_expected_columns": []
+  },
+  "posthoc_selection": {
+    "status": "present",
+    "role": "checkpoint_selection_context",
+    "evidence_role": "conditional_supporting_not_primary",
+    "missingness_treatment": "not_missing",
+    "protocol_name": "formal_posthoc_trainselect_v1",
+    "candidate_start_step": 200000,
+    "candidate_end_step": 500000,
+    "checkpoint_interval": 20000,
+    "selection_window_env_steps": 40000,
+    "selection_weights": {
+      "reward": 0.35,
+      "coverage": 0.25,
+      "success_rate": 0.2,
+      "episode_length": -0.1,
+      "repeat_visit_ratio": -0.1
+    },
+    "candidate_count": 16,
+    "valid_candidate_count": 16,
+    "selected_candidate_count": 3,
+    "selected_candidate_steps": [
+      440000,
+      460000,
+      500000
+    ],
+    "train_side_top_candidates": [
+      {
+        "selection_rank": 1,
+        "selected": true,
+        "candidate_step": 440000,
+        "reward": 137.275622,
+        "coverage": 0.925622,
+        "success_rate": 0.701728,
+        "episode_length": 411.91506,
+        "repeat_visit_ratio": 0.216494,
+        "selection_score": 0.912837
+      },
+      {
+        "selection_rank": 2,
+        "selected": true,
+        "candidate_step": 460000,
+        "reward": 136.854032,
+        "coverage": 0.925384,
+        "success_rate": 0.70963,
+        "episode_length": 416.134197,
+        "repeat_visit_ratio": 0.217702,
+        "selection_score": 0.897908
+      },
+      {
+        "selection_rank": 3,
+        "selected": true,
+        "candidate_step": 500000,
+        "reward": 136.120907,
+        "coverage": 0.922025,
+        "success_rate": 0.697284,
+        "episode_length": 417.312098,
+        "repeat_visit_ratio": 0.223836,
+        "selection_score": 0.79324
+      }
+    ],
+    "parseability": {
+      "candidate_scores_csv": "parsed",
+      "summary_json": "parsed"
+    }
+  },
+  "supplemental_final_probe": {
+    "status": "present",
+    "role": "supplemental_evaluation_evidence",
+    "evidence_role": "conditional_supporting_not_primary",
+    "missingness_treatment": "not_missing",
+    "protocol_name": "formal_posthoc_trainselect_v1",
+    "seed_base": 20261323,
+    "episode_count": 100,
+    "selected_candidate_steps": [
+      440000,
+      460000,
+      500000
+    ],
+    "winner_step": 460000,
+    "winner_source": "posthoc_final_winner",
+    "ranking_order": [
+      "success_rate",
+      "coverage",
+      "reward"
+    ],
+    "compact_ranking": [
+      {
+        "final_probe_rank": 1,
+        "env_steps": 460000,
+        "source": "posthoc_final_winner",
+        "formal_winner": true,
+        "reward": 138.333817,
+        "coverage": 0.925573,
+        "success_rate": 0.76,
+        "episode_length": 392.339996,
+        "repeat_visit_ratio": 0.192683,
+        "timeout": 0.24
+      },
+      {
+        "final_probe_rank": 2,
+        "env_steps": 440000,
+        "source": "posthoc_candidate_final_probe",
+        "formal_winner": false,
+        "reward": 129.857727,
+        "coverage": 0.906063,
+        "success_rate": 0.72,
+        "episode_length": 408.079987,
+        "repeat_visit_ratio": 0.235533,
+        "timeout": 0.28
+      },
+      {
+        "final_probe_rank": 3,
+        "env_steps": 500000,
+        "source": "posthoc_candidate_final_probe",
+        "formal_winner": false,
+        "reward": 116.171295,
+        "coverage": 0.885558,
+        "success_rate": 0.59,
+        "episode_length": 449.980011,
+        "repeat_visit_ratio": 0.312896,
+        "timeout": 0.41
+      }
+    ],
+    "winner_metrics": {
+      "final_probe_rank": 1,
+      "env_steps": 460000,
+      "source": "posthoc_final_winner",
+      "formal_winner": true,
+      "reward": 138.333817,
+      "coverage": 0.925573,
+      "success_rate": 0.76,
+      "episode_length": 392.339996,
+      "repeat_visit_ratio": 0.192683,
+      "timeout": 0.24
+    },
+    "best_vs_last_diagnostic": {
+      "role": "diagnostic_best_vs_last",
+      "comparison_mode": "heldout_winner_vs_heldout_last_checkpoint",
+      "direction_note": "Positive best_minus_last is better for reward/coverage/success; negative is better for episode_length/repeat_visit_ratio.",
+      "last_env_steps": 500000
+    },
+    "parseability": {
+      "final_probe_csv": "parsed",
+      "summary_json": "parsed"
+    }
+  },
+  "configuration_and_runtime": {
+    "budget": {
+      "total_env_steps": 500000,
+      "budget_mode": "env_steps",
+      "total_train_episodes": 1018,
+      "final_greedy_episodes": 100
+    },
+    "mode": {
+      "train_side_only_tuning": false,
+      "test_side_evaluation_status": "enabled",
+      "posthoc_status": "present",
+      "final_probe_status": "present",
+      "formal_final_object_role": "formal_acceptance_object",
+      "formal_final_object_env_steps": 460000
+    },
+    "exploration": {
+      "epsilon_decay_steps": 240000,
+      "epsilon_end": 0.04,
+      "min_replay_size": 8000
+    },
+    "replay_learner_update": {
+      "batch_size": 128,
+      "replay_capacity": 100000,
+      "n_step": 3,
+      "gamma": 0.99,
+      "learning_rate": 0.0001,
+      "target_update_interval": 1000,
+      "collect_steps_per_iter": 16,
+      "learner_updates_per_iter": 2,
+      "train_every_env_steps": 16
+    },
+    "reward_config": {
+      "reward_info_scale": 3.0,
+      "reward_revisit_penalty": 0.12,
+      "reward_turn_penalty_scale": 0.05,
+      "reward_timeout_penalty": 8.0,
+      "reward_step_penalty": 0.02,
+      "reward_terminal_bonus": 20.0,
+      "reward_obstacle_weight": 0.25
+    },
+    "map_eval_comparability": {
+      "rows": 40,
+      "cols": 60,
+      "scan_radius": 10,
+      "final_greedy_episodes": 100,
+      "posthoc_final_probe_topk": 3,
+      "final_probe_seed_base": 20261323
+    },
+    "runtime": {
+      "device": "cuda",
+      "actual_device": "cuda:0",
+      "runtime_duration_hms": "04:13:23",
+      "runtime_duration_sec": 15202.824,
+      "source_git_branch": "main",
+      "source_git_commit_sha": "fc86f69ffcb8f4446e26bca54c22242dfb4be5bf",
+      "strict_backend_status": "strict_contract_ready",
+      "seed_status": {
+        "use_fixed_train_episode_seeds": true,
+        "fixed_train_episode_seed_base": 20259323,
+        "use_fixed_eval_seeds": true,
+        "fixed_final_probe_seed_base": 20261323,
+        "use_fixed_model_select_seeds": true,
+        "fixed_model_select_seed_base": 20262323
+      }
+    }
+  },
+  "missing_artifacts": [],
+  "parse_failures": [],
+  "unverified_items": [],
+  "forbidden_artifact_findings": [],
+  "factual_summary_status": "factual_summary_ready",
+  "tuning_recommendation_provided": false
+}
