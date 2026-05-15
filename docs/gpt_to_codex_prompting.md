@@ -32,12 +32,12 @@ Validation: selected_skill_contract; json_parse; required_top_level_keys; factua
 ### 2.2 single_run_analysis_archive_task
 Skill invocation:
   Use [$training-analysis-archive](C:\Users\Dk\Desktop\SCI\Automatic_2\.agents\skills\training-analysis-archive\SKILL.md)
-Inputs: current factual JSON; GPT-provided strict `tuning_review_md_digest` generated from the immediately preceding GPT tuning review answer; `archive_id`
-Outputs: single-run archive factual JSON; single-run archive `tuning_review.md`; `training_results/history/history_index.json`
-Writes: archive pair plus history index
-Validation: selected_skill_contract; source_json; tuning_review_md_digest; archive_id; history_index; diff_scope; commit_push
+Inputs: current factual JSON; GPT-provided strict `tuning_review_md_digest` generated from the immediately preceding GPT tuning review answer and satisfying the current archive skill digest contract, including baseline decision fields, `validation_status`, `baseline_update_status`, `current_train_side_reference_baseline_before`, `baseline_candidate`, `current_train_side_reference_baseline_after`, `baseline_scope`, `selected_next_surface`, `parameter_change`, and `recommended_next_run_name`; `archive_id`
+Outputs: single-run archive factual JSON; single-run archive `tuning_review.md`; `training_results/history/history_index.json`; `training_results/history/tuning_map.md`
+Writes: archive pair plus history index plus tuning map
+Validation: selected_skill_contract; source_json; tuning_review_md_digest; baseline_fields; compact_history_index_fields; tuning_map_sync; archive_id; diff_scope; commit_push
 Digest block rule: Include the supplied digest between the required `BEGIN_TUNING_REVIEW_MD_DIGEST` and `END_TUNING_REVIEW_MD_DIGEST` markers owned by Final Prompt Format.
-Digest rule: Codex preserves the supplied GPT digest without re-summarizing, reanalyzing metrics, changing `recommendation_type`, or changing tuning meaning.
+Digest rule: Codex preserves the supplied GPT digest without re-summarizing, reanalyzing metrics, changing `recommendation_type`, changing `validation_status`, changing `baseline_update_status`, inferring baseline, inferring selected surface, inventing hyperparameters, or changing tuning meaning.
 
 ### 2.3 multi_run_analysis_archive_task
 Skill invocation:
