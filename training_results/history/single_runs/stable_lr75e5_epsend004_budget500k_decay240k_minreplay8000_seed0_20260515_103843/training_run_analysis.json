@@ -1,0 +1,412 @@
+{
+  "schema_version": "1.0",
+  "report_type": "training_run_factual_analysis",
+  "generated_by": "codex",
+  "source_run_dir": "source_repo:outputs/stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843",
+  "run_name": "stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843",
+  "files_inspected": [
+    {
+      "path": "source_repo:outputs/stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843/logs/reproducibility_contract.json",
+      "status": "inspected",
+      "bytes": 8819
+    },
+    {
+      "path": "source_repo:outputs/stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843/logs/config_snapshot.json",
+      "status": "inspected",
+      "bytes": 17113
+    },
+    {
+      "path": "source_repo:outputs/stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843/logs/metric_snapshot.json",
+      "status": "inspected",
+      "bytes": 29595
+    },
+    {
+      "path": "source_repo:outputs/stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843/logs/artifact_index.json",
+      "status": "inspected",
+      "bytes": 3309
+    },
+    {
+      "path": "source_repo:outputs/stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843/logs/benchmark_summary.json",
+      "status": "inspected",
+      "bytes": 2155
+    },
+    {
+      "path": "source_repo:outputs/stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843/logs/train_steps.csv",
+      "status": "inspected",
+      "bytes": 1053068
+    },
+    {
+      "path": "source_repo:outputs/stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843/logs/train_episodes.csv",
+      "status": "inspected",
+      "bytes": 810724
+    },
+    {
+      "path": "source_repo:outputs/stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843/logs/training_summary.txt",
+      "status": "metadata_confirmed",
+      "bytes": 1834
+    }
+  ],
+  "commands_run": [
+    "read docs/gpt_to_codex_prompting.md and selected training-run-factual-analysis skill contract",
+    "inspected compact JSON artifacts under source_repo:outputs/<run>/logs",
+    "parsed train_steps.csv and train_episodes.csv for counts, endpoint metrics, deltas, and train-side diagnostics",
+    "used artifact_index.json plus metric/config/reproducibility metadata for train_side_only_tuning and test-side status only",
+    "wrote compact factual JSON only to training_results/current/current_training_run_analysis.json"
+  ],
+  "reproducible_launch_status": "reproducible_launch_confirmed",
+  "reproducible_launch": {
+    "contract_verdict": "strict_contract_ready",
+    "strict_reproducibility": true,
+    "deterministic_algorithms_enabled": true,
+    "deterministic_algorithms_warn_only": false,
+    "PYTHONHASHSEED": {
+      "value": 0,
+      "present": true
+    },
+    "CUBLAS_WORKSPACE_CONFIG": {
+      "value": ":4096:8",
+      "present": true
+    },
+    "backend_requested_flags": {
+      "enable_tf32": false,
+      "enable_cudnn_benchmark": false,
+      "enable_amp": false,
+      "enable_inference_amp": false,
+      "enable_torch_compile": false,
+      "enable_channels_last": false
+    },
+    "backend_runtime_readback": {
+      "requested_device": "cuda",
+      "strict_reproducibility": true,
+      "deterministic_algorithms_warn_only": false,
+      "cublas_workspace_config_action": {
+        "name": "CUBLAS_WORKSPACE_CONFIG",
+        "value": ":4096:8",
+        "preexisting": true,
+        "set_by_script": false,
+        "status": "preexisting"
+      },
+      "torch.backends.cudnn.deterministic": true,
+      "torch.backends.cudnn.benchmark": false,
+      "torch.backends.cuda.matmul.allow_tf32": false,
+      "torch.backends.cudnn.allow_tf32": false,
+      "torch.are_deterministic_algorithms_enabled()": true
+    },
+    "fixed_seed_fields": {
+      "use_fixed_train_episode_seeds": true,
+      "fixed_train_episode_seed_base": 20259323,
+      "use_fixed_eval_seeds": true,
+      "fixed_final_probe_seed_base": 20261323,
+      "use_fixed_model_select_seeds": true,
+      "fixed_model_select_seed_base": 20262323
+    },
+    "eval_seed_status_metadata": {
+      "use_fixed_eval_seeds": true,
+      "fixed_final_probe_seed_base": 20261323,
+      "role": "mode_status_metadata_only_train_side_only_skipped"
+    },
+    "launch_command_sanitized": ".\\train_q_agent.py --device cuda --run-name stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0 --seed 0 --total-env-steps 500000 --epsilon-decay-steps 240000 --epsilon-end 0.04 --min-replay-size 8000 --final-greedy-episodes 100 --reward-revisit-penalty 0.1 --reward-turn-penalty-scale 0.05 --reward-timeout-penalty 8 --reward-step-penalty 0.02 --reward-terminal-bonus 20 --reward-info-scale 3 --reward-obstacle-weight 0.25 --batch-size 128 --replay-capacity 100000 --n-step 3 --gamma 0.99 --learning-rate 7.5E-05 --target-update-interval 1000 --grad-clip-norm 10 --collect-steps-per-iter 16 --learner-updates-per-iter 2 --train-every-env-steps 16 --fixed-train-episode-seed-base 20259323 --fixed-final-probe-seed-base 20261323 --strict-reproducibility --no-deterministic-warn-only --no-enable-tf32 --no-enable-cudnn-benchmark --no-enable-amp --no-enable-inference-amp --no-enable-torch-compile --no-enable-channels-last --use-fixed-train-episode-seeds --use-fixed-eval-seeds --train-side-only-tuning",
+    "cwd_sanitized": "source_repo:.",
+    "source_git_branch": "main",
+    "source_git_commit_sha": "0d0826d4b99164b44fcb34edbe01f5a09b255d28",
+    "limitations": [
+      "PYTHONHASHSEED can only be fully effective when set before interpreter startup.",
+      "CUBLAS_WORKSPACE_CONFIG should be set before CUDA/CUBLAS use.",
+      "warn_only deterministic mode may warn rather than fail.",
+      "Replay sampling currently uses global torch RNG unless a dedicated generator is implemented.",
+      "Epsilon action selection currently uses global Python random unless a dedicated RNG is implemented."
+    ]
+  },
+  "train_side_monitoring": {
+    "mode_detection": {
+      "train_side_only_tuning": true,
+      "mode_sources": {
+        "config_snapshot.train_side_only_tuning": true,
+        "config_snapshot.full_train_config.train_side_only_tuning": true,
+        "config_snapshot.observed_run_contract.train_side_only_tuning": true,
+        "metric_snapshot.train_side_only_tuning": true,
+        "metric_snapshot.final_probe_source": "skipped_train_side_only_tuning",
+        "artifact_index.posthoc_required": false,
+        "artifact_index.final_probe_required": false,
+        "reproducibility_contract.argv_has_train_side_only_flag": true
+      },
+      "test_side_evaluation_status": "skipped_train_side_only_tuning",
+      "skipped_test_side_evaluation": {
+        "reason": "train_side_only_tuning",
+        "missingness_treatment": "not_missing",
+        "skipped_operations": [
+          "posthoc_checkpoint_selection",
+          "posthoc_candidate_scoring",
+          "posthoc_final_artifacts",
+          "test_side_comparison",
+          "final_probe_evaluation",
+          "final_probe_csv_summary_writing",
+          "automatic_winner_checkpoint_selection"
+        ]
+      },
+      "formal_protocol_revision": "formal_posthoc_trainselect_v1",
+      "formal_final_object_role": "not_applicable_for_train_side_tuning",
+      "formal_final_object_checkpoint": "checkpoints/last.pt",
+      "last_checkpoint_required": true,
+      "best_checkpoint_required": false,
+      "mode_inference_from_run_name": false
+    },
+    "row_counts": {
+      "train_steps_rows": 992,
+      "train_episodes_rows": 1024
+    },
+    "parseability": {
+      "train_steps_csv": "parsed",
+      "train_episodes_csv": "parsed",
+      "metric_snapshot_json": "parsed",
+      "empty_csvs": [],
+      "nan_nonfinite_treatment": "empty_or_nonfinite_values_recorded_as_null_if_encountered"
+    },
+    "endpoint_metrics": {
+      "recent_train_window": {
+        "source": "logs/metric_snapshot.json:recent_train",
+        "env_steps": 500000,
+        "completed_train_episodes": 1018,
+        "reward": 140.124496,
+        "coverage": 0.931062,
+        "success_rate": 0.75,
+        "episode_length": 396.339996,
+        "repeat_visit_ratio": 0.227861,
+        "RVR": 0.227861,
+        "timeout": 0.25
+      },
+      "last_train_episode": {
+        "source": "logs/train_episodes.csv:last_row",
+        "env_steps": 499509,
+        "reward": 158.065013,
+        "coverage": 0.9516,
+        "success": 1,
+        "episode_length": 312,
+        "repeat_visit_ratio": 0.13099,
+        "RVR": 0.13099,
+        "timeout_flag": 0.0,
+        "done_reason": "coverage_reached"
+      }
+    },
+    "initial_to_endpoint_delta": {
+      "from_env_steps": 4512,
+      "to_env_steps": 500000,
+      "deltas": {
+        "reward": 130.14931,
+        "coverage": 0.478262,
+        "success_rate": 0.75,
+        "episode_length": -203.660004,
+        "repeat_visit_ratio": -0.398952,
+        "timeout": -0.75
+      }
+    },
+    "late_stage_delta": {
+      "from_env_steps": 400000,
+      "to_env_steps": 500000,
+      "deltas": {
+        "reward": 7.465622,
+        "coverage": 0.0153,
+        "success_rate": 0.09,
+        "episode_length": -36.200012,
+        "repeat_visit_ratio": -0.01839,
+        "timeout": -0.09
+      },
+      "directions": {
+        "reward": "increased",
+        "coverage": "increased",
+        "success_rate": "increased",
+        "episode_length": "decreased",
+        "repeat_visit_ratio": "decreased",
+        "timeout": "decreased"
+      }
+    },
+    "key_behavior_diagnostics": {
+      "source": "logs/metric_snapshot.json:recent_train.reward_events",
+      "zero_info": 220.330002,
+      "recent_revisit": 56.669998,
+      "stall": 157.110001,
+      "turn_ge_90": 157.770004,
+      "turn_135": 43.310001,
+      "turn_180": 36.529999,
+      "timeout_flag": 0.25,
+      "turn_penalty_weight_sum": 91.380013
+    },
+    "derived_exploration_efficiency": {
+      "source": "logs/metric_snapshot.json:recent_train.semantic_monitoring",
+      "metric_role": "diagnostic_only",
+      "evidence_role": "not_standalone_superiority_evidence",
+      "use": "explain_mechanism_not_superiority_decision",
+      "coverage_gain_per_step": 0.002761,
+      "weighted_info_gain_per_step": 0.144001,
+      "zero_info_rate": 0.484042,
+      "recent_revisit_rate": 0.132059,
+      "stall_rate": 0.317048,
+      "turn_burden_rate": 0.22282,
+      "timeout_rate": 0.25
+    },
+    "reward_breakdown": {
+      "source": "logs/metric_snapshot.json:recent_train.reward_breakdown",
+      "info_reward_sum": 145.287308,
+      "step_penalty_sum": -7.926801,
+      "recent_revisit_penalty_sum": -5.667,
+      "turn_penalty_sum": -4.569,
+      "timeout_penalty_sum": -2.0,
+      "terminal_bonus_sum": 15.0
+    },
+    "reward_event_summary": {
+      "source": "logs/metric_snapshot.json:recent_train.reward_events",
+      "delta_empty_sum": 1438.449951,
+      "delta_obstacle_sum": 331.980011,
+      "empty_info_gain_sum": 45.787285,
+      "obstacle_info_gain_sum": 10.567251,
+      "weighted_obstacle_info_gain_sum": 2.641813,
+      "weighted_info_gain_sum": 48.429096,
+      "obstacle_info_contribution_ratio": 0.054453,
+      "recent_revisit_trigger_count": 56.669998,
+      "stall_trigger_count": 157.110001,
+      "zero_info_step_count": 220.330002,
+      "turn_ge_90_count": 157.770004,
+      "turn_135_count": 43.310001,
+      "turn_180_count": 36.529999,
+      "timeout_flag": 0.25
+    },
+    "learner_replay_exploration_context": {
+      "source": "logs/metric_snapshot.json:recent_train.optimizer_monitoring",
+      "loss": 3.627014,
+      "q_mean": 19.413887,
+      "target_q_mean": 19.668812,
+      "td_abs_mean": 3.97671,
+      "grad_norm": 47.53315,
+      "replay_size": 100000,
+      "epsilon": 0.04,
+      "learner_steps": 61500,
+      "batch_size": 128,
+      "replay_capacity": 100000,
+      "n_step": 3,
+      "gamma": 0.99,
+      "learning_rate": 7.5e-05,
+      "target_update_interval": 1000,
+      "collect_steps_per_iter": 16,
+      "learner_updates_per_iter": 2,
+      "train_every_env_steps": 16
+    },
+    "missing_expected_columns": []
+  },
+  "posthoc_selection": {
+    "status": "skipped_train_side_only_tuning",
+    "role": "not_applicable_for_train_side_tuning",
+    "evidence_role": "not_used_for_train_side_tuning",
+    "missingness_treatment": "not_missing",
+    "reason": "train_side_only_tuning",
+    "artifacts_required": {
+      "csv": false,
+      "structured_summary_json": false
+    },
+    "artifacts_present": {
+      "csv": false,
+      "structured_summary_json": false
+    },
+    "metrics_extracted": false
+  },
+  "supplemental_final_probe": {
+    "status": "skipped_train_side_only_tuning",
+    "role": "not_applicable_for_train_side_tuning",
+    "evidence_role": "not_used_for_train_side_tuning",
+    "missingness_treatment": "not_missing",
+    "reason": "train_side_only_tuning",
+    "artifacts_required": {
+      "csv": false,
+      "structured_summary_json": false,
+      "best_checkpoint": false
+    },
+    "artifacts_present": {
+      "csv": false,
+      "structured_summary_json": false,
+      "best_checkpoint": false
+    },
+    "metrics_extracted": false
+  },
+  "configuration_and_runtime": {
+    "budget": {
+      "total_env_steps": 500000,
+      "budget_mode": "env_steps",
+      "total_train_episodes_configured": 600,
+      "total_train_episodes_completed": 1018,
+      "final_greedy_episodes": 100
+    },
+    "mode": {
+      "train_side_only_tuning": true,
+      "test_side_evaluation_status": "skipped_train_side_only_tuning",
+      "skipped_reason": "train_side_only_tuning",
+      "posthoc_status": "skipped_train_side_only_tuning",
+      "final_probe_status": "skipped_train_side_only_tuning",
+      "formal_final_object_role": "not_applicable_for_train_side_tuning",
+      "formal_final_object_checkpoint": "checkpoints/last.pt",
+      "last_checkpoint_env_steps": 500000,
+      "best_checkpoint_required": false
+    },
+    "exploration": {
+      "epsilon_decay_steps": 240000,
+      "epsilon_end": 0.04,
+      "min_replay_size": 8000
+    },
+    "replay_learner_update": {
+      "batch_size": 128,
+      "replay_capacity": 100000,
+      "n_step": 3,
+      "gamma": 0.99,
+      "learning_rate": 7.5e-05,
+      "target_update_interval": 1000,
+      "grad_clip_norm": 10.0,
+      "collect_steps_per_iter": 16,
+      "learner_updates_per_iter": 2,
+      "train_every_env_steps": 16
+    },
+    "reward_config": {
+      "reward_info_scale": 3.0,
+      "reward_obstacle_weight": 0.25,
+      "reward_step_penalty": 0.02,
+      "reward_terminal_bonus": 20.0,
+      "reward_revisit_penalty": 0.1,
+      "reward_turn_penalty_scale": 0.05,
+      "reward_turn_weight_45": 0.0,
+      "reward_turn_weight_90": 0.333333,
+      "reward_turn_weight_135": 0.666667,
+      "reward_turn_weight_180": 1.0,
+      "reward_timeout_penalty": 8.0
+    },
+    "map_eval_comparability": {
+      "rows": 40,
+      "cols": 60,
+      "obs_size": 6,
+      "scan_radius": 10,
+      "obstacle_ratio": 0.2,
+      "final_greedy_episodes": 100,
+      "final_probe_seed_base": 20261323,
+      "final_probe_role": "skipped_train_side_only_tuning"
+    },
+    "runtime": {
+      "device": "cuda",
+      "actual_device": "cuda:0",
+      "runtime_duration_hms": "03:12:56",
+      "runtime_duration_sec": 11576.241939,
+      "source_git_branch": "main",
+      "source_git_commit_sha": "0d0826d4b99164b44fcb34edbe01f5a09b255d28",
+      "strict_backend_status": "strict_contract_ready",
+      "seed_status": {
+        "use_fixed_train_episode_seeds": true,
+        "fixed_train_episode_seed_base": 20259323,
+        "use_fixed_eval_seeds": true,
+        "fixed_final_probe_seed_base": 20261323,
+        "use_fixed_model_select_seeds": true,
+        "fixed_model_select_seed_base": 20262323
+      }
+    }
+  },
+  "missing_artifacts": [],
+  "parse_failures": [],
+  "unverified_items": [],
+  "forbidden_artifact_findings": [],
+  "factual_summary_status": "factual_summary_ready",
+  "tuning_recommendation_provided": false
+}
