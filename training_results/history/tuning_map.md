@@ -18,7 +18,7 @@ Limits:
 | Field | Value |
 | --- | --- |
 | current_train_side_reference_baseline | `stable_epsend004_budget500k_decay240k_minreplay8000_seed0_20260511_195904` |
-| basis | Archived GPT review for `stable_epsend004...` recorded `prior_validation_status: supported` and updated epsend004 as the current train-side reference baseline. Later archived GPT reviews retained epsend004 after refuting epsend0035, epsdecay300k, and revisit012. |
+| basis | Archived GPT review for `stable_epsend004...` recorded `prior_validation_status: supported` and updated epsend004 as the current train-side reference baseline. Later archived GPT reviews retained epsend004 after refuting epsend0035, epsdecay300k, revisit012, and turn006. |
 | scope | `single_seed_train_side_reference_only` |
 | caveat | Current reference baseline is not a global optimum, tuning completion claim, paper-level conclusion, or cross-seed conclusion. |
 
@@ -42,6 +42,7 @@ Limits:
 | `stable_epsend0035_budget500k_decay240k_minreplay8000_seed0_20260512_140630` | `refuted` | epsend004 retained. | Test `EpsilonDecaySteps=300000` with `EpsilonEnd=0.04`. |
 | `stable_epsdecay300k_epsend004_budget500k_minreplay8000_seed0_20260512_192305` | `refuted` | epsend004 retained. | Test `RewardRevisitPenalty=0.12`. |
 | `stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851` | `refuted` | epsend004 retained. | Recommended next run name: `stable_turn006_epsend004_budget500k_decay240k_minreplay8000_seed0`. |
+| `stable_turn006_epsend004_budget500k_decay240k_minreplay8000_seed0_20260514_182435` | `refuted` | epsend004 retained. | Recommended next run name: `stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0`. |
 
 ## 5. Refuted Directions
 
@@ -52,10 +53,12 @@ Limits:
 | EpsilonEnd down-search to 0.035 after epsend004 | Refuted by `stable_epsend0035...`; epsend004 retained. |
 | EpsilonDecaySteps increase to 300000 under epsend004 core | Refuted by `stable_epsdecay300k...`; epsend004 retained. |
 | RewardRevisitPenalty increase to 0.12 under epsend004 core | Refuted by `stable_revisit012...`; epsend004 retained. |
+| RewardTurnPenaltyScale increase to 0.06 under epsend004 core | Refuted by `stable_turn006...`; epsend004 retained. |
 
 Notes:
 - Exploration schedule slicing should not remain a primary direction unless new current evidence supports revisiting it.
 - `RewardRevisitPenalty=0.12` should not remain a primary direction unless new current evidence supports revisiting it.
+- `RewardTurnPenaltyScale=0.06` should not remain a primary direction unless new current evidence supports revisiting it.
 - Improvement over an already-refuted run does not update the current train-side reference baseline unless it also improves over epsend004.
 
 ## 6. Supported / Retained Directions
@@ -66,12 +69,14 @@ Notes:
 | Keep epsend004 as reference after epsend0035 | Retained by archived GPT review for `stable_epsend0035...`. |
 | Keep epsend004 as reference after epsdecay300k | Retained by archived GPT review for `stable_epsdecay300k...`. |
 | Keep epsend004 as reference after revisit012 | Retained by archived GPT review for `stable_revisit012...`. |
+| Keep epsend004 as reference after turn006 | Retained by archived GPT review for `stable_turn006...`. |
 
 ## 7. Open Uncertainties
 
 | Uncertainty | Status |
 | --- | --- |
 | Whether light turn shaping can reduce turn burden, repeated revisit induced inefficient paths, stall, zero_info, and timeout while preserving epsend004-level train-side endpoint performance. | Open in archived GPT review after revisit012. |
+| Whether reducing `LearningRate` from 0.0001 to 0.000075 can improve endpoint stability and train-side system performance under epsend004 core settings. | Open in archived GPT review after turn006. |
 | Whether posthoc/final_probe mismatch indicates a stability issue requiring later focused review. | Open as context only; not baseline decision authority by itself. |
 | Whether learner/update dynamics such as learning rate or target update cadence should be considered if light reward shaping is weaker than epsend004. | Mentioned as conditional future consideration in archived GPT review after revisit012. |
 | Cross-seed robustness. | Not evaluated by this single-seed tuning map and not the default blocker. |
@@ -80,10 +85,10 @@ Notes:
 
 | Surface | Status from archived GPT review |
 | --- | --- |
-| Light turn shaping with `RewardTurnPenaltyScale=0.06` under epsend004 core | Recommended next candidate after revisit012; represented by `recommended_next_run_name: stable_turn006_epsend004_budget500k_decay240k_minreplay8000_seed0`. |
-| Learner/update dynamics, for example learning rate or target update cadence | Conditional future surface only if the light turn-shaping run is weaker than epsend004. |
+| Learner/replay dynamics with `LearningRate: 0.0001 -> 0.000075` under epsend004 core | Recommended next candidate after turn006; represented by `recommended_next_run_name: stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0`. |
+| Bounded multi-run comparison or rollout/update cadence surface | Conditional future surface only if `LearningRate=0.000075` is weaker than epsend004. |
 
-`stable_turn006_epsend004_budget500k_decay240k_minreplay8000_seed0` is recorded only as a recommended next run name. It is not summarized as an archived result because it is not present as an archived entry in `history_index.json`.
+`stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0` is recorded only as a recommended next run name. It is not summarized as an archived result unless it becomes present as an archived entry in `history_index.json`.
 
 ## 9. Maintenance Rule
 
