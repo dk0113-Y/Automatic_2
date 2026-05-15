@@ -144,6 +144,7 @@ Decision rules:
 - Consider reward-function knobs, exploration schedule, replay/start dynamics, learner/replay dynamics, rollout/update dynamics, and bounded config/implementation tasks when evidence supports them.
 - Keep one primary parameter or one tightly coupled mechanism group per formal `next_run_plan` unless evidence strongly supports a small group.
 - If a change is launcher-ready, provide a launcher-only PowerShell command.
+- For formal train-side launcher-ready `next_run_plan` commands, explicitly include `-TrainSideOnlyTuning:$true` unless the user explicitly requests a non-train-side-only run.
 - If a change requires code/config exposure, provide a bounded implementation/config task with candidate tuning specification; do not invent a launcher command.
 - Recommendations must bind parameter, config, or reward changes to evidence and a testable hypothesis.
 
@@ -197,6 +198,8 @@ Each output must explicitly include:
 Command formatting:
 - If `recommendation_type = next_run_plan` and the selected change is launcher-ready, output exactly one standalone command.
 - The command must start with `.\scripts\launch_formal_train_stable.ps1`.
+- If the launcher-ready command targets the active train-side tuning objective, include `-TrainSideOnlyTuning:$true` as a normal launcher parameter; do not omit it because the launcher default is currently true.
+- Omit `-TrainSideOnlyTuning:$true` only when the recommendation explicitly targets a non-train-side-only run and explains that exception in `边界与风险`.
 - The command must not include `cd`, local absolute paths, working-directory placeholders, or explanatory text inside the command block.
 - Place the command in a standalone `text` fenced block in GPT's user-facing answer.
 - Do not include nested fenced blocks in Codex prompts.
