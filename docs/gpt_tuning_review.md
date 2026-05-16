@@ -137,6 +137,7 @@ Required mechanism diagnosis fields:
 
 Decision rules:
 - Use `next_run_plan` when gates pass and evidence supports one concrete bounded performance-improvement run.
+- Use `multi_run_comparison_needed` only when gates pass, one single `next_run_plan` is not sufficiently justified, and GPT can specify a bounded candidate set for comparison.
 - Do not default to robustness confirmation after a useful single-seed train-side result.
 - Rank plausible tuning surfaces by evidence-to-mechanism relevance, not launcher convenience.
 - Use `tuning_map.md` to avoid repeating refuted directions without explicit new evidence.
@@ -145,6 +146,10 @@ Decision rules:
 - Keep one primary parameter or one tightly coupled mechanism group per formal `next_run_plan` unless evidence strongly supports a small group.
 - If a change is launcher-ready, provide a launcher-only PowerShell command.
 - For formal train-side launcher-ready `next_run_plan` commands, explicitly include `-TrainSideOnlyTuning:$true` unless the user explicitly requests a non-train-side-only run.
+- If all `multi_run_comparison_needed` candidates are launcher-ready, provide a bounded launcher command set rather than only an abstract candidate list.
+- A bounded launcher command set should normally contain 2 to 4 commands.
+- Each command-set entry must correspond to one named candidate and one primary parameter or one tightly coupled mechanism group.
+- If `multi_run_comparison_needed` candidates are not launcher-ready, provide a bounded implementation/config task instead of launcher commands.
 - If a change requires code/config exposure, provide a bounded implementation/config task with candidate tuning specification; do not invent a launcher command.
 - Recommendations must bind parameter, config, or reward changes to evidence and a testable hypothesis.
 
@@ -197,11 +202,16 @@ Each output must explicitly include:
 
 Command formatting:
 - If `recommendation_type = next_run_plan` and the selected change is launcher-ready, output exactly one standalone command.
-- The command must start with `.\scripts\launch_formal_train_stable.ps1`.
-- If the launcher-ready command targets the active train-side tuning objective, include `-TrainSideOnlyTuning:$true` as a normal launcher parameter; do not omit it because the launcher default is currently true.
+- If `recommendation_type = multi_run_comparison_needed` and the candidates are launcher-ready, output a standalone command set with 2 to 4 launcher commands.
+- Each command in a launcher command set must start with `.\scripts\launch_formal_train_stable.ps1`.
+- GPT must not omit commands when it provides concrete launcher-ready tuning candidates.
+- Command set entries may include short plain label lines such as `Candidate A`, `Candidate B`, and `Candidate C`, but no explanatory paragraphs inside the command block.
+- Each formal train-side launcher command must include `-TrainSideOnlyTuning:$true` as a normal launcher parameter; do not omit it because the launcher default is currently true.
 - Omit `-TrainSideOnlyTuning:$true` only when the recommendation explicitly targets a non-train-side-only run and explains that exception in `边界与风险`.
-- The command must not include `cd`, local absolute paths, working-directory placeholders, or explanatory text inside the command block.
-- Place the command in a standalone `text` fenced block in GPT's user-facing answer.
+- Command blocks must not include `cd`, local absolute paths, working-directory placeholders, explanatory paragraphs, or nested fenced blocks.
+- Place the command or command set in a standalone `text` fenced block in GPT's user-facing answer.
+- In `下一轮训练命令`, output either one command for `next_run_plan` or a bounded command set for launcher-ready `multi_run_comparison_needed`.
+- If `recommendation_type` is `requires_more_evidence`, `repeat_or_repair_run`, `hold_current_baseline`, or `method_redesign_discussion_only`, do not invent launcher commands unless that recommendation explicitly includes a repair/repeat launcher command.
 - Do not include nested fenced blocks in Codex prompts.
 
 Do not output:
