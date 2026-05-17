@@ -2,14 +2,14 @@
   "schema_version": "1.0",
   "report_type": "training_run_factual_analysis",
   "generated_by": "codex",
-  "source_run_dir": "source_training_repo:outputs/stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_175304",
+  "source_run_dir": "source_training_repo:outputs/stable_updates1_info32_epsend004_budget500k_decay240k_minreplay8000_seed0_20260517_122158",
   "source_run_dir_identity": {
-    "provided_source_run_dir_sanitized": "source_training_repo:outputs/stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_175304",
-    "basename": "stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_175304",
+    "provided_source_run_dir_sanitized": "source_training_repo:outputs/stable_updates1_info32_epsend004_budget500k_decay240k_minreplay8000_seed0_20260517_122158",
+    "basename": "stable_updates1_info32_epsend004_budget500k_decay240k_minreplay8000_seed0_20260517_122158",
     "run_name_matches_basename": true,
     "run_name_starts_with_expected_prefix": true
   },
-  "run_name": "stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_175304",
+  "run_name": "stable_updates1_info32_epsend004_budget500k_decay240k_minreplay8000_seed0_20260517_122158",
   "files_inspected": [
     "logs/config_snapshot.json",
     "logs/metric_snapshot.json",
@@ -18,16 +18,35 @@
     "logs/benchmark_summary.json",
     "logs/train_steps.csv",
     "logs/train_episodes.csv",
-    "logs/training_summary.txt"
+    "logs/training_summary.txt",
+    "docs/gpt_tuning_review.md",
+    "docs/gpt_to_codex_prompting.md",
+    "docs/training_system_manifest.md",
+    ".agents/skills/training-run-factual-analysis/SKILL.md",
+    "training_results/history/history_index.json",
+    "training_results/history/tuning_map.md"
   ],
   "commands_run": [
-    "read required Automatic_2 prompting and factual-analysis skill docs",
-    "validated previous stable_lr75e5 history archive landing",
-    "parsed compact source JSON artifacts and train-side CSV summaries",
-    "validated generated current factual JSON with json.tool and schema checks"
+    {
+      "purpose": "required_docs_and_history_read",
+      "status": "passed"
+    },
+    {
+      "purpose": "source_structured_artifacts_and_train_side_csv_summaries_parsed_read_only",
+      "status": "passed"
+    },
+    {
+      "purpose": "compact_current_factual_report_written",
+      "status": "passed"
+    },
+    {
+      "purpose": "validation",
+      "status": "passed"
+    }
   ],
   "reproducible_launch_status": "reproducible_launch_confirmed",
   "reproducible_launch": {
+    "status": "reproducible_launch_confirmed",
     "contract_verdict": "strict_contract_ready",
     "strict_reproducibility": true,
     "deterministic_algorithms_enabled": true,
@@ -92,7 +111,7 @@
     "actual_device": "cuda:0",
     "source_git_branch": "main",
     "source_git_commit_sha": "0d0826d4b99164b44fcb34edbe01f5a09b255d28",
-    "run_contract_name_sanitized": "stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0",
+    "run_contract_name_sanitized": "stable_updates1_info32_epsend004_budget500k_decay240k_minreplay8000_seed0",
     "argv_summary": {
       "contains_train_side_only_tuning_flag": true,
       "contains_strict_reproducibility_flag": true,
@@ -122,20 +141,20 @@
       "metric_snapshot_train_side_only_tuning": true,
       "observed_run_contract_train_side_only_tuning": true,
       "observed_run_contract_test_side_evaluation_status": "skipped_train_side_only_tuning",
-      "metric_snapshot_skipped_reason": "train_side_only_tuning",
       "reproducibility_argv_contains_train_side_only_flag": true,
       "artifact_index_posthoc_and_final_probe_required": false
     }
   },
   "train_side_monitoring": {
+    "primary_evidence_role": "train_side_monitoring_primary",
     "row_counts": {
       "train_steps_rows": 992,
-      "train_episodes_rows": 958,
+      "train_episodes_rows": 1107,
       "train_steps_empty": false,
       "train_episodes_empty": false,
       "last_train_env_steps": 500000,
       "last_checkpoint_env_steps": 500000,
-      "last_checkpoint_train_episode_idx": 952
+      "completed_train_episodes": 1101
     },
     "parseability": {
       "train_steps_readable": true,
@@ -145,12 +164,14 @@
       "nan_nonfinite_handling": "nonfinite numeric cells treated as null in compact extraction"
     },
     "endpoint_metrics": {
-      "reward": 134.99583435058594,
-      "coverage": 0.9289610385894775,
-      "success_rate": 0.6600000262260437,
-      "episode_length": 447.2099914550781,
-      "repeat_visit_ratio": 0.25163736939430237,
-      "timeout": 0.3400000035762787
+      "env_steps": 500000,
+      "completed_train_episodes": 1101,
+      "reward": 157.527832,
+      "coverage": 0.934988,
+      "success_rate": 0.81,
+      "episode_length": 362.519989,
+      "repeat_visit_ratio": 0.176916,
+      "timeout": 0.19
     },
     "initial_to_endpoint_delta": {
       "source": "first train_steps recent-window row to endpoint recent_train row",
@@ -158,34 +179,34 @@
       "end_env_steps": 500000,
       "metrics": {
         "reward": {
-          "start": 9.975186347961426,
-          "end": 134.99583435058594,
-          "delta": 125.02064800262451
+          "start": 14.121627,
+          "end": 157.527832,
+          "delta": 143.406205
         },
         "coverage": {
-          "start": 0.4528000056743622,
-          "end": 0.9289610385894775,
-          "delta": 0.47616103291511536
+          "start": 0.4528,
+          "end": 0.934988,
+          "delta": 0.482188
         },
         "success_rate": {
-          "start": 0,
-          "end": 0.6600000262260437,
-          "delta": 0.6600000262260437
+          "start": 0.0,
+          "end": 0.81,
+          "delta": 0.81
         },
         "episode_length": {
-          "start": 600,
-          "end": 447.2099914550781,
-          "delta": -152.79000854492188
+          "start": 600.0,
+          "end": 362.519989,
+          "delta": -237.480011
         },
         "repeat_visit_ratio": {
-          "start": 0.6268124580383301,
-          "end": 0.25163736939430237,
-          "delta": -0.3751750886440277
+          "start": 0.626812,
+          "end": 0.176916,
+          "delta": -0.449896
         },
         "timeout": {
-          "start": 1,
-          "end": 0.3400000035762787,
-          "delta": -0.6599999964237213
+          "start": 1.0,
+          "end": 0.19,
+          "delta": -0.81
         }
       }
     },
@@ -195,101 +216,101 @@
       "end_env_steps": 500000,
       "metrics": {
         "reward": {
-          "start": 124.6424789428711,
-          "end": 134.99583435058594,
-          "delta": 10.353355407714844
+          "start": 143.748917,
+          "end": 157.527832,
+          "delta": 13.778915
         },
         "coverage": {
-          "start": 0.9018859267234802,
-          "end": 0.9289610385894775,
-          "delta": 0.027075111865997314
+          "start": 0.914104,
+          "end": 0.934988,
+          "delta": 0.020884
         },
         "success_rate": {
-          "start": 0.5899999737739563,
-          "end": 0.6600000262260437,
-          "delta": 0.0700000524520874
+          "start": 0.6,
+          "end": 0.81,
+          "delta": 0.21
         },
         "episode_length": {
-          "start": 466.7099914550781,
-          "end": 447.2099914550781,
-          "delta": -19.5
+          "start": 423.190002,
+          "end": 362.519989,
+          "delta": -60.670013
         },
         "repeat_visit_ratio": {
-          "start": 0.2920091152191162,
-          "end": 0.25163736939430237,
-          "delta": -0.04037174582481384
+          "start": 0.252879,
+          "end": 0.176916,
+          "delta": -0.075963
         },
         "timeout": {
-          "start": 0.4099999964237213,
-          "end": 0.3400000035762787,
-          "delta": -0.06999999284744263
+          "start": 0.4,
+          "end": 0.19,
+          "delta": -0.21
         }
       }
     },
     "key_behavior_diagnostics": {
-      "zero_info": 260.8999938964844,
-      "recent_revisit": 62.54999923706055,
-      "stall": 184.9600067138672,
-      "turn_ge_90": 194.13999938964844,
-      "turn_135": 54.88999938964844,
-      "turn_180": 37.36000061035156,
-      "timeout_flag": 0.3400000035762787,
-      "turn_penalty_weight_sum": 107.91665649414062
+      "zero_info": 202.419998,
+      "recent_revisit": 26.559999,
+      "stall": 156.179993,
+      "turn_ge_90": 106.580002,
+      "turn_135": 23.59,
+      "turn_180": 17.280001,
+      "timeout_flag": 0.19,
+      "turn_penalty_weight_sum": 54.91
     },
     "derived_exploration_efficiency": {
-      "coverage_gain_per_step": 0.002340450417250395,
-      "weighted_info_gain_per_step": 0.12205324321985245,
-      "zero_info_rate": 0.5350480675697327,
-      "recent_revisit_rate": 0.13249054551124573,
-      "stall_rate": 0.35960352420806885,
-      "turn_burden_rate": 0.2363446205854416,
-      "timeout_rate": 0.3400000035762787,
+      "coverage_gain_per_step": 0.003124,
+      "weighted_info_gain_per_step": 0.162631,
+      "zero_info_rate": 0.474261,
+      "recent_revisit_rate": 0.060461,
+      "stall_rate": 0.341719,
+      "turn_burden_rate": 0.138745,
+      "timeout_rate": 0.19,
       "metric_role": "diagnostic_only",
       "evidence_role": "not_standalone_superiority_evidence"
     },
     "reward_breakdown": {
-      "info_reward_sum": 145.11087036132812,
-      "step_penalty_sum": -8.944199562072754,
-      "recent_revisit_penalty_sum": -6.254999160766602,
-      "turn_penalty_sum": -5.3958330154418945,
-      "timeout_penalty_sum": -2.7200000286102295,
-      "terminal_bonus_sum": 13.199999809265137
+      "info_reward_sum": 155.499725,
+      "step_penalty_sum": -7.2504,
+      "recent_revisit_penalty_sum": -2.656,
+      "turn_penalty_sum": -2.7455,
+      "timeout_penalty_sum": -1.52,
+      "terminal_bonus_sum": 16.200001
     },
     "reward_event_summary": {
-      "delta_empty_sum": 1436.739990234375,
-      "delta_obstacle_sum": 331.42999267578125,
-      "empty_info_gain_sum": 45.73285675048828,
-      "obstacle_info_gain_sum": 10.54974365234375,
-      "weighted_obstacle_info_gain_sum": 2.6374359130859375,
-      "weighted_info_gain_sum": 48.37029266357422,
-      "obstacle_info_contribution_ratio": 0.05455474555492401,
-      "recent_revisit_trigger_count": 62.54999923706055,
-      "stall_trigger_count": 184.9600067138672,
-      "zero_info_step_count": 260.8999938964844,
-      "turn_ge_90_count": 194.13999938964844,
-      "turn_135_count": 54.88999938964844,
-      "turn_180_count": 37.36000061035156,
-      "timeout_flag": 0.3400000035762787,
-      "turn_penalty_weight_sum": 107.91665649414062
+      "delta_empty_sum": 1442.640015,
+      "delta_obstacle_sum": 335.899994,
+      "empty_info_gain_sum": 45.920658,
+      "obstacle_info_gain_sum": 10.692029,
+      "weighted_obstacle_info_gain_sum": 2.673007,
+      "weighted_info_gain_sum": 48.593662,
+      "obstacle_info_contribution_ratio": 0.05506,
+      "recent_revisit_trigger_count": 26.559999,
+      "stall_trigger_count": 156.179993,
+      "zero_info_step_count": 202.419998,
+      "turn_ge_90_count": 106.580002,
+      "turn_135_count": 23.59,
+      "turn_180_count": 17.280001,
+      "timeout_flag": 0.19,
+      "turn_penalty_weight_sum": 54.91
     },
     "learner_replay_exploration_context": {
-      "loss": 2.3351778984069824,
-      "q_mean": 20.89937400817871,
-      "target_q_mean": 20.992841720581055,
-      "td_abs_mean": 2.70748233795166,
-      "grad_norm": 32.67287826538086,
+      "loss": 1.638905,
+      "q_mean": 12.129852,
+      "target_q_mean": 12.283079,
+      "td_abs_mean": 1.933121,
+      "grad_norm": 23.970671,
       "replay_size": 100000,
       "epsilon": 0.04,
-      "batch_size": 256,
+      "batch_size": 128,
       "replay_capacity": 100000,
       "n_step": 3,
       "gamma": 0.99,
       "learning_rate": 0.0001,
       "target_update_interval": 1000,
       "collect_steps_per_iter": 16,
-      "learner_updates_per_iter": 2,
+      "learner_updates_per_iter": 1,
       "train_every_env_steps": 16,
-      "learner_steps": 61500
+      "learner_steps": 30750
     },
     "missing_expected_columns": []
   },
@@ -316,31 +337,80 @@
     "budget_mode": "env_steps",
     "total_env_steps": 500000,
     "final_training_env_steps": 500000,
-    "total_train_episodes_completed": 952,
+    "total_train_episodes_completed": 1101,
     "final_greedy_episodes_configured": 100,
     "final_probe_execution_status": "skipped_train_side_only_tuning",
     "epsilon_decay_steps": 240000,
     "epsilon_end": 0.04,
     "min_replay_size": 8000,
+    "expected_configuration_checks": {
+      "RewardInfoScale": {
+        "expected": 3.2,
+        "observed_config": 3.2,
+        "observed_argv": 3.2,
+        "matches_expected": true
+      },
+      "LearnerUpdatesPerIter": {
+        "expected": 1,
+        "observed_config": 1,
+        "observed_argv": 1,
+        "matches_expected": true
+      },
+      "EpsilonEnd": {
+        "expected": 0.04,
+        "observed_config": 0.04,
+        "observed_argv": 0.04,
+        "matches_expected": true
+      },
+      "EpsilonDecaySteps": {
+        "expected": 240000,
+        "observed_config": 240000,
+        "observed_argv": 240000,
+        "matches_expected": true
+      },
+      "MinReplaySize": {
+        "expected": 8000,
+        "observed_config": 8000,
+        "observed_argv": 8000,
+        "matches_expected": true
+      },
+      "BatchSize": {
+        "expected": 128,
+        "observed_config": 128,
+        "observed_argv": 128,
+        "matches_expected": true
+      },
+      "LearningRate": {
+        "expected": 0.0001,
+        "observed_config": 0.0001,
+        "observed_argv": 0.0001,
+        "matches_expected": true
+      },
+      "TrainSideOnlyTuning": {
+        "expected": true,
+        "observed_config": true,
+        "observed_argv": true,
+        "matches_expected": true
+      }
+    },
     "replay_and_learner_config": {
-      "batch_size": 256,
+      "batch_size": 128,
       "replay_capacity": 100000,
       "n_step": 3,
       "gamma": 0.99,
       "learning_rate": 0.0001,
       "target_update_interval": 1000,
-      "grad_clip_norm": 10,
       "collect_steps_per_iter": 16,
-      "learner_updates_per_iter": 2,
+      "learner_updates_per_iter": 1,
       "train_every_env_steps": 16
     },
     "reward_config": {
+      "reward_info_scale": 3.2,
       "reward_revisit_penalty": 0.1,
       "reward_turn_penalty_scale": 0.05,
       "reward_timeout_penalty": 8,
       "reward_step_penalty": 0.02,
       "reward_terminal_bonus": 20,
-      "reward_info_scale": 3,
       "reward_obstacle_weight": 0.25
     },
     "map_and_eval_config": {
@@ -355,8 +425,8 @@
     },
     "device": "cuda:0",
     "duration": {
-      "total_runtime_sec": 15629.930015899998,
-      "total_runtime_hms": "04:20:30"
+      "total_runtime_sec": 9573.924113,
+      "total_runtime_hms": "02:39:34"
     },
     "source_git": {
       "branch": "main",
@@ -384,13 +454,23 @@
       }
     },
     "seed_status": {
-      "use_fixed_train_episode_seeds": true,
-      "fixed_train_episode_seed_base": 20259323,
-      "use_fixed_eval_seeds": true,
-      "fixed_final_probe_seed_base": 20261323,
-      "use_fixed_model_select_seeds": true,
-      "fixed_model_select_seed_base": 20262323
+      "seed": 0,
+      "fixed_seed_fields": {
+        "use_fixed_train_episode_seeds": true,
+        "fixed_train_episode_seed_base": 20259323,
+        "use_fixed_eval_seeds": true,
+        "fixed_final_probe_seed_base": 20261323,
+        "use_fixed_model_select_seeds": true,
+        "fixed_model_select_seed_base": 20262323
+      }
     }
+  },
+  "reference_context": {
+    "role": "factual_context_only_not_decision_authority",
+    "current_train_side_reference_baseline_from_tuning_map": "stable_epsend004_budget500k_decay240k_minreplay8000_seed0_20260511_195904",
+    "matched_prior_archive_id": "stable_bs256_bounded_learner_update_comparison_20260515",
+    "matched_prior_recommended_run_name": "stable_updates1_info32_epsend004_budget500k_decay240k_minreplay8000_seed0",
+    "comparison_or_decision_made_by_codex": false
   },
   "missing_artifacts": {
     "required_missing": [],
@@ -408,6 +488,11 @@
       {
         "path": "logs/posthoc_candidate_scores.csv",
         "category": "posthoc_selection_csv",
+        "missingness_treatment": "not_missing"
+      },
+      {
+        "path": "logs/final_probe.csv",
+        "category": "csv",
         "missingness_treatment": "not_missing"
       },
       {
@@ -439,27 +524,34 @@
     "skipped_test_side_artifacts_missingness_treatment": "not_missing"
   },
   "parse_failures": [],
-  "unverified_items": [],
+  "unverified_items": [
+    "source_training_repo_had_preexisting_untracked_directory_before_analysis; no source writes performed by this task"
+  ],
   "forbidden_artifact_findings": {
     "forbidden_artifacts_copied": false,
     "source_run_outputs_modified": false,
     "source_training_repository_modified_by_codex": false,
-    "notes": "Only compact structured summaries and train-side CSV summaries were read; checkpoints, plots, trajectories, raw outputs, and binary artifacts were not copied."
+    "notes": "Only compact structured summaries and train-side CSV summaries were read; checkpoints, model weights, full logs, full CSVs, plots, trajectories, raw outputs, and binary artifacts were not copied."
   },
   "validation_facts": {
-    "precondition_stable_lr75e5_archive_landing_complete": true,
-    "train_side_only_tuning_detected_from_artifacts": "true",
-    "posthoc_and_final_probe_status_only": true,
-    "skipped_test_side_missingness_treatment": "not_missing",
-    "test_side_metric_extraction": false,
-    "checkpoint_selection_details_extracted": false,
-    "heldout_summaries_extracted": false,
-    "derived_metric_count": 7,
-    "derived_metric_role": "diagnostic_only",
-    "derived_evidence_role": "not_standalone_superiority_evidence",
+    "schema_and_constants": "passed",
+    "mode_detection_contract": "passed",
+    "train_side_monitoring_contract": "passed",
+    "derived_metrics_contract": "passed",
+    "test_side_status_only_contract": "passed",
+    "factual_summary_status_contract": "passed",
     "path_sanitization": "private absolute source paths excluded",
-    "factual_only_boundary": "no tuning recommendation, baseline decision, or continuation decision provided"
+    "write_scope": "passed; only training_results/current/current_training_run_analysis.json changed",
+    "source_integrity": "passed; source repo status unchanged except preexisting untracked directory",
+    "factual_only_boundary": "no tuning recommendation, baseline decision, next hyperparameters, or superiority conclusion provided",
+    "json_parse": "passed",
+    "required_top_level_keys": "passed",
+    "expected_configuration_checks": "passed",
+    "git_diff_check": "passed",
+    "git_diff_cached_check": "passed"
   },
   "factual_summary_status": "factual_summary_ready",
-  "tuning_recommendation_provided": false
+  "tuning_recommendation_provided": false,
+  "baseline_update_decision_provided": false,
+  "next_hyperparameters_provided": false
 }
