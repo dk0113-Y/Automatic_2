@@ -222,6 +222,37 @@
         "no_source_run_output_modification": true,
         "no_forbidden_artifacts_copied": true
       }
+    },
+    {
+      "archive_id": "stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_175304",
+      "archive_type": "single_run",
+      "run_name_or_group": "stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_175304",
+      "created_by": "codex",
+      "tuning_review_generated_by": "gpt",
+      "pairing_status": "paired",
+      "training_analysis_path": "training_results/history/single_runs/stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_175304/training_run_analysis.json",
+      "tuning_review_path": "training_results/history/single_runs/stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_175304/tuning_review.md",
+      "source_current_analysis_path": "training_results/current/current_training_run_analysis.json",
+      "source_report_type": "training_run_factual_analysis",
+      "tuning_review_report_type": "gpt_tuning_review_digest",
+      "recommendation_type": "multi_run_comparison_needed",
+      "prior_validation_status": "partially_supported",
+      "validation_status": "partially_supported",
+      "baseline_update_status": "unchanged",
+      "current_train_side_reference_baseline_before": "stable_epsend004_budget500k_decay240k_minreplay8000_seed0_20260511_195904",
+      "baseline_candidate": "stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_175304",
+      "current_train_side_reference_baseline_after": "stable_epsend004_budget500k_decay240k_minreplay8000_seed0_20260511_195904",
+      "baseline_scope": "single_seed_train_side_reference_only",
+      "selected_next_surface": "bounded multi-run comparison over learner/update dynamics",
+      "parameter_change": "Candidate A BatchSize: 128 -> 192; Candidate B LearnerUpdatesPerIter: 2 -> 1; Candidate C TargetUpdateInterval: 1000 -> 2000",
+      "recommended_next_run_name": "stable_bs192_epsend004_budget500k_decay240k_minreplay8000_seed0; stable_updates1_epsend004_budget500k_decay240k_minreplay8000_seed0; stable_target2000_epsend004_budget500k_decay240k_minreplay8000_seed0",
+      "validation": {
+        "source_analysis_json_parse": "passed",
+        "tuning_review_md_digest_validation": "passed",
+        "no_training_repo_modification": true,
+        "no_source_run_output_modification": true,
+        "no_forbidden_artifacts_copied": true
+      }
     }
   ]
 }

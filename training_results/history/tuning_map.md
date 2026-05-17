@@ -18,7 +18,7 @@ Limits:
 | Field | Value |
 | --- | --- |
 | current_train_side_reference_baseline | `stable_epsend004_budget500k_decay240k_minreplay8000_seed0_20260511_195904` |
-| basis | Archived GPT review for `stable_epsend004...` recorded `prior_validation_status: supported` and updated epsend004 as the current train-side reference baseline. Later archived GPT reviews retained epsend004 after refuting epsend0035, epsdecay300k, revisit012, turn006, and lr75e5. |
+| basis | Archived GPT review for `stable_epsend004...` recorded `prior_validation_status: supported` and updated epsend004 as the current train-side reference baseline. Later archived GPT reviews retained epsend004 after refuting epsend0035, epsdecay300k, revisit012, turn006, and lr75e5, and after partially supporting bs256 without a baseline update. |
 | scope | `single_seed_train_side_reference_only` |
 | caveat | Current reference baseline is not a global optimum, tuning completion claim, paper-level conclusion, or cross-seed conclusion. |
 
@@ -44,6 +44,7 @@ Limits:
 | `stable_revisit012_epsend004_budget500k_decay240k_minreplay8000_seed0_20260513_135851` | `refuted` | epsend004 retained. | Recommended next run name: `stable_turn006_epsend004_budget500k_decay240k_minreplay8000_seed0`. |
 | `stable_turn006_epsend004_budget500k_decay240k_minreplay8000_seed0_20260514_182435` | `refuted` | epsend004 retained. | Recommended next run name: `stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0`. |
 | `stable_lr75e5_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_103843` | `refuted` | epsend004 retained. | Recommended next run name: `stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0`. |
+| `stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0_20260515_175304` | `partially_supported` | epsend004 retained. | Recommended next run names: `stable_bs192_epsend004_budget500k_decay240k_minreplay8000_seed0`; `stable_updates1_epsend004_budget500k_decay240k_minreplay8000_seed0`; `stable_target2000_epsend004_budget500k_decay240k_minreplay8000_seed0`. |
 
 ## 5. Refuted Directions
 
@@ -74,13 +75,14 @@ Notes:
 | Keep epsend004 as reference after revisit012 | Retained by archived GPT review for `stable_revisit012...`. |
 | Keep epsend004 as reference after turn006 | Retained by archived GPT review for `stable_turn006...`. |
 | Keep epsend004 as reference after lr75e5 | Retained by archived GPT review for `stable_lr75e5...`. |
+| Keep epsend004 as reference after bs256 | Retained by archived GPT review for `stable_bs256...`. |
 
 ## 7. Open Uncertainties
 
 | Uncertainty | Status |
 | --- | --- |
 | Whether light turn shaping can reduce turn burden, repeated revisit induced inefficient paths, stall, zero_info, and timeout while preserving epsend004-level train-side endpoint performance. | Open in archived GPT review after revisit012. |
-| Whether restoring epsend004 learning rate and increasing `BatchSize` from 128 to 256 can reduce minibatch gradient variance and improve endpoint stability, behavior efficiency, and train-side system performance. | Open in archived GPT review after lr75e5. |
+| Whether a bounded learner/update comparison can identify a local region where learner stability transfers to behavior efficiency: intermediate batch size, lower update-to-data ratio, or slower target sync cadence under epsend004 core settings. | Open in archived GPT review after bs256. |
 | Whether posthoc/final_probe mismatch indicates a stability issue requiring later focused review. | Open as context only; not baseline decision authority by itself. |
 | Whether learner/update dynamics such as learning rate or target update cadence should be considered if light reward shaping is weaker than epsend004. | Mentioned as conditional future consideration in archived GPT review after revisit012. |
 | Cross-seed robustness. | Not evaluated by this single-seed tuning map and not the default blocker. |
@@ -89,10 +91,10 @@ Notes:
 
 | Surface | Status from archived GPT review |
 | --- | --- |
-| `learner/replay dynamics` with `BatchSize: 128 -> 256` and `LearningRate: 0.000075 -> 0.0001 restored to epsend004 core` | Recommended next candidate after lr75e5; represented by `recommended_next_run_name: stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0`. |
-| Bounded multi-run comparison or rollout/update cadence surface | Conditional future surface only if `BatchSize=256` is weaker than epsend004. |
+| `bounded multi-run comparison over learner/update dynamics` with `Candidate A BatchSize: 128 -> 192; Candidate B LearnerUpdatesPerIter: 2 -> 1; Candidate C TargetUpdateInterval: 1000 -> 2000` | Recommended next candidate surface after bs256; represented by `recommended_next_run_name: stable_bs192_epsend004_budget500k_decay240k_minreplay8000_seed0; stable_updates1_epsend004_budget500k_decay240k_minreplay8000_seed0; stable_target2000_epsend004_budget500k_decay240k_minreplay8000_seed0`. |
+| Systematic multi-run design or method_redesign_discussion_only | Conditional future surface only if all three bounded learner/update candidates remain weaker than epsend004. |
 
-`stable_bs256_epsend004_budget500k_decay240k_minreplay8000_seed0` is recorded only as a recommended next run name. It is not summarized as an archived result unless it becomes present as an archived entry in `history_index.json`.
+`stable_bs192_epsend004_budget500k_decay240k_minreplay8000_seed0`, `stable_updates1_epsend004_budget500k_decay240k_minreplay8000_seed0`, and `stable_target2000_epsend004_budget500k_decay240k_minreplay8000_seed0` are recorded only as recommended next run names. They are not summarized as archived results unless they become present as archived entries in `history_index.json`.
 
 ## 9. Maintenance Rule
 
